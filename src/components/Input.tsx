@@ -1,11 +1,11 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
 
 type InputPropsType = {
-    addTask: (title: string) => void
+    addTask: (title: string, todolistID: string) => void
+    id: string
 }
 
 export function Input(props: InputPropsType) {
-
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 
@@ -16,7 +16,7 @@ export function Input(props: InputPropsType) {
 
     const onClickHandler = () => {
         if (title.trim()) {
-            props.addTask(title.trim())
+            props.addTask(title.trim(), props.id)
             setTitle('')
         } else {
             setTitle('')
@@ -30,11 +30,8 @@ export function Input(props: InputPropsType) {
 
     return (
         <div>
-            <input onChange={onChangeHandler}
-                   onKeyPress={onKeyPressHandler}
-                   value={title}
-                   className={error ? 'error' : ''}
-            />
+            <input onChange={onChangeHandler} onKeyPress={onKeyPressHandler} value={title}
+                   className={error ? 'error' : ''}/>
             <button onClick={onClickHandler}>Add</button>
             {error && <div className={'errorMessage'}>Field is required</div>}
         </div>
