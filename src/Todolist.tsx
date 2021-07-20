@@ -16,48 +16,69 @@ type TodolistPropsType = {
     removeTodolist: (todolistID: string) => void
 }
 
-export function Todolist(props: TodolistPropsType) {
+export const Todolist: React.FC<TodolistPropsType> = (props) => {
+
     const changeFilterCallbackHandler = (value: FilterValuesType) => props.changeTodolistFilter(value, props.id)
     const removeTodolist = () => props.removeTodolist(props.id)
 
     return (
-        <div>
-            <h3>{props.title}
-                <button onClick={removeTodolist}>x</button>
-            </h3>
+        <div className={'todolistContainer'}>
 
-            <Input addTask={props.addTask} id={props.id}/>
 
-            <ul>
+            <div className={'todolistHeaderWrapper'}>
+                <div className={'todolistHeaderContainer'}>
+                    <h2 className={'todolistTitle'}>{props.title}</h2>
+                    <Button value={'x'}
+                            className={'deleteButton'}
+                            onClick={removeTodolist}
+                            icon={'TrashIcon'}
+                    />
+                </div>
+
+                <Input addTask={props.addTask} id={props.id}/>
+            </div>
+
+
+            <ul className={'tasksContainer'}>
                 {props.tasks.map(t => {
                     const removeTaskCallbackHandler = () => props.removeTask(t.id, props.id)
                     const changeStatusCallbackHandler = (isDone: boolean) => props.changeStatus(t.id, isDone, props.id)
 
                     return (
-                        <li key={t.id}>
-                            <Button value={'Delete'} clickAction={removeTaskCallbackHandler}/>
+                        <li key={t.id} className={'singleTaskContainer'}>
                             <Checkbox checked={t.isDone} changeStatus={changeStatusCallbackHandler}/>
                             <span className={t.isDone ? 'completed' : ''}>{t.title}</span>
+                            <Button
+                                value={'x'}
+                                onClick={removeTaskCallbackHandler}
+                                className={'deleteButton'}
+                                icon={'TrashIcon'}
+                            />
                         </li>
                     )
                 })}
             </ul>
 
-            <div>
+
+            {/*ok*/}
+            <div className={'filterButtonsContainer'}>
                 <Button
                     value={'All'}
-                    clickAction={() => changeFilterCallbackHandler('All')}
-                    filter={props.filter}/>
+                    onClick={() => changeFilterCallbackHandler('All')}
+                    filter={props.filter}
+                />
 
                 <Button
                     value={'Active'}
-                    clickAction={() => changeFilterCallbackHandler('Active')}
-                    filter={props.filter}/>
+                    onClick={() => changeFilterCallbackHandler('Active')}
+                    filter={props.filter}
+                />
 
                 <Button
                     value={'Completed'}
-                    clickAction={() => changeFilterCallbackHandler('Completed')}
-                    filter={props.filter}/>
+                    onClick={() => changeFilterCallbackHandler('Completed')}
+                    filter={props.filter}
+                />
             </div>
         </div>
     )

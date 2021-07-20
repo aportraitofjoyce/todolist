@@ -21,7 +21,7 @@ export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
-function App() {
+const App = () => {
     const TODOLIST_ID_1 = v1()
     const TODOLIST_ID_2 = v1()
 

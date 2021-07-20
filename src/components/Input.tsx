@@ -1,4 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
+import {Button} from "./Button";
 
 type InputPropsType = {
     addTask: (title: string, todolistID: string) => void
@@ -30,9 +31,15 @@ export function Input(props: InputPropsType) {
 
     return (
         <div>
-            <input onChange={onChangeHandler} onKeyPress={onKeyPressHandler} value={title}
-                   className={error ? 'error' : ''}/>
-            <button onClick={onClickHandler}>Add</button>
+            <div className={'inputDataContainer'}>
+                <input onChange={onChangeHandler}
+                       onKeyPress={onKeyPressHandler}
+                       value={title}
+                       className={error ? 'error' : 'dataInput'}
+                       placeholder={'What to add?'}
+                />
+                <Button value={'Add'} onClick={onClickHandler}/>
+            </div>
             {error && <div className={'errorMessage'}>Field is required</div>}
         </div>
     )

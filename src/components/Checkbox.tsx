@@ -10,5 +10,5 @@ export const Checkbox = (props: CheckboxPropsType) => {
         props.changeStatus(e.currentTarget.checked)
     }
 
-    return <input type='checkbox' checked={props.checked} onChange={onCheckboxChangeHandler}/>
+    return <input type='checkbox' checked={props.checked} onChange={onCheckboxChangeHandler} className={'checkbox'}/>
 }
