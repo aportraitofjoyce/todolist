@@ -18,10 +18,11 @@ export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
-export const App = () => {
-    const TODOLIST_ID_1 = v1()
-    const TODOLIST_ID_2 = v1()
+const TODOLIST_ID_1 = v1()
+const TODOLIST_ID_2 = v1()
 
+export const App = () => {
+    // Data
     const [todolists, setTodolists] = useState<TodolistType[]>([
         {id: TODOLIST_ID_1, title: 'What to Learn', filter: 'All'},
         {id: TODOLIST_ID_2, title: 'What to Buy', filter: 'All'},
@@ -45,6 +46,7 @@ export const App = () => {
         ],
     })
 
+    // Local Storage
     useEffect(() => {
         const todolistsString = localStorage.getItem('todolists')
         if (todolistsString) {
@@ -65,6 +67,7 @@ export const App = () => {
     }, [todolists, tasks])
 
 
+    // Actions
     const removeTask = (taskID: string, todolistID: string) => {
         tasks[todolistID] = tasks[todolistID].filter(t => t.id !== taskID)
         setTasks({...tasks})
@@ -76,7 +79,7 @@ export const App = () => {
         setTasks({...tasks})
     }
 
-    const changeStatus = (taskID: string, isDone: boolean, todolistID: string) => {
+    const changeTaskStatus = (taskID: string, isDone: boolean, todolistID: string) => {
         tasks[todolistID] = tasks[todolistID].map(t => (t.id === taskID ? {...t, isDone: isDone} : t))
         setTasks({...tasks})
     }
@@ -101,21 +104,24 @@ export const App = () => {
         }
     }
 
-    const todolistComponents = todolists.map(tl => {
-        return (
-            <Todolist
-                key={tl.id}
-                id={tl.id}
-                filter={tl.filter}
-                title={tl.title}
-                tasks={tasksToRender(tl)}
-                removeTask={removeTask}
-                changeTodolistFilter={changeTodolistFilter}
-                addTask={addTask}
-                changeStatus={changeStatus}
-                removeTodolist={removeTodolist}
-            />
-        )
-    })
-    return <div className='App'>{todolistComponents}</div>
+    // JSX
+    return (
+        <div className='App'>
+            {todolists.map(tl => {
+                return (
+                    <Todolist
+                        key={tl.id}
+                        id={tl.id}
+                        title={tl.title}
+                        filter={tl.filter}
+                        removeTask={removeTask}
+                        addTask={addTask}
+                        changeTaskStatus={changeTaskStatus}
+                        changeTodolistFilter={changeTodolistFilter}
+                        removeTodolist={removeTodolist}
+                        tasksToRender={tasksToRender(tl)}/>
+                )
+            })}
+        </div>
+    )
 }
