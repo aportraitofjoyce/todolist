@@ -68,29 +68,29 @@ export const App = () => {
 
 
     // Actions
-    const removeTask = (taskID: string, todolistID: string) => {
-        tasks[todolistID] = tasks[todolistID].filter(t => t.id !== taskID)
+    const removeTask = (taskID: string, TODOLIST_ID: string) => {
+        tasks[TODOLIST_ID] = tasks[TODOLIST_ID].filter(t => t.id !== taskID)
         setTasks({...tasks})
     }
 
-    const addTask = (title: string, todolistID: string) => {
-        const newTask: TaskType = {id: v1(), title: title, isDone: false}
-        tasks[todolistID] = [newTask, ...tasks[todolistID]]
+    const addTask = (title: string, TODOLIST_ID: string) => {
+        const newTask = {id: v1(), title: title, isDone: false}
+        tasks[TODOLIST_ID] = [newTask, ...tasks[TODOLIST_ID]]
         setTasks({...tasks})
     }
 
-    const changeTaskStatus = (taskID: string, isDone: boolean, todolistID: string) => {
-        tasks[todolistID] = tasks[todolistID].map(t => (t.id === taskID ? {...t, isDone: isDone} : t))
+    const changeTaskStatus = (taskID: string, isDone: boolean, TODOLIST_ID: string) => {
+        tasks[TODOLIST_ID] = tasks[TODOLIST_ID].map(t => (t.id === taskID ? {...t, isDone} : t))
         setTasks({...tasks})
     }
 
-    const changeTodolistFilter = (filterValue: FilterValuesType, todolistID: string) => {
-        setTodolists(todolists.map(tl => (tl.id === todolistID ? {...tl, filter: filterValue} : tl)))
+    const changeTodolistFilter = (filter: FilterValuesType, TODOLIST_ID: string) => {
+        setTodolists(todolists.map(todolist => (todolist.id === TODOLIST_ID ? {...todolist, filter: filter} : todolist)))
     }
 
-    const removeTodolist = (todolistID: string) => {
-        setTodolists(todolists.filter(tl => tl.id !== todolistID))
-        delete tasks[todolistID]
+    const removeTodolist = (TODOLIST_ID: string) => {
+        setTodolists(todolists.filter(todolist => todolist.id !== TODOLIST_ID))
+        delete tasks[TODOLIST_ID]
     }
 
     const tasksToRender = (todolist: TodolistType): TaskType[] => {
@@ -107,19 +107,19 @@ export const App = () => {
     // JSX
     return (
         <div className='App'>
-            {todolists.map(tl => {
+            {todolists.map(todolist => {
                 return (
                     <Todolist
-                        key={tl.id}
-                        id={tl.id}
-                        title={tl.title}
-                        filter={tl.filter}
+                        key={todolist.id}
+                        TODOLIST_ID={todolist.id}
+                        title={todolist.title}
+                        filter={todolist.filter}
                         removeTask={removeTask}
                         addTask={addTask}
                         changeTaskStatus={changeTaskStatus}
                         changeTodolistFilter={changeTodolistFilter}
                         removeTodolist={removeTodolist}
-                        tasksToRender={tasksToRender(tl)}/>
+                        tasksToRender={tasksToRender(todolist)}/>
                 )
             })}
         </div>

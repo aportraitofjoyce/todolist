@@ -5,21 +5,21 @@ import {Input} from './components/Input'
 import {Checkbox} from './components/Checkbox'
 
 type TodolistPropsType = {
-    id: string
+    TODOLIST_ID: string
     title: string
     tasksToRender: TaskType[]
     filter: FilterValuesType
     removeTask: (taskID: string, todolistID: string) => void
     addTask: (title: string, todolistID: string) => void
     changeTaskStatus: (taskID: string, isDone: boolean, todolistID: string) => void
-    changeTodolistFilter: (filterValue: FilterValuesType, todolistID: string) => void
+    changeTodolistFilter: (filter: FilterValuesType, todolistID: string) => void
     removeTodolist: (todolistID: string) => void
 }
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
 
-    const changeFilterHandler = (value: FilterValuesType) => props.changeTodolistFilter(value, props.id)
-    const removeTodolistHandler = () => props.removeTodolist(props.id)
+    const changeTodolistFilterHandler = (filter: FilterValuesType) => props.changeTodolistFilter(filter, props.TODOLIST_ID)
+    const removeTodolistHandler = () => props.removeTodolist(props.TODOLIST_ID)
 
     return (
         <div className={'todolistContainer'}>
@@ -34,14 +34,14 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                             icon={'TrashIcon'}
                     />
                 </div>
-                <Input addTask={props.addTask} id={props.id}/>
+                <Input addTask={props.addTask} id={props.TODOLIST_ID}/>
             </div>
 
-            {/*Container*/}
+            {/*Container with tasks*/}
             <ul className={'tasksContainer'}>
                 {props.tasksToRender.map(t => {
-                    const removeTaskHandler = () => props.removeTask(t.id, props.id)
-                    const changeTaskStatusHandler = (isDone: boolean) => props.changeTaskStatus(t.id, isDone, props.id)
+                    const removeTaskHandler = () => props.removeTask(t.id, props.TODOLIST_ID)
+                    const changeTaskStatusHandler = (isDone: boolean) => props.changeTaskStatus(t.id, isDone, props.TODOLIST_ID)
 
                     return (
                         <li key={t.id} className={'singleTaskContainer'}>
@@ -59,17 +59,17 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
             {/*Footer*/}
             <div className={'filterButtonsContainer'}>
                 <Button value={'All'}
-                        onClick={() => changeFilterHandler('All')}
+                        onClick={() => changeTodolistFilterHandler('All')}
                         filter={props.filter}
                 />
 
                 <Button value={'Active'}
-                        onClick={() => changeFilterHandler('Active')}
+                        onClick={() => changeTodolistFilterHandler('Active')}
                         filter={props.filter}
                 />
 
                 <Button value={'Completed'}
-                        onClick={() => changeFilterHandler('Completed')}
+                        onClick={() => changeTodolistFilterHandler('Completed')}
                         filter={props.filter}
                 />
             </div>
