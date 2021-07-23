@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import './App.css'
 import {Todolist} from './Todolist'
 import {v1} from 'uuid'
@@ -44,6 +44,26 @@ export const App = () => {
             {id: v1(), title: 'Smoke', isDone: true},
         ],
     })
+
+    useEffect(() => {
+        const todolistsString = localStorage.getItem('todolists')
+        if (todolistsString) {
+            const todolistsInit = JSON.parse(todolistsString)
+            setTodolists(todolistsInit)
+        }
+
+        const tasksString = localStorage.getItem('tasks')
+        if (tasksString) {
+            const tasksInit = JSON.parse(tasksString)
+            setTasks(tasksInit)
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem('todolists', JSON.stringify(todolists))
+        localStorage.setItem('tasks', JSON.stringify(tasks))
+    }, [todolists, tasks])
+
 
     const removeTask = (taskID: string, todolistID: string) => {
         tasks[todolistID] = tasks[todolistID].filter(t => t.id !== taskID)

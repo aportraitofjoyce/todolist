@@ -35,7 +35,7 @@ export function Input(props: InputPropsType) {
                 <input onChange={onChangeHandler}
                        onKeyPress={onKeyPressHandler}
                        value={title}
-                       className={error ? 'error' : 'dataInput'}
+                       className={error ? 'dataInput error' : 'dataInput'}
                        placeholder={'What to add?'}
                 />
                 <Button value={'Add'} onClick={onClickHandler}/>
