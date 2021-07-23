@@ -23,8 +23,6 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
 
     return (
         <div className={'todolistContainer'}>
-
-
             <div className={'todolistHeaderWrapper'}>
                 <div className={'todolistHeaderContainer'}>
                     <h2 className={'todolistTitle'}>{props.title}</h2>
@@ -48,36 +46,29 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                         <li key={t.id} className={'singleTaskContainer'}>
                             <Checkbox checked={t.isDone} changeStatus={changeStatusCallbackHandler}/>
                             <span className={t.isDone ? 'completed' : ''}>{t.title}</span>
-                            <Button
-                                value={'x'}
-                                onClick={removeTaskCallbackHandler}
-                                className={'deleteButton'}
-                                icon={'TrashIcon'}
-                            />
+                            <Button value={'x'}
+                                    onClick={removeTaskCallbackHandler}
+                                    className={'deleteButton'}
+                                    icon={'TrashIcon'}/>
                         </li>
                     )
                 })}
             </ul>
 
-
-            {/*ok*/}
             <div className={'filterButtonsContainer'}>
-                <Button
-                    value={'All'}
-                    onClick={() => changeFilterCallbackHandler('All')}
-                    filter={props.filter}
+                <Button value={'All'}
+                        onClick={() => changeFilterCallbackHandler('All')}
+                        filter={props.filter}
                 />
 
-                <Button
-                    value={'Active'}
-                    onClick={() => changeFilterCallbackHandler('Active')}
-                    filter={props.filter}
+                <Button value={'Active'}
+                        onClick={() => changeFilterCallbackHandler('Active')}
+                        filter={props.filter}
                 />
 
-                <Button
-                    value={'Completed'}
-                    onClick={() => changeFilterCallbackHandler('Completed')}
-                    filter={props.filter}
+                <Button value={'Completed'}
+                        onClick={() => changeFilterCallbackHandler('Completed')}
+                        filter={props.filter}
                 />
             </div>
         </div>

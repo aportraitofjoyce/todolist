@@ -14,10 +14,8 @@ export function Button(props: ButtonPropsType) {
     const finalButtonClassName = `${props.filter === props.value ? 'activeButton' : ''} ${props.className}`
 
     return (
-        <button
-            onClick={props.onClick}
-            className={finalButtonClassName}
-        >
+        <button onClick={props.onClick}
+                className={finalButtonClassName}>
             {props.icon ? <TrashIcon/> : props.value}
         </button>
     )

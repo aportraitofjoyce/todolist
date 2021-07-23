@@ -4,24 +4,21 @@ import {Todolist} from './Todolist'
 import {v1} from 'uuid'
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
-
 export type TaskType = {
     id: string
     title: string
     isDone: boolean
 }
-
 export type TodolistType = {
     id: string
     title: string
     filter: FilterValuesType
 }
-
 export type TasksStateType = {
     [key: string]: TaskType[]
 }
 
-const App = () => {
+export const App = () => {
     const TODOLIST_ID_1 = v1()
     const TODOLIST_ID_2 = v1()
 
@@ -100,8 +97,5 @@ const App = () => {
             />
         )
     })
-
     return <div className='App'>{todolistComponents}</div>
 }
-
-export default App
