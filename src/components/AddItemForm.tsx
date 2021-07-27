@@ -2,11 +2,10 @@ import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
 import {Button} from "./Button";
 
 type InputPropsType = {
-    addTask: (title: string, todolistID: string) => void
-    id: string
+    addItem: (title: string) => void
 }
 
-export function Input(props: InputPropsType) {
+export function AddItemForm(props: InputPropsType) {
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 
@@ -14,17 +13,15 @@ export function Input(props: InputPropsType) {
         setTitle(e.currentTarget.value)
         setError(false)
     }
-
     const onClickHandler = () => {
         if (title.trim()) {
-            props.addTask(title.trim(), props.id)
+            props.addItem(title.trim())
             setTitle('')
         } else {
             setTitle('')
             setError(true)
         }
     }
-
     const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') onClickHandler()
     }
@@ -32,9 +29,9 @@ export function Input(props: InputPropsType) {
     return (
         <div>
             <div className={'inputDataContainer'}>
-                <input onChange={onChangeHandler}
+                <input value={title}
+                       onChange={onChangeHandler}
                        onKeyPress={onKeyPressHandler}
-                       value={title}
                        className={error ? 'dataInput error' : 'dataInput'}
                        placeholder={'What to add?'}
                 />
