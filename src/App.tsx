@@ -81,11 +81,11 @@ export const App = () => {
         setTasks({...tasks})
     }
     const changeTodolistFilter = (filter: FilterValuesType, TODOLIST_ID: string) => {
-        setTodolists(todolists.map(todolist => (todolist.id === TODOLIST_ID ? {...todolist, filter} : todolist)))
+        setTodolists(todolists.map(tdl => (tdl.id === TODOLIST_ID ? {...tdl, filter} : tdl)))
     }
     const removeTodolist = (TODOLIST_ID: string) => {
-        setTodolists(todolists.filter(todolist => todolist.id !== TODOLIST_ID))
-        delete tasks[TODOLIST_ID]
+        setTodolists(todolists.filter(tdl => tdl.id !== TODOLIST_ID))
+        delete tasks[TODOLIST_ID] // Подчищаем повисшие таски
     }
     const tasksToRender = (todolist: TodolistType): TaskType[] => {
         switch (todolist.filter) {
@@ -105,13 +105,11 @@ export const App = () => {
             filter: "All"
         }
         setTodolists([...todolists, newTodolist])
-        setTasks({ ...tasks, [NEW_TODOLIST_ID]:[] })
+        setTasks({...tasks, [NEW_TODOLIST_ID]: []})
     }
-
     const changeTodolistTitle = (title: string, TODOLIST_ID: string) => {
-        setTodolists(todolists.map(todolist => (todolist.id === TODOLIST_ID ? {...todolist, title} : todolist)))
+        setTodolists(todolists.map(tdl => (tdl.id === TODOLIST_ID ? {...tdl, title} : tdl)))
     }
-
     const changeTaskTitle = (taskID: string, title: string, TODOLIST_ID: string) => {
         tasks[TODOLIST_ID] = tasks[TODOLIST_ID].map(t => (t.id === taskID ? {...t, title} : t))
         setTasks({...tasks})
@@ -121,24 +119,26 @@ export const App = () => {
         <div className='App'>
             <AddItemForm addItem={addTodolist}/>
 
-            {todolists.map(todolist => {
-                return (
-                    <Todolist
-                        key={todolist.id}
-                        TODOLIST_ID={todolist.id}
-                        title={todolist.title}
-                        filter={todolist.filter}
-                        removeTask={removeTask}
-                        addTask={addTask}
-                        changeTaskStatus={changeTaskStatus}
-                        changeTodolistFilter={changeTodolistFilter}
-                        removeTodolist={removeTodolist}
-                        tasksToRender={tasksToRender(todolist)}
-                        changeTaskTitle={changeTaskTitle}
-                        changeTodolistTitle={changeTodolistTitle}
-                    />
-                )
-            })}
+            {
+                todolists.map(todolist => {
+                    return (
+                        <Todolist
+                            key={todolist.id}
+                            TODOLIST_ID={todolist.id}
+                            title={todolist.title}
+                            filter={todolist.filter}
+                            removeTask={removeTask}
+                            addTask={addTask}
+                            changeTaskStatus={changeTaskStatus}
+                            changeTodolistFilter={changeTodolistFilter}
+                            removeTodolist={removeTodolist}
+                            tasksToRender={tasksToRender(todolist)}
+                            changeTaskTitle={changeTaskTitle}
+                            changeTodolistTitle={changeTodolistTitle}
+                        />
+                    )
+                })
+            }
         </div>
     )
 }
