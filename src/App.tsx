@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import './App.css'
 import {Todolist} from './Todolist'
 import {v1} from 'uuid'
 import {AddItemForm} from "./components/AddItemForm";
+import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {Menu} from "@material-ui/icons";
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
 export type TaskType = {
@@ -85,7 +86,7 @@ export const App = () => {
     }
     const removeTodolist = (TODOLIST_ID: string) => {
         setTodolists(todolists.filter(tdl => tdl.id !== TODOLIST_ID))
-        delete tasks[TODOLIST_ID] // Подчищаем повисшие таски
+        delete tasks[TODOLIST_ID]
     }
     const tasksToRender = (todolist: TodolistType): TaskType[] => {
         switch (todolist.filter) {
@@ -116,12 +117,32 @@ export const App = () => {
     }
 
     return (
-        <div className='App'>
-            <AddItemForm addItem={addTodolist}/>
+        <>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton
+                        size="large"
+                        edge="start"
+                        color="inherit"
+                        aria-label="menu"
+                        sx={{mr: 2}}>
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
+                        Todolist
+                    </Typography>
+                    <Button color="inherit">Login</Button>
+                </Toolbar>
+            </AppBar>
 
-            {
-                todolists.map(todolist => {
-                    return (
+            <Container>
+                <Grid container
+                      style={{margin: '40px 0'}}>
+                    <AddItemForm addItem={addTodolist}/>
+                </Grid>
+
+                <Grid container spacing={5}>
+                    {todolists.map(todolist =>
                         <Todolist
                             key={todolist.id}
                             TODOLIST_ID={todolist.id}
@@ -134,11 +155,10 @@ export const App = () => {
                             removeTodolist={removeTodolist}
                             tasksToRender={tasksToRender(todolist)}
                             changeTaskTitle={changeTaskTitle}
-                            changeTodolistTitle={changeTodolistTitle}
-                        />
-                    )
-                })
-            }
-        </div>
+                            changeTodolistTitle={changeTodolistTitle}/>
+                    )}
+                </Grid>
+            </Container>
+        </>
     )
 }
