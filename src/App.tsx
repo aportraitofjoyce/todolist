@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react'
 import {Todolist} from './Todolist'
 import {v1} from 'uuid'
 import {AddItemForm} from "./components/AddItemForm";
-import {AppBar, Button, Container, Grid, IconButton, Paper, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Button, Container, CssBaseline, Grid, IconButton, Toolbar, Typography} from "@material-ui/core";
 import {Menu} from "@material-ui/icons";
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
@@ -118,6 +118,8 @@ export const App = () => {
 
     return (
         <>
+            <CssBaseline/>
+
             <AppBar position="static">
                 <Toolbar>
                     <IconButton
@@ -135,11 +137,8 @@ export const App = () => {
                 </Toolbar>
             </AppBar>
 
-            <Container>
-                <Grid container
-                      style={{margin: '40px 0'}}>
-                    <AddItemForm addItem={addTodolist}/>
-                </Grid>
+            <Container maxWidth={"md"}>
+                <AddItemForm addItem={addTodolist}/>
 
                 <Grid container spacing={5}>
                     {todolists.map(todolist =>

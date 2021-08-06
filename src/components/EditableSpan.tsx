@@ -24,7 +24,7 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
     return (
         editMode
             ? <TextField
-                id="standard-basic" label="Edit your task" variant="standard"
+                id="standard-basic" variant="standard"
                 value={title}
                 onBlur={offEditMode}
                 onChange={onChangeHandler}

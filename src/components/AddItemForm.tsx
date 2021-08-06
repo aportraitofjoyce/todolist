@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
-import {IconButton, TextField} from "@material-ui/core";
+import {Grid, IconButton, TextField} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
 
 type InputPropsType = {
@@ -28,7 +28,7 @@ export function AddItemForm(props: InputPropsType) {
     }
 
     return (
-        <div>
+        <Grid container justifyContent={'space-between'} alignItems={'center'} m={'24px 0'}>
             <TextField id="standard-basic" label="What to add?" variant="standard"
                        value={title}
                        onChange={onChangeHandler}
@@ -38,6 +38,6 @@ export function AddItemForm(props: InputPropsType) {
             <IconButton onClick={onClickHandler}>
                 <Add/>
             </IconButton>
-        </div>
+        </Grid>
     )
 }
