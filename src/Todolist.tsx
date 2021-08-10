@@ -21,8 +21,8 @@ type TodolistPropsType = {
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
 
-    const changeTodolistFilterHandler = (filter: FilterValuesType) => props.changeTodolistFilter(filter, props.TODOLIST_ID)
-    const removeTodolistHandler = () => props.removeTodolist(props.TODOLIST_ID)
+    const changeTodolistFilter = (filter: FilterValuesType) => props.changeTodolistFilter(filter, props.TODOLIST_ID)
+    const removeTodolist = () => props.removeTodolist(props.TODOLIST_ID)
     const addTask = (title: string) => props.addTask(title, props.TODOLIST_ID)
     const changeTodolistTitle = (title: string) => props.changeTodolistTitle(title, props.TODOLIST_ID)
 
@@ -31,13 +31,13 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
             <Paper sx={{padding: '24px'}}>
 
                 <Grid container justifyContent={'space-between'} alignItems={'center'}>
-                    <Typography variant="h4" sx={{fontWeight: 'bold'}}>
+                    <Typography variant="h5" sx={{fontWeight: 'bold'}}>
                         <EditableSpan title={props.title}
                                       changeTitle={changeTodolistTitle}/>
                     </Typography>
 
                     <IconButton aria-label="delete"
-                                onClick={removeTodolistHandler}>
+                                onClick={removeTodolist}>
                         <Delete/>
                     </IconButton>
                 </Grid>
@@ -71,14 +71,14 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
             </Paper>
 
             <ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{mt: '24px'}} fullWidth>
-                <Button onClick={() => changeTodolistFilterHandler('All')}
+                <Button onClick={() => changeTodolistFilter('All')}
                         color={props.filter === 'All' ? "secondary" : "primary"}>All
                 </Button>
-                <Button onClick={() => changeTodolistFilterHandler('Active')}
+                <Button onClick={() => changeTodolistFilter('Active')}
                     // sx={{margin: '0 8px'}}
                         color={props.filter === 'Active' ? "secondary" : "primary"}>Active
                 </Button>
-                <Button onClick={() => changeTodolistFilterHandler('Completed')}
+                <Button onClick={() => changeTodolistFilter('Completed')}
                         color={props.filter === 'Completed' ? "secondary" : "primary"}>Completed
                 </Button>
             </ButtonGroup>

@@ -81,23 +81,11 @@ export const App = () => {
         tasks[TODOLIST_ID] = tasks[TODOLIST_ID].map(t => (t.id === taskID ? {...t, isDone} : t))
         setTasks({...tasks})
     }
-    const changeTodolistFilter = (filter: FilterValuesType, TODOLIST_ID: string) => {
-        setTodolists(todolists.map(tdl => (tdl.id === TODOLIST_ID ? {...tdl, filter} : tdl)))
+    const changeTaskTitle = (taskID: string, title: string, TODOLIST_ID: string) => {
+        tasks[TODOLIST_ID] = tasks[TODOLIST_ID].map(t => (t.id === taskID ? {...t, title} : t))
+        setTasks({...tasks})
     }
-    const removeTodolist = (TODOLIST_ID: string) => {
-        setTodolists(todolists.filter(tdl => tdl.id !== TODOLIST_ID))
-        delete tasks[TODOLIST_ID]
-    }
-    const tasksToRender = (todolist: TodolistType): TaskType[] => {
-        switch (todolist.filter) {
-            case 'Completed':
-                return tasks[todolist.id].filter(t => t.isDone)
-            case 'Active':
-                return tasks[todolist.id].filter(t => !t.isDone)
-            default:
-                return tasks[todolist.id]
-        }
-    }
+
     const addTodolist = (title: string) => {
         const NEW_TODOLIST_ID = v1()
         const newTodolist: TodolistType = {
@@ -108,12 +96,26 @@ export const App = () => {
         setTodolists([...todolists, newTodolist])
         setTasks({...tasks, [NEW_TODOLIST_ID]: []})
     }
+    const removeTodolist = (TODOLIST_ID: string) => {
+        setTodolists(todolists.filter(tdl => tdl.id !== TODOLIST_ID))
+        delete tasks[TODOLIST_ID]
+    }
+    const changeTodolistFilter = (filter: FilterValuesType, TODOLIST_ID: string) => {
+        setTodolists(todolists.map(tdl => (tdl.id === TODOLIST_ID ? {...tdl, filter} : tdl)))
+    }
     const changeTodolistTitle = (title: string, TODOLIST_ID: string) => {
         setTodolists(todolists.map(tdl => (tdl.id === TODOLIST_ID ? {...tdl, title} : tdl)))
     }
-    const changeTaskTitle = (taskID: string, title: string, TODOLIST_ID: string) => {
-        tasks[TODOLIST_ID] = tasks[TODOLIST_ID].map(t => (t.id === taskID ? {...t, title} : t))
-        setTasks({...tasks})
+
+    const tasksToRender = (todolist: TodolistType): TaskType[] => {
+        switch (todolist.filter) {
+            case 'Completed':
+                return tasks[todolist.id].filter(t => t.isDone)
+            case 'Active':
+                return tasks[todolist.id].filter(t => !t.isDone)
+            default:
+                return tasks[todolist.id]
+        }
     }
 
     return (
