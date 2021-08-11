@@ -49,7 +49,7 @@ export const App = () => {
         ],
     })
 
-    /*useEffect(() => {
+    useEffect(() => {
         const todolistsString = localStorage.getItem('todolists')
         if (todolistsString) {
             const todolistsInit = JSON.parse(todolistsString)
@@ -65,7 +65,7 @@ export const App = () => {
     useEffect(() => {
         localStorage.setItem('todolists', JSON.stringify(todolists))
         localStorage.setItem('tasks', JSON.stringify(tasks))
-    }, [todolists, tasks])*/
+    }, [todolists, tasks])
 
     const removeTask = (taskID: string, TODOLIST_ID: string) => {
         tasks[TODOLIST_ID] = tasks[TODOLIST_ID].filter(t => t.id !== taskID)
