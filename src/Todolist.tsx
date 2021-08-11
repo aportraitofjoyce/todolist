@@ -83,9 +83,8 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                 <Button onClick={() => changeTodolistFilter('Completed')}
                         color={props.filter === 'Completed' ? "secondary" : "primary"}>Completed
                 </Button>
-                <Button onClick={sortTasksByName}>Sort
-                </Button>
             </ButtonGroup>
+            
             <h4 style={{marginBottom: '8px'}}>Sort:</h4>
             <ButtonGroup variant="contained" aria-label="outlined primary button group" fullWidth>
                 <Button onClick={sortTasksByName}>By name</Button>

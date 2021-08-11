@@ -159,8 +159,6 @@ export const App = () => {
                 <Grid container spacing={5}>
                     {todolists.map(todolist =>
                         <Todolist
-                            sortTasksByName={sortTasksByName}
-                            sortTasksByComplete={sortTasksByComplete}
                             key={todolist.id}
                             TODOLIST_ID={todolist.id}
                             title={todolist.title}
@@ -172,7 +170,10 @@ export const App = () => {
                             removeTodolist={removeTodolist}
                             tasksToRender={tasksToRender(todolist)}
                             changeTaskTitle={changeTaskTitle}
-                            changeTodolistTitle={changeTodolistTitle}/>
+                            changeTodolistTitle={changeTodolistTitle}
+                            sortTasksByName={sortTasksByName}
+                            sortTasksByComplete={sortTasksByComplete}
+                        />
                     )}
                 </Grid>
             </Container>
