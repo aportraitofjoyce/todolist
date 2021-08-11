@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.input {
+    font-family: var(--fira-sans);
+    border: none;
+    border-bottom: 2px solid var(--white);
+    background-color: transparent;
+    color: var(--white);
+    font-size: 16px;
+    outline: none;
+    padding: 8px 0;
+}
+
+.input:hover, .input:focus {
+    border-color: var(--secondary);
+}
+
+.inputError {
+    border-color: #ff9c9c;
+}
+
+.inputError:hover, .inputError:focus {
+    border-color: red;
+}
+
+.errorMessage {
+    color: red;
+}

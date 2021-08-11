@@ -1,0 +1,41 @@
+.default {
+    font-family: var(--fira-sans);
+    font-weight: 400;
+    font-size: 16px;
+    background-color: var(--primary);
+    color: var(--white);
+    padding: 8px 24px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    height: 40px;
+    outline: none;
+}
+
+.default:hover {
+    opacity: 0.8;
+}
+
+.grouped {
+    flex-grow: 1;
+}
+
+.active {
+    background-color: var(--secondary);
+    color: var(--black);
+}
+
+.icon {
+    background-color: transparent;
+    color: var(--white);
+    padding: 8px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    height: 40px;
+    outline: none;
+}
+
+.icon:hover {
+    opacity: 0.8;
+}

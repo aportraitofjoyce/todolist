@@ -1,9 +1,12 @@
-import React, {ChangeEvent} from 'react'
+import React from 'react'
 import {FilterValuesType, TaskType} from './App'
 import {AddItemForm} from './components/AddItemForm'
 import {EditableSpan} from "./components/EditableSpan";
-import {Button, ButtonGroup, Checkbox, Grid, IconButton, Paper, Typography} from "@material-ui/core";
-import {Delete} from "@material-ui/icons";
+import {Button} from "./components/UI/Button/Button";
+import {Checkbox} from "./components/UI/Checkbox/Checkbox";
+import s from './Todolist.module.css'
+import {IconButton} from "./components/UI/Button/IconButton";
+import {Delete} from "./components/Icons/Delete/Delete";
 
 type TodolistPropsType = {
     TODOLIST_ID: string
@@ -18,7 +21,6 @@ type TodolistPropsType = {
     changeTaskTitle: (taskID: string, title: string, TODOLIST_ID: string) => void
     changeTodolistTitle: (title: string, TODOLIST_ID: string) => void
     sortTasksByName: (TODOLIST_ID: string) => void
-    sortTasksByComplete: (TODOLIST_ID: string) => void
     sortTasksByDate: (TODOLIST_ID: string) => void
 
 }
@@ -30,73 +32,78 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     const addTask = (title: string) => props.addTask(title, props.TODOLIST_ID)
     const changeTodolistTitle = (title: string) => props.changeTodolistTitle(title, props.TODOLIST_ID)
     const sortTasksByName = () => props.sortTasksByName(props.TODOLIST_ID)
-    const sortTasksByComplete = () => props.sortTasksByComplete(props.TODOLIST_ID)
     const sortTasksByDate = () => props.sortTasksByDate(props.TODOLIST_ID)
 
     return (
-        <Grid item xs>
-            <Paper sx={{padding: '24px'}}>
-                <Grid container justifyContent={'space-between'} alignItems={'center'}>
-                    <Typography variant="h5" sx={{fontWeight: 'bold'}}>
-                        <EditableSpan title={props.title}
-                                      changeTitle={changeTodolistTitle}/>
-                    </Typography>
+        <div className={s.todolistContainer}>
+            <div className={s.titleContainer}>
+                <EditableSpan title={props.title}
+                              changeTitle={changeTodolistTitle}/>
+                <IconButton onClick={removeTodolist}><Delete/></IconButton>
+            </div>
 
-                    <IconButton aria-label="delete"
-                                onClick={removeTodolist}>
-                        <Delete/>
-                    </IconButton>
-                </Grid>
-
+            <div className={s.addTaskContainer}>
                 <AddItemForm addItem={addTask}/>
+            </div>
 
+            <div>
                 {props.tasksToRender.map(t => {
                     const removeTask = () => props.removeTask(t.id, props.TODOLIST_ID)
                     const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.TODOLIST_ID)
-                    const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
-                        props.changeTaskStatus(t.id, e.currentTarget.checked, props.TODOLIST_ID)
+                    const changeTaskStatus = (isDone: boolean) => {
+                        props.changeTaskStatus(t.id, isDone, props.TODOLIST_ID)
                     }
 
                     return (
-                        <div>
-                            <Grid container justifyContent={'space-between'} alignItems={'center'} key={t.id}>
-                                <div>
+                        <div key={t.id}>
+                            <div className={s.taskContentContainer}>
+                                <div className={s.taskContent}>
                                     <Checkbox checked={t.isDone}
-                                              onChange={changeTaskStatus}/>
+                                              changeStatus={changeTaskStatus}/>
 
                                     <EditableSpan title={t.title}
                                                   changeTitle={changeTaskTitle}/>
                                 </div>
-
-                                <IconButton aria-label="delete"
-                                            onClick={removeTask}>
-                                    <Delete/>
-                                </IconButton>
-                            </Grid>
-                            <div style={{margin: '0 0 16px 8px', opacity: '0.8'}}>{String(t.date)}</div>
+                                <IconButton onClick={removeTask}><Delete/></IconButton>
+                            </div>
+                            <div style={{
+                                margin: '8px 0 16px 40px',
+                                opacity: '0.8',
+                                fontSize: '14px'
+                            }}>{String(t.date)}</div>
                         </div>
+
                     )
                 })}
-            </Paper>
+            </div>
 
-            <ButtonGroup variant="contained" aria-label="outlined primary button group" sx={{mt: '24px'}} fullWidth>
+            <div className={s.buttonsContainer}>
                 <Button onClick={() => changeTodolistFilter('All')}
-                        color={props.filter === 'All' ? "secondary" : "primary"}>All
+                        active={props.filter === 'All'}
+                        grouped>
+                    All
                 </Button>
                 <Button onClick={() => changeTodolistFilter('Active')}
-                        color={props.filter === 'Active' ? "secondary" : "primary"}>Active
+                        active={props.filter === 'Active'}
+                        grouped>
+                    Active
                 </Button>
                 <Button onClick={() => changeTodolistFilter('Completed')}
-                        color={props.filter === 'Completed' ? "secondary" : "primary"}>Completed
+                        active={props.filter === 'Completed'}
+                        grouped>
+                    Completed
                 </Button>
-            </ButtonGroup>
-
-            <h4 style={{marginBottom: '8px'}}>Sort:</h4>
-            <ButtonGroup variant="contained" aria-label="outlined primary button group" fullWidth>
-                <Button onClick={sortTasksByName}>By name</Button>
-                <Button onClick={sortTasksByComplete}>By complete</Button>
-                <Button onClick={sortTasksByDate}>By date</Button>
-            </ButtonGroup>
-        </Grid>
+            </div>
+            <div className={s.buttonsContainer}>
+                <Button onClick={sortTasksByName}
+                        grouped>
+                    Sort by name
+                </Button>
+                <Button onClick={sortTasksByDate}
+                        grouped>
+                    Sort by date
+                </Button>
+            </div>
+        </div>
     )
 }

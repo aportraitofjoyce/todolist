@@ -2,8 +2,8 @@ import React, {useEffect, useState} from 'react'
 import {Todolist} from './Todolist'
 import {v1} from 'uuid'
 import {AddItemForm} from "./components/AddItemForm";
-import {AppBar, Button, Container, CssBaseline, Grid, IconButton, Toolbar, Typography} from "@material-ui/core";
-import {Menu} from "@material-ui/icons";
+import './App.css'
+import s from './App.module.css'
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
 export type TaskType = {
@@ -49,8 +49,7 @@ export const App = () => {
         ],
     })
 
-
-    useEffect(() => {
+    /*useEffect(() => {
         const todolistsString = localStorage.getItem('todolists')
         if (todolistsString) {
             const todolistsInit = JSON.parse(todolistsString)
@@ -66,7 +65,7 @@ export const App = () => {
     useEffect(() => {
         localStorage.setItem('todolists', JSON.stringify(todolists))
         localStorage.setItem('tasks', JSON.stringify(tasks))
-    }, [todolists, tasks])
+    }, [todolists, tasks])*/
 
     const removeTask = (taskID: string, TODOLIST_ID: string) => {
         tasks[TODOLIST_ID] = tasks[TODOLIST_ID].filter(t => t.id !== taskID)
@@ -95,13 +94,6 @@ export const App = () => {
             tasks[TODOLIST_ID]
                 .sort((a: TaskType, b: TaskType) => a['title']
                     .localeCompare(b['title']))
-        setTasks({...tasks, newTasks})
-    }
-    const sortTasksByComplete = (TODOLIST_ID: string) => {
-        const newTasks =
-            tasks[TODOLIST_ID]
-                .sort((a: TaskType, b: TaskType) => String(a['isDone'])
-                    .localeCompare(String(b['isDone'])))
         setTasks({...tasks, newTasks})
     }
     const sortTasksByDate = (TODOLIST_ID: string) => {
@@ -145,51 +137,31 @@ export const App = () => {
     }
 
     return (
-        <>
-            <CssBaseline/>
-
-            <AppBar position="static">
-                <Toolbar>
-                    <IconButton
-                        size="large"
-                        edge="start"
-                        color="inherit"
-                        aria-label="menu"
-                        sx={{mr: 2}}>
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant="h6" component="div" sx={{flexGrow: 1}}>
-                        Todolist
-                    </Typography>
-                    <Button color="inherit">Login</Button>
-                </Toolbar>
-            </AppBar>
-
-            <Container maxWidth={"md"}>
+        <div className={'App'}>
+            <div className={s.addTodolistContainer}>
                 <AddItemForm addItem={addTodolist}/>
+            </div>
 
-                <Grid container spacing={5}>
-                    {todolists.map(todolist =>
-                        <Todolist
-                            key={todolist.id}
-                            TODOLIST_ID={todolist.id}
-                            title={todolist.title}
-                            filter={todolist.filter}
-                            removeTask={removeTask}
-                            addTask={addTask}
-                            changeTaskStatus={changeTaskStatus}
-                            changeTodolistFilter={changeTodolistFilter}
-                            removeTodolist={removeTodolist}
-                            tasksToRender={tasksToRender(todolist)}
-                            changeTaskTitle={changeTaskTitle}
-                            changeTodolistTitle={changeTodolistTitle}
-                            sortTasksByName={sortTasksByName}
-                            sortTasksByComplete={sortTasksByComplete}
-                            sortTasksByDate={sortTasksByDate}
-                        />
-                    )}
-                </Grid>
-            </Container>
-        </>
+            <div className={s.todolistsContainer}>
+                {todolists.map(todolist =>
+                    <Todolist
+                        key={todolist.id}
+                        TODOLIST_ID={todolist.id}
+                        title={todolist.title}
+                        filter={todolist.filter}
+                        removeTask={removeTask}
+                        addTask={addTask}
+                        changeTaskStatus={changeTaskStatus}
+                        changeTodolistFilter={changeTodolistFilter}
+                        removeTodolist={removeTodolist}
+                        tasksToRender={tasksToRender(todolist)}
+                        changeTaskTitle={changeTaskTitle}
+                        changeTodolistTitle={changeTodolistTitle}
+                        sortTasksByName={sortTasksByName}
+                        sortTasksByDate={sortTasksByDate}
+                    />
+                )}
+            </div>
+        </div>
     )
 }

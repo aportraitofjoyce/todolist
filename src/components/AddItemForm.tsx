@@ -1,6 +1,7 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
-import {Grid, IconButton, TextField} from "@material-ui/core";
-import {Add} from "@material-ui/icons";
+import {Button} from "./UI/Button/Button";
+import {Input} from "./UI/Input/Input";
+import s from './AddItemForm.module.css'
 
 type InputPropsType = {
     addItem: (title: string) => void
@@ -28,16 +29,12 @@ export function AddItemForm(props: InputPropsType) {
     }
 
     return (
-        <Grid container justifyContent={'space-between'} alignItems={'center'} m={'24px 0'}>
-            <TextField id="standard-basic" label="What to add?" variant="standard"
-                       value={title}
-                       onChange={onChangeHandler}
-                       onKeyPress={onKeyPressHandler}
-                       error={error}/>
-
-            <IconButton onClick={onClickHandler}>
-                <Add/>
-            </IconButton>
-        </Grid>
+        <div className={s.container}>
+            <Input value={title}
+                   onChange={onChangeHandler}
+                   onKeyPress={onKeyPressHandler}
+                   error={error ? 'Field is required' : ''}/>
+            <Button onClick={onClickHandler}>Add</Button>
+        </div>
     )
 }
