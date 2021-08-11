@@ -19,6 +19,8 @@ type TodolistPropsType = {
     changeTodolistTitle: (title: string, TODOLIST_ID: string) => void
     sortTasksByName: (TODOLIST_ID: string) => void
     sortTasksByComplete: (TODOLIST_ID: string) => void
+    sortTasksByDate: (TODOLIST_ID: string) => void
+
 }
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
@@ -29,6 +31,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     const changeTodolistTitle = (title: string) => props.changeTodolistTitle(title, props.TODOLIST_ID)
     const sortTasksByName = () => props.sortTasksByName(props.TODOLIST_ID)
     const sortTasksByComplete = () => props.sortTasksByComplete(props.TODOLIST_ID)
+    const sortTasksByDate = () => props.sortTasksByDate(props.TODOLIST_ID)
 
     return (
         <Grid item xs>
@@ -55,20 +58,23 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                     }
 
                     return (
-                        <Grid container justifyContent={'space-between'} alignItems={'center'} key={t.id}>
-                            <div>
-                                <Checkbox checked={t.isDone}
-                                          onChange={changeTaskStatus}/>
+                        <div>
+                            <Grid container justifyContent={'space-between'} alignItems={'center'} key={t.id}>
+                                <div>
+                                    <Checkbox checked={t.isDone}
+                                              onChange={changeTaskStatus}/>
 
-                                <EditableSpan title={t.title}
-                                              changeTitle={changeTaskTitle}/>
-                            </div>
+                                    <EditableSpan title={t.title}
+                                                  changeTitle={changeTaskTitle}/>
+                                </div>
 
-                            <IconButton aria-label="delete"
-                                        onClick={removeTask}>
-                                <Delete/>
-                            </IconButton>
-                        </Grid>
+                                <IconButton aria-label="delete"
+                                            onClick={removeTask}>
+                                    <Delete/>
+                                </IconButton>
+                            </Grid>
+                            <div style={{margin: '0 0 16px 8px', opacity: '0.8'}}>{String(t.date)}</div>
+                        </div>
                     )
                 })}
             </Paper>
@@ -84,11 +90,12 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                         color={props.filter === 'Completed' ? "secondary" : "primary"}>Completed
                 </Button>
             </ButtonGroup>
-            
+
             <h4 style={{marginBottom: '8px'}}>Sort:</h4>
             <ButtonGroup variant="contained" aria-label="outlined primary button group" fullWidth>
                 <Button onClick={sortTasksByName}>By name</Button>
                 <Button onClick={sortTasksByComplete}>By complete</Button>
+                <Button onClick={sortTasksByDate}>By date</Button>
             </ButtonGroup>
         </Grid>
     )

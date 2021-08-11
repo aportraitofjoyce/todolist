@@ -10,6 +10,7 @@ export type TaskType = {
     id: string
     title: string
     isDone: boolean
+    date: any
 }
 export type TodolistType = {
     id: string
@@ -24,27 +25,30 @@ const TODOLIST_ID_1 = v1()
 const TODOLIST_ID_2 = v1()
 
 export const App = () => {
+    const createTime = `${new Date().getHours()}:${new Date().getMinutes()}`
+
     const [todolists, setTodolists] = useState<TodolistType[]>([
         {id: TODOLIST_ID_1, title: 'What to learn', filter: 'All'},
         {id: TODOLIST_ID_2, title: 'What to buy', filter: 'All'},
     ])
     const [tasks, setTasks] = useState<TasksStateType>({
         [TODOLIST_ID_1]: [
-            {id: v1(), title: 'HTML&CSS', isDone: true},
-            {id: v1(), title: 'JS', isDone: true},
-            {id: v1(), title: 'ReactJS', isDone: false},
-            {id: v1(), title: 'Rest API', isDone: false},
-            {id: v1(), title: 'GraphQL', isDone: false},
+            {id: v1(), title: 'HTML&CSS', isDone: true, date: createTime},
+            {id: v1(), title: 'JS', isDone: true, date: createTime},
+            {id: v1(), title: 'ReactJS', isDone: false, date: createTime},
+            {id: v1(), title: 'Rest API', isDone: false, date: createTime},
+            {id: v1(), title: 'GraphQL', isDone: false, date: createTime},
         ],
 
         [TODOLIST_ID_2]: [
-            {id: v1(), title: 'Beer', isDone: true},
-            {id: v1(), title: 'Milk', isDone: true},
-            {id: v1(), title: 'Cola', isDone: false},
-            {id: v1(), title: 'Bread', isDone: false},
-            {id: v1(), title: 'Smoke', isDone: true},
+            {id: v1(), title: 'Beer', isDone: true, date: createTime},
+            {id: v1(), title: 'Milk', isDone: true, date: createTime},
+            {id: v1(), title: 'Cola', isDone: false, date: createTime},
+            {id: v1(), title: 'Bread', isDone: false, date: createTime},
+            {id: v1(), title: 'Smoke', isDone: true, date: createTime},
         ],
     })
+
 
     useEffect(() => {
         const todolistsString = localStorage.getItem('todolists')
@@ -72,7 +76,8 @@ export const App = () => {
         const newTask = {
             id: v1(),
             title: title,
-            isDone: false
+            isDone: false,
+            date: `${new Date().getHours()}:${new Date().getMinutes()}`
         }
         tasks[TODOLIST_ID] = [newTask, ...tasks[TODOLIST_ID]]
         setTasks({...tasks})
@@ -97,6 +102,13 @@ export const App = () => {
             tasks[TODOLIST_ID]
                 .sort((a: TaskType, b: TaskType) => String(a['isDone'])
                     .localeCompare(String(b['isDone'])))
+        setTasks({...tasks, newTasks})
+    }
+    const sortTasksByDate = (TODOLIST_ID: string) => {
+        const newTasks =
+            tasks[TODOLIST_ID]
+                .sort((a: TaskType, b: TaskType) => a['date']
+                    .localeCompare(b['date']))
         setTasks({...tasks, newTasks})
     }
 
@@ -173,6 +185,7 @@ export const App = () => {
                             changeTodolistTitle={changeTodolistTitle}
                             sortTasksByName={sortTasksByName}
                             sortTasksByComplete={sortTasksByComplete}
+                            sortTasksByDate={sortTasksByDate}
                         />
                     )}
                 </Grid>
