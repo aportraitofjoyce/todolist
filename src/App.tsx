@@ -25,8 +25,8 @@ const TODOLIST_ID_2 = v1()
 
 export const App = () => {
     const [todolists, setTodolists] = useState<TodolistType[]>([
-        {id: TODOLIST_ID_1, title: 'What to Learn', filter: 'All'},
-        {id: TODOLIST_ID_2, title: 'What to Buy', filter: 'All'},
+        {id: TODOLIST_ID_1, title: 'What to learn', filter: 'All'},
+        {id: TODOLIST_ID_2, title: 'What to buy', filter: 'All'},
     ])
     const [tasks, setTasks] = useState<TasksStateType>({
         [TODOLIST_ID_1]: [
@@ -84,6 +84,20 @@ export const App = () => {
     const changeTaskTitle = (taskID: string, title: string, TODOLIST_ID: string) => {
         tasks[TODOLIST_ID] = tasks[TODOLIST_ID].map(t => (t.id === taskID ? {...t, title} : t))
         setTasks({...tasks})
+    }
+    const sortTasksByName = (TODOLIST_ID: string) => {
+        const newTasks =
+            tasks[TODOLIST_ID]
+                .sort((a: TaskType, b: TaskType) => a['title']
+                    .localeCompare(b['title']))
+        setTasks({...tasks, newTasks})
+    }
+    const sortTasksByComplete = (TODOLIST_ID: string) => {
+        const newTasks =
+            tasks[TODOLIST_ID]
+                .sort((a: TaskType, b: TaskType) => String(a['isDone'])
+                    .localeCompare(String(b['isDone'])))
+        setTasks({...tasks, newTasks})
     }
 
     const addTodolist = (title: string) => {
@@ -145,6 +159,8 @@ export const App = () => {
                 <Grid container spacing={5}>
                     {todolists.map(todolist =>
                         <Todolist
+                            sortTasksByName={sortTasksByName}
+                            sortTasksByComplete={sortTasksByComplete}
                             key={todolist.id}
                             TODOLIST_ID={todolist.id}
                             title={todolist.title}

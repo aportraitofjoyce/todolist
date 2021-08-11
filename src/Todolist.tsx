@@ -17,6 +17,8 @@ type TodolistPropsType = {
     removeTodolist: (TODOLIST_ID: string) => void
     changeTaskTitle: (taskID: string, title: string, TODOLIST_ID: string) => void
     changeTodolistTitle: (title: string, TODOLIST_ID: string) => void
+    sortTasksByName: (TODOLIST_ID: string) => void
+    sortTasksByComplete: (TODOLIST_ID: string) => void
 }
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
@@ -25,11 +27,12 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     const removeTodolist = () => props.removeTodolist(props.TODOLIST_ID)
     const addTask = (title: string) => props.addTask(title, props.TODOLIST_ID)
     const changeTodolistTitle = (title: string) => props.changeTodolistTitle(title, props.TODOLIST_ID)
+    const sortTasksByName = () => props.sortTasksByName(props.TODOLIST_ID)
+    const sortTasksByComplete = () => props.sortTasksByComplete(props.TODOLIST_ID)
 
     return (
         <Grid item xs>
             <Paper sx={{padding: '24px'}}>
-
                 <Grid container justifyContent={'space-between'} alignItems={'center'}>
                     <Typography variant="h5" sx={{fontWeight: 'bold'}}>
                         <EditableSpan title={props.title}
@@ -45,9 +48,9 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                 <AddItemForm addItem={addTask}/>
 
                 {props.tasksToRender.map(t => {
-                    const removeTaskHandler = () => props.removeTask(t.id, props.TODOLIST_ID)
+                    const removeTask = () => props.removeTask(t.id, props.TODOLIST_ID)
                     const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.TODOLIST_ID)
-                    const changeTaskStatusHandler = (e: ChangeEvent<HTMLInputElement>) => {
+                    const changeTaskStatus = (e: ChangeEvent<HTMLInputElement>) => {
                         props.changeTaskStatus(t.id, e.currentTarget.checked, props.TODOLIST_ID)
                     }
 
@@ -55,14 +58,14 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                         <Grid container justifyContent={'space-between'} alignItems={'center'} key={t.id}>
                             <div>
                                 <Checkbox checked={t.isDone}
-                                          onChange={changeTaskStatusHandler}/>
+                                          onChange={changeTaskStatus}/>
 
                                 <EditableSpan title={t.title}
                                               changeTitle={changeTaskTitle}/>
                             </div>
 
                             <IconButton aria-label="delete"
-                                        onClick={removeTaskHandler}>
+                                        onClick={removeTask}>
                                 <Delete/>
                             </IconButton>
                         </Grid>
@@ -75,12 +78,18 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                         color={props.filter === 'All' ? "secondary" : "primary"}>All
                 </Button>
                 <Button onClick={() => changeTodolistFilter('Active')}
-                    // sx={{margin: '0 8px'}}
                         color={props.filter === 'Active' ? "secondary" : "primary"}>Active
                 </Button>
                 <Button onClick={() => changeTodolistFilter('Completed')}
                         color={props.filter === 'Completed' ? "secondary" : "primary"}>Completed
                 </Button>
+                <Button onClick={sortTasksByName}>Sort
+                </Button>
+            </ButtonGroup>
+            <h4 style={{marginBottom: '8px'}}>Sort:</h4>
+            <ButtonGroup variant="contained" aria-label="outlined primary button group" fullWidth>
+                <Button onClick={sortTasksByName}>By name</Button>
+                <Button onClick={sortTasksByComplete}>By complete</Button>
             </ButtonGroup>
         </Grid>
     )
