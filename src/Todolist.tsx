@@ -1,12 +1,12 @@
 import React from 'react'
 import {FilterValuesType, TaskType} from './App'
 import {AddItemForm} from './components/AddItemForm'
-import {EditableSpan} from "./components/EditableSpan";
-import {Button} from "./components/UI/Button/Button";
-import {Checkbox} from "./components/UI/Checkbox/Checkbox";
+import {EditableSpan} from './components/EditableSpan'
+import {Button} from './components/UI/Button/Button'
+import {Checkbox} from './components/UI/Checkbox/Checkbox'
 import s from './Todolist.module.css'
-import {IconButton} from "./components/UI/Button/IconButton";
-import {Delete} from "./components/Icons/Delete/Delete";
+import {IconButton} from './components/UI/Button/IconButton'
+import {Delete} from './components/Icons/Delete/Delete'
 
 type TodolistPropsType = {
     TODOLIST_ID: string
@@ -21,8 +21,6 @@ type TodolistPropsType = {
     changeTaskTitle: (taskID: string, title: string, TODOLIST_ID: string) => void
     changeTodolistTitle: (title: string, TODOLIST_ID: string) => void
     sortTasksByName: (TODOLIST_ID: string) => void
-    sortTasksByDate: (TODOLIST_ID: string) => void
-
 }
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
@@ -32,7 +30,6 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
     const addTask = (title: string) => props.addTask(title, props.TODOLIST_ID)
     const changeTodolistTitle = (title: string) => props.changeTodolistTitle(title, props.TODOLIST_ID)
     const sortTasksByName = () => props.sortTasksByName(props.TODOLIST_ID)
-    const sortTasksByDate = () => props.sortTasksByDate(props.TODOLIST_ID)
 
     return (
         <div className={s.todolistContainer}>
@@ -66,13 +63,7 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                                 </div>
                                 <IconButton onClick={removeTask}><Delete/></IconButton>
                             </div>
-                            <div style={{
-                                margin: '8px 0 16px 40px',
-                                opacity: '0.8',
-                                fontSize: '14px'
-                            }}>{String(t.date)}</div>
                         </div>
-
                     )
                 })}
             </div>
@@ -98,10 +89,6 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
                 <Button onClick={sortTasksByName}
                         grouped>
                     Sort by name
-                </Button>
-                <Button onClick={sortTasksByDate}
-                        grouped>
-                    Sort by date
                 </Button>
             </div>
         </div>
