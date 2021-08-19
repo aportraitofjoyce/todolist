@@ -56,7 +56,7 @@ test('correct task should be added to correct array', () => {
 
     expect(endState['TD1'].length).toBe(3)
     expect(endState['TD2'].length).toBe(4)
-    // expect(endState['TD2'][0].id).toBeDefined()
+    expect(endState['TD2'][0].id).toBeDefined()
     expect(endState['TD2'][0].title).toBe('juice')
     expect(endState['TD2'][0].isDone).toBe(false)
 })

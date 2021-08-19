@@ -19,49 +19,44 @@ export type ActionsType =
 
 export const tasksReducer = (state: TasksStateType, action: ActionsType): TasksStateType => {
     switch (action.type) {
-        case REMOVE_TASK: {
-            const stateCopy = {...state}
-            stateCopy[action.TODOLIST_ID] = stateCopy[action.TODOLIST_ID].filter(t => t.id !== action.taskID)
-            return stateCopy
-        }
+        case REMOVE_TASK:
+            return {
+                ...state, [action.TODOLIST_ID]: state[action.TODOLIST_ID]
+                    .filter(t => t.id !== action.taskID)
+            }
 
-        case ADD_TASK: {
-            const stateCopy = {...state}
+        case ADD_TASK:
             const newTask = {id: v1(), title: action.title, isDone: false}
-            stateCopy[action.TODOLIST_ID] = [newTask, ...stateCopy[action.TODOLIST_ID]]
-            return stateCopy
-        }
+            return {...state, [action.TODOLIST_ID]: [newTask, ...state[action.TODOLIST_ID]]}
 
-        case CHANGE_TASK_STATUS: {
-            const stateCopy = {...state}
-            stateCopy[action.TODOLIST_ID] = stateCopy[action.TODOLIST_ID].map(t => (t.id === action.taskID
-                ? {...t, isDone: action.isDone} : t))
-            return stateCopy
-        }
+        case CHANGE_TASK_STATUS:
+            return {
+                ...state, [action.TODOLIST_ID]: state[action.TODOLIST_ID]
+                    .map(t => (t.id === action.taskID
+                        ? {...t, isDone: action.isDone} : t))
+            }
 
-        case CHANGE_TASK_TITLE: {
-            const stateCopy = {...state}
-            stateCopy[action.TODOLIST_ID] = stateCopy[action.TODOLIST_ID].map(t => (t.id === action.taskID
-                ? {...t, title: action.title} : t))
-            return stateCopy
-        }
+        case CHANGE_TASK_TITLE:
+            return {
+                ...state, [action.TODOLIST_ID]: state[action.TODOLIST_ID]
+                    .map(t => (t.id === action.taskID
+                        ? {...t, title: action.title} : t))
+            }
 
-        case SORT_TASKS_BY_NAME: {
-            const newTasks = state[action.TODOLIST_ID].sort((a: TaskType, b: TaskType) => a['title'] > b['title'] ? 1 : -1)
-            return {...state, newTasks}
-        }
+        case SORT_TASKS_BY_NAME:
+            return {
+                ...state,
+                [action.TODOLIST_ID]: state[action.TODOLIST_ID]
+                    .sort((a: TaskType, b: TaskType) => a['title'] > b['title'] ? 1 : -1)
+            }
 
-        case ADD_TODOLIST: {
-            const stateCopy = {...state}
-            stateCopy[action.NEW_TODOLIST_ID] = []
-            return {...stateCopy}
-        }
+        case ADD_TODOLIST:
+            return {...state, [action.NEW_TODOLIST_ID]: []}
 
-        case REMOVE_TODOLIST: {
+        case REMOVE_TODOLIST:
             const stateCopy = {...state}
             delete stateCopy[action.TODOLIST_ID]
             return stateCopy
-        }
 
         default:
             return state
