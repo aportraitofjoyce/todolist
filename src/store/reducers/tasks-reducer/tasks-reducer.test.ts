@@ -1,16 +1,17 @@
 import {
-    addTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeTaskAC,
-    sortTasksByNameAC,
     tasksReducer
 } from './tasks-reducer'
-import {TasksStateType} from '../App'
-import {addTodolistAC, removeTodolistAC} from './todolists-reducer'
+import {TasksType} from '../../../components/Todolist/TodolistContainer'
+import {
+    addTaskAC,
+    changeTaskStatusAC,
+    changeTaskTitleAC, removeTaskAC,
+    sortTasksByNameAC
+} from '../../actions/tasks-actions/tasks-actions'
+import {addTodolistAC, removeTodolistAC} from '../../actions/todolists-actions/todolists-actions'
 
 test('correct task should be deleted from correct array', () => {
-    const startState: TasksStateType = {
+    const startState: TasksType = {
         'TD1': [
             {id: '1', title: 'CSS', isDone: false},
             {id: '2', title: 'JS', isDone: true},
@@ -39,7 +40,7 @@ test('correct task should be deleted from correct array', () => {
 })
 
 test('correct task should be added to correct array', () => {
-    const startState: TasksStateType = {
+    const startState: TasksType = {
         'TD1': [
             {id: '1', title: 'CSS', isDone: false},
             {id: '2', title: 'JS', isDone: true},
@@ -62,7 +63,7 @@ test('correct task should be added to correct array', () => {
 })
 
 test('status of specified task should be changed', () => {
-    const startState: TasksStateType = {
+    const startState: TasksType = {
         'TD1': [
             {id: '1', title: 'CSS', isDone: false},
             {id: '2', title: 'JS', isDone: true},
@@ -82,7 +83,7 @@ test('status of specified task should be changed', () => {
 })
 
 test('title of specified task should be changed', () => {
-    const startState: TasksStateType = {
+    const startState: TasksType = {
         'TD1': [
             {id: '1', title: 'CSS', isDone: false},
             {id: '2', title: 'JS', isDone: true},
@@ -102,7 +103,7 @@ test('title of specified task should be changed', () => {
 })
 
 test('tasks of specified todolist should be sorted by name', () => {
-    const startState: TasksStateType = {
+    const startState: TasksType = {
         'TD1': [
             {id: '1', title: 'CSS', isDone: false},
             {id: '2', title: 'JS', isDone: true},
@@ -122,7 +123,7 @@ test('tasks of specified todolist should be sorted by name', () => {
 })
 
 test('new array should be added when new todolist is added', () => {
-    const startState: TasksStateType = {
+    const startState: TasksType = {
         'TD1': [
             {id: '1', title: 'CSS', isDone: false},
             {id: '2', title: 'JS', isDone: true},
@@ -150,7 +151,7 @@ test('new array should be added when new todolist is added', () => {
 
 
 test('property with todolistId should be deleted', () => {
-    const startState: TasksStateType = {
+    const startState: TasksType = {
         'TD1': [
             {id: '1', title: 'CSS', isDone: false},
             {id: '2', title: 'JS', isDone: true},

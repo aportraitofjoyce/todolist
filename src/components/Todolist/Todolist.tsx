@@ -1,12 +1,14 @@
 import React from 'react'
-import {FilterValuesType, TaskType} from './App'
-import {AddItemForm} from './components/AddItemForm'
-import {EditableSpan} from './components/EditableSpan'
-import {Button} from './components/UI/Button/Button'
-import {Checkbox} from './components/UI/Checkbox/Checkbox'
 import s from './Todolist.module.css'
-import {IconButton} from './components/UI/Button/IconButton'
-import {Delete} from './components/Icons/Delete/Delete'
+import {FilterValuesType, TaskType, TodolistType} from './TodolistContainer'
+import {AddItemForm} from './AddItemForm/AddItemForm'
+import {EditableSpan} from './EditableSpan/EditableSpan'
+import {Button} from '../UI/Button/Button'
+import {Checkbox} from '../UI/Checkbox/Checkbox'
+import {IconButton} from '../UI/Button/IconButton'
+import {Delete} from '../Icons/Delete/Delete'
+import {useSelector} from 'react-redux'
+import {StateType} from '../../store/store'
 
 type TodolistPropsType = {
     TODOLIST_ID: string
@@ -24,7 +26,6 @@ type TodolistPropsType = {
 }
 
 export const Todolist: React.FC<TodolistPropsType> = (props) => {
-
     const changeTodolistFilter = (filter: FilterValuesType) => props.changeTodolistFilter(filter, props.TODOLIST_ID)
     const removeTodolist = () => props.removeTodolist(props.TODOLIST_ID)
     const addTask = (title: string) => props.addTask(title, props.TODOLIST_ID)
@@ -42,7 +43,6 @@ export const Todolist: React.FC<TodolistPropsType> = (props) => {
             <div className={s.addTaskContainer}>
                 <AddItemForm addItem={addTask}/>
             </div>
-
             <div>
                 {props.tasksToRender.map(t => {
                     const removeTask = () => props.removeTask(t.id, props.TODOLIST_ID)

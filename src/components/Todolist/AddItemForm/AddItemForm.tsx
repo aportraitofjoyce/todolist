@@ -1,6 +1,6 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
-import {Button} from "./UI/Button/Button";
-import {Input} from "./UI/Input/Input";
+import {Button} from '../../UI/Button/Button'
+import {Input} from '../../UI/Input/Input'
 import s from './AddItemForm.module.css'
 
 type InputPropsType = {

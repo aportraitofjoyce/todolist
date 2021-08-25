@@ -1,6 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
-import {App} from './App'
+import {TodolistContainer} from './components/Todolist/TodolistContainer'
+import {Provider} from 'react-redux'
+import {store} from './store/store'
+import {TodolistContainerWithUseReducer} from './components/Todolist/TodolistContainerWithUseReducer'
 
-ReactDOM.render(<App/>, document.getElementById('root'))
+ReactDOM.render(
+    <React.StrictMode>
+        <Provider store={store}>
+            <TodolistContainer/>
+            {/*<TodolistContainerWithUseReducer/>*/}
+        </Provider>
+    </React.StrictMode>,
+    document.getElementById('root'))

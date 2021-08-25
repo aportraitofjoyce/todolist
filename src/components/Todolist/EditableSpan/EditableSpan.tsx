@@ -1,5 +1,5 @@
 import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
-import {Input} from "./UI/Input/Input";
+import {Input} from '../../UI/Input/Input'
 
 type EditableSpanPropsType = {
     title: string

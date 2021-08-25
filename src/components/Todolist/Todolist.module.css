@@ -1,3 +1,13 @@
+.todolistsWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.addTodolistContainer {
+    margin: 40px 0;
+}
+
 .todolistContainer {
     background-color: var(--black-light);
     border-radius: 8px;
