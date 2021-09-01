@@ -62,7 +62,7 @@ export const tasksReducer = (state: TasksType = initialState, action: TasksActio
         case SORT_TASKS_BY_NAME:
             return {
                 ...state,
-                [action.TODOLIST_ID]: state[action.TODOLIST_ID]
+                [action.TODOLIST_ID]: [...state[action.TODOLIST_ID]]
                     .sort((a: TaskType, b: TaskType) => a['title'] > b['title'] ? 1 : -1)
             }
 
