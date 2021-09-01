@@ -16,7 +16,6 @@ export const Button: React.FC<ButtonPropsType> = React.memo((
         ...restProps
     }
 ) => {
-    console.log('Button')
     const finalClassName = `${s.default} ${active ? s.active : ''} ${grouped ? s.grouped : ''} ${className ? className : ''}`
 
     return (
