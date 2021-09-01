@@ -24,7 +24,7 @@ export const AddItemForm: React.FC<InputPropsType> = React.memo((props) => {
             setTitle('')
             setError(true)
         }
-    }, [props.addItem])
+    }, [props.addItem, title])
 
     const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') onClickHandler()
