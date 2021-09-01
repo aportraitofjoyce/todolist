@@ -5,7 +5,7 @@ type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonE
 
 type IconButtonPropsType = DefaultButtonPropsType & {}
 
-export const IconButton: React.FC<IconButtonPropsType> = (
+export const IconButton: React.FC<IconButtonPropsType> = React.memo((
     {
         className,
         ...restProps
@@ -19,4 +19,4 @@ export const IconButton: React.FC<IconButtonPropsType> = (
             {...restProps}
         />
     )
-}
+})

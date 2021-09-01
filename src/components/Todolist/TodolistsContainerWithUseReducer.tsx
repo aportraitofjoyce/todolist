@@ -15,7 +15,7 @@ import {
     removeTodolistAC
 } from '../../store/actions/todolists-actions/todolists-actions'
 import {tasksReducer} from '../../store/reducers/tasks-reducer/tasks-reducer'
-import {TODOLIST_ID_1, TODOLIST_ID_2, todolistsReducer} from '../../store/reducers/todolists-reducer/todolists-reducer'
+import {todolistsReducer} from '../../store/reducers/todolists-reducer/todolists-reducer'
 import {v1} from 'uuid'
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
@@ -33,29 +33,10 @@ export type TasksType = {
     [key: string]: TaskType[]
 }
 
-export const TodolistContainerWithUseReducer = () => {
-    const [todolists, dispatchTodolists] = useReducer(todolistsReducer, [
-        {id: TODOLIST_ID_1, title: 'What to learn', filter: 'All'},
-        {id: TODOLIST_ID_2, title: 'What to buy', filter: 'All'}
-    ])
+export const TodolistsContainerWithUseReducer = () => {
+    const [todolists, dispatchTodolists] = useReducer(todolistsReducer, [])
 
-    const [tasks, dispatchTasks] = useReducer(tasksReducer, {
-        [TODOLIST_ID_1]: [
-            {id: v1(), title: 'HTML&CSS', isDone: true},
-            {id: v1(), title: 'JS', isDone: true},
-            {id: v1(), title: 'ReactJS', isDone: false},
-            {id: v1(), title: 'Rest API', isDone: false},
-            {id: v1(), title: 'GraphQL', isDone: false}
-        ],
-
-        [TODOLIST_ID_2]: [
-            {id: v1(), title: 'Beer', isDone: true},
-            {id: v1(), title: 'Milk', isDone: true},
-            {id: v1(), title: 'Cola', isDone: false},
-            {id: v1(), title: 'Bread', isDone: false},
-            {id: v1(), title: 'Smoke', isDone: true}
-        ]
-    })
+    const [tasks, dispatchTasks] = useReducer(tasksReducer, {})
 
 
     const removeTask = (taskID: string, TODOLIST_ID: string) => {
@@ -127,7 +108,7 @@ export const TodolistContainerWithUseReducer = () => {
                         changeTaskStatus={changeTaskStatus}
                         changeTodolistFilter={changeTodolistFilter}
                         removeTodolist={removeTodolist}
-                        tasksToRender={tasksToRender(todolist)}
+                        tasks={tasksToRender(todolist)}
                         changeTaskTitle={changeTaskTitle}
                         changeTodolistTitle={changeTodolistTitle}
                         sortTasksByName={sortTasksByName}

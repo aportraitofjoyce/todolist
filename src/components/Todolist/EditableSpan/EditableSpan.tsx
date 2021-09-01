@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react'
 import {Input} from '../../UI/Input/Input'
 
 type EditableSpanPropsType = {
@@ -6,20 +6,22 @@ type EditableSpanPropsType = {
     changeTitle: (title: string) => void
 }
 
-export const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
+export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo((props) => {
     const [title, setTitle] = useState<string>(props.title)
     const [editMode, setEditMode] = useState<boolean>(false)
 
-    const onEditMode = () => setEditMode(true)
-    const offEditMode = () => {
+    const onEditMode = useCallback(() => setEditMode(true), [])
+
+    const offEditMode = useCallback(() => {
         setEditMode(false)
         props.changeTitle(title)
-    }
+    }, [props.changeTitle, title])
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value)
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value), [])
+
+    const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') offEditMode()
-    }
+    }, [offEditMode])
 
     return (
         editMode
@@ -30,4 +32,4 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
                      autoFocus/>
             : <span onDoubleClick={onEditMode}>{props.title}</span>
     )
-}
+})

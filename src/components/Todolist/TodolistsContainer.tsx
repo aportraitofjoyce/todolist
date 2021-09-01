@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import {Todolist} from './Todolist'
 import {AddItemForm} from './AddItemForm/AddItemForm'
 import s from './Todolist.module.css'
@@ -17,71 +17,65 @@ import {
 } from '../../store/actions/todolists-actions/todolists-actions'
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
+
 export type TaskType = {
     id: string
     title: string
     isDone: boolean
 }
+
 export type TodolistType = {
     id: string
     title: string
     filter: FilterValuesType
 }
+
 export type TasksType = {
     [key: string]: TaskType[]
 }
 
-export const TodolistContainer = () => {
+export const TodolistsContainer = () => {
     const tasks = useSelector<StateType, TasksType>(state => state.tasks)
+
     const todolists = useSelector<StateType, TodolistType[]>(state => state.todolists)
+
     const dispatch = useDispatch()
 
-    const removeTask = (taskID: string, TODOLIST_ID: string) => {
+    const removeTask = useCallback((taskID: string, TODOLIST_ID: string) => {
         dispatch(removeTaskAC(taskID, TODOLIST_ID))
-    }
+    }, [dispatch])
 
-    const addTask = (title: string, TODOLIST_ID: string) => {
+    const addTask = useCallback((title: string, TODOLIST_ID: string) => {
         dispatch(addTaskAC(title, TODOLIST_ID))
-    }
+    }, [dispatch])
 
-    const changeTaskStatus = (taskID: string, isDone: boolean, TODOLIST_ID: string) => {
+    const changeTaskStatus = useCallback((taskID: string, isDone: boolean, TODOLIST_ID: string) => {
         dispatch(changeTaskStatusAC(taskID, isDone, TODOLIST_ID))
-    }
+    }, [dispatch])
 
-    const changeTaskTitle = (taskID: string, title: string, TODOLIST_ID: string) => {
+    const changeTaskTitle = useCallback((taskID: string, title: string, TODOLIST_ID: string) => {
         dispatch(changeTaskTitleAC(taskID, title, TODOLIST_ID))
-    }
+    }, [dispatch])
 
-    const sortTasksByName = (TODOLIST_ID: string) => {
+    const sortTasksByName = useCallback((TODOLIST_ID: string) => {
         dispatch(sortTasksByNameAC(TODOLIST_ID))
-    }
+    }, [dispatch])
 
-    const addTodolist = (title: string) => {
+    const addTodolist = useCallback((title: string) => {
         dispatch(addTodolistAC(title))
-    }
+    }, [dispatch])
 
-    const removeTodolist = (TODOLIST_ID: string) => {
+    const removeTodolist = useCallback((TODOLIST_ID: string) => {
         dispatch(removeTodolistAC(TODOLIST_ID))
-    }
+    }, [dispatch])
 
-    const changeTodolistFilter = (filter: FilterValuesType, TODOLIST_ID: string) => {
+    const changeTodolistFilter = useCallback((filter: FilterValuesType, TODOLIST_ID: string) => {
         dispatch(changeTodolistFilterAC(filter, TODOLIST_ID))
-    }
+    }, [dispatch])
 
-    const changeTodolistTitle = (title: string, TODOLIST_ID: string) => {
+    const changeTodolistTitle = useCallback((title: string, TODOLIST_ID: string) => {
         dispatch(changeTodolistTitleAC(title, TODOLIST_ID))
-    }
-
-    const tasksToRender = (todolist: TodolistType): TaskType[] => {
-        switch (todolist.filter) {
-            case 'Completed':
-                return tasks[todolist.id].filter(t => t.isDone)
-            case 'Active':
-                return tasks[todolist.id].filter(t => !t.isDone)
-            default:
-                return tasks[todolist.id]
-        }
-    }
+    }, [dispatch])
 
     return (
         <div className={'App'}>
@@ -90,18 +84,18 @@ export const TodolistContainer = () => {
             </div>
 
             <div className={s.todolistsWrapper}>
-                {todolists.map(todolist =>
+                {todolists.map(tdl =>
                     <Todolist
-                        key={todolist.id}
-                        TODOLIST_ID={todolist.id}
-                        title={todolist.title}
-                        filter={todolist.filter}
+                        key={tdl.id}
+                        TODOLIST_ID={tdl.id}
+                        title={tdl.title}
+                        filter={tdl.filter}
                         removeTask={removeTask}
                         addTask={addTask}
                         changeTaskStatus={changeTaskStatus}
                         changeTodolistFilter={changeTodolistFilter}
                         removeTodolist={removeTodolist}
-                        tasksToRender={tasksToRender(todolist)}
+                        tasks={tasks[tdl.id]}
                         changeTaskTitle={changeTaskTitle}
                         changeTodolistTitle={changeTodolistTitle}
                         sortTasksByName={sortTasksByName}

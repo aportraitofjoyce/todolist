@@ -8,7 +8,7 @@ type ButtonPropsType = DefaultButtonPropsType & {
     grouped?: boolean
 }
 
-export const Button: React.FC<ButtonPropsType> = (
+export const Button: React.FC<ButtonPropsType> = React.memo((
     {
         active,
         grouped,
@@ -16,6 +16,7 @@ export const Button: React.FC<ButtonPropsType> = (
         ...restProps
     }
 ) => {
+    console.log('Button')
     const finalClassName = `${s.default} ${active ? s.active : ''} ${grouped ? s.grouped : ''} ${className ? className : ''}`
 
     return (
@@ -24,4 +25,4 @@ export const Button: React.FC<ButtonPropsType> = (
             {...restProps}
         />
     )
-}
+})

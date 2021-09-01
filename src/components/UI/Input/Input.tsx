@@ -23,14 +23,13 @@ export const Input: React.FC<InputPropsType> = (
         ...restProps
     }
 ) => {
-
     const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
         onChange && onChange(e)
         onChangeText && onChangeText(e.currentTarget.value)
     }
 
     const onKeyPressCallback = (e: KeyboardEvent<HTMLInputElement>) => {
-        onKeyPress && onKeyPress(e);
+        onKeyPress && onKeyPress(e)
         onEnter && e.key === 'Enter' && onEnter()
     }
 

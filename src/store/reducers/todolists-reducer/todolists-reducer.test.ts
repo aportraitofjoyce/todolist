@@ -2,7 +2,7 @@ import {
     todolistsReducer
 } from './todolists-reducer'
 import {v1} from 'uuid'
-import {FilterValuesType, TodolistType} from '../../../components/Todolist/TodolistContainer'
+import {FilterValuesType, TodolistType} from '../../../components/Todolist/TodolistsContainer'
 import {
     addTodolistAC,
     changeTodolistFilterAC,

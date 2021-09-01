@@ -1,4 +1,4 @@
-import {TodolistType} from '../../../components/Todolist/TodolistContainer'
+import {TodolistType} from '../../../components/Todolist/TodolistsContainer'
 import {
     TodolistsActionsType,
     ADD_TODOLIST,
@@ -6,15 +6,16 @@ import {
     CHANGE_TODOLIST_TITLE,
     REMOVE_TODOLIST
 } from '../../actions/todolists-actions/todolists-actions'
-import {v1} from 'uuid'
 
-export const TODOLIST_ID_1 = v1()
-export const TODOLIST_ID_2 = v1()
+/*export const TODOLIST_ID_1 = v1()
+export const TODOLIST_ID_2 = v1()*/
 
-const initialState: TodolistType[] = [
+/*const initialState: TodolistType[] = [
     {id: TODOLIST_ID_1, title: 'What to learn', filter: 'All'},
     {id: TODOLIST_ID_2, title: 'What to buy', filter: 'All'}
-]
+]*/
+
+const initialState: TodolistType[] = []
 
 export const todolistsReducer = (state: TodolistType[] = initialState, action: TodolistsActionsType): TodolistType[] => {
     switch (action.type) {
@@ -22,8 +23,10 @@ export const todolistsReducer = (state: TodolistType[] = initialState, action: T
             return [...state.filter(tdl => tdl.id !== action.TODOLIST_ID)]
 
         case ADD_TODOLIST:
-            const newTodolist: TodolistType = {id: action.NEW_TODOLIST_ID, title: action.title, filter: 'All'}
-            return [...state, newTodolist]
+            return [
+                ...state,
+                {id: action.NEW_TODOLIST_ID, title: action.title, filter: 'All'}
+            ]
 
         case CHANGE_TODOLIST_FILTER:
             return [...state.map(tdl => (tdl.id === action.TODOLIST_ID ? {...tdl, filter: action.filter} : tdl))]

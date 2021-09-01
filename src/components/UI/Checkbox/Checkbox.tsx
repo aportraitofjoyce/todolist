@@ -3,12 +3,13 @@ import s from './Checkbox.module.css'
 
 type CheckboxPropsType = {
     checked: boolean
-    changeStatus: (isDone: boolean) => void
+    changeTaskStatus: (isDone: boolean) => void
 }
 
-export const Checkbox = (props: CheckboxPropsType) => {
+export const Checkbox = React.memo((props: CheckboxPropsType) => {
     const onCheckboxChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        props.changeStatus(e.currentTarget.checked)
+        props.changeTaskStatus(e.currentTarget.checked)
     }
-    return <input type='checkbox' checked={props.checked} onChange={onCheckboxChangeHandler} className={s.checkbox}/>
-}
+
+    return <input type="checkbox" checked={props.checked} onChange={onCheckboxChangeHandler} className={s.checkbox}/>
+})

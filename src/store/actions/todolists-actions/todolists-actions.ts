@@ -1,5 +1,5 @@
 import {v1} from 'uuid'
-import {FilterValuesType} from '../../../components/Todolist/TodolistContainer'
+import {FilterValuesType} from '../../../components/Todolist/TodolistsContainer'
 
 export const REMOVE_TODOLIST = 'REMOVE_TODOLIST'
 export const ADD_TODOLIST = 'ADD_TODOLIST'

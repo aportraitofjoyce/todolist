@@ -1,7 +1,7 @@
 import {
     tasksReducer
 } from './tasks-reducer'
-import {TasksType} from '../../../components/Todolist/TodolistContainer'
+import {TasksType} from '../../../components/Todolist/TodolistsContainer'
 import {
     addTaskAC,
     changeTaskStatusAC,

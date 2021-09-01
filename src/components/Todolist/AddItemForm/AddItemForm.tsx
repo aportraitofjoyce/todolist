@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react'
+import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react'
 import {Button} from '../../UI/Button/Button'
 import {Input} from '../../UI/Input/Input'
 import s from './AddItemForm.module.css'
@@ -7,15 +7,16 @@ type InputPropsType = {
     addItem: (title: string) => void
 }
 
-export function AddItemForm(props: InputPropsType) {
+export const AddItemForm: React.FC<InputPropsType> = React.memo((props) => {
     const [title, setTitle] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 
-    const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setTitle(e.currentTarget.value)
-        setError(false)
-    }
-    const onClickHandler = () => {
+        error && setError(false)
+    }, [error])
+
+    const onClickHandler = useCallback(() => {
         if (title.trim()) {
             props.addItem(title.trim())
             setTitle('')
@@ -23,10 +24,11 @@ export function AddItemForm(props: InputPropsType) {
             setTitle('')
             setError(true)
         }
-    }
-    const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+    }, [props.addItem])
+
+    const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') onClickHandler()
-    }
+    }, [onClickHandler])
 
     return (
         <div className={s.container}>
@@ -37,4 +39,4 @@ export function AddItemForm(props: InputPropsType) {
             <Button onClick={onClickHandler}>Add</Button>
         </div>
     )
-}
+})

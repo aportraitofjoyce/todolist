@@ -1,4 +1,4 @@
-import {TasksType, TodolistType} from '../../../components/Todolist/TodolistContainer'
+import {TasksType, TodolistType} from '../../../components/Todolist/TodolistsContainer'
 import {todolistsReducer} from './todolists-reducer'
 import {tasksReducer} from '../tasks-reducer/tasks-reducer'
 import {addTodolistAC} from '../../actions/todolists-actions/todolists-actions'

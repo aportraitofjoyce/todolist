@@ -1,19 +1,17 @@
-import React from 'react'
+import React, {useCallback} from 'react'
 import s from './Todolist.module.css'
-import {FilterValuesType, TaskType, TodolistType} from './TodolistContainer'
+import {FilterValuesType, TaskType} from './TodolistsContainer'
 import {AddItemForm} from './AddItemForm/AddItemForm'
 import {EditableSpan} from './EditableSpan/EditableSpan'
 import {Button} from '../UI/Button/Button'
-import {Checkbox} from '../UI/Checkbox/Checkbox'
 import {IconButton} from '../UI/Button/IconButton'
 import {Delete} from '../Icons/Delete/Delete'
-import {useSelector} from 'react-redux'
-import {StateType} from '../../store/store'
+import {Task} from './Task/Task'
 
 type TodolistPropsType = {
     TODOLIST_ID: string
     title: string
-    tasksToRender: TaskType[]
+    tasks: TaskType[]
     filter: FilterValuesType
     removeTask: (taskID: string, TODOLIST_ID: string) => void
     addTask: (title: string, TODOLIST_ID: string) => void
@@ -25,72 +23,101 @@ type TodolistPropsType = {
     sortTasksByName: (TODOLIST_ID: string) => void
 }
 
-export const Todolist: React.FC<TodolistPropsType> = (props) => {
-    const changeTodolistFilter = (filter: FilterValuesType) => props.changeTodolistFilter(filter, props.TODOLIST_ID)
-    const removeTodolist = () => props.removeTodolist(props.TODOLIST_ID)
-    const addTask = (title: string) => props.addTask(title, props.TODOLIST_ID)
-    const changeTodolistTitle = (title: string) => props.changeTodolistTitle(title, props.TODOLIST_ID)
-    const sortTasksByName = () => props.sortTasksByName(props.TODOLIST_ID)
+export const Todolist: React.FC<TodolistPropsType> = React.memo((props) => {
+    const changeTodolistFilter = useCallback((filter: FilterValuesType) => props.changeTodolistFilter(filter, props.TODOLIST_ID),
+        [props.changeTodolistFilter, props.TODOLIST_ID])
+
+    const changeTodolistFilterToAll = useCallback(() => props.changeTodolistFilter('All', props.TODOLIST_ID),
+        [props.changeTodolistFilter, props.TODOLIST_ID])
+
+    const changeTodolistFilterToActive = useCallback(() => props.changeTodolistFilter('Active', props.TODOLIST_ID),
+        [props.changeTodolistFilter, props.TODOLIST_ID])
+
+    const changeTodolistFilterToCompleted = useCallback(() => props.changeTodolistFilter('Completed', props.TODOLIST_ID),
+        [props.changeTodolistFilter, props.TODOLIST_ID])
+
+    const removeTodolist = useCallback(() => props.removeTodolist(props.TODOLIST_ID),
+        [props.removeTodolist, props.TODOLIST_ID])
+
+    const addTask = useCallback((title: string) => props.addTask(title, props.TODOLIST_ID),
+        [props.addTask, props.TODOLIST_ID])
+
+    const changeTodolistTitle = useCallback((title: string) => props.changeTodolistTitle(title, props.TODOLIST_ID),
+        [props.changeTodolistTitle, props.TODOLIST_ID])
+
+    const sortTasksByName = useCallback(() => props.sortTasksByName(props.TODOLIST_ID),
+        [props.sortTasksByName, props.TODOLIST_ID])
+
+    const tasksToRender = useCallback((filter: FilterValuesType) => {
+        switch (filter) {
+            case 'Completed':
+                return props.tasks.filter(t => t.isDone)
+            case 'Active':
+                return props.tasks.filter(t => !t.isDone)
+            default:
+                return props.tasks
+        }
+    }, [props.tasks])
 
     return (
         <div className={s.todolistContainer}>
+
             <div className={s.titleContainer}>
                 <EditableSpan title={props.title}
                               changeTitle={changeTodolistTitle}/>
-                <IconButton onClick={removeTodolist}><Delete/></IconButton>
+
+                <IconButton onClick={removeTodolist}>
+                    <Delete/>
+                </IconButton>
             </div>
 
             <div className={s.addTaskContainer}>
                 <AddItemForm addItem={addTask}/>
             </div>
+
             <div>
-                {props.tasksToRender.map(t => {
-                    const removeTask = () => props.removeTask(t.id, props.TODOLIST_ID)
-                    const changeTaskTitle = (title: string) => props.changeTaskTitle(t.id, title, props.TODOLIST_ID)
-                    const changeTaskStatus = (isDone: boolean) => {
-                        props.changeTaskStatus(t.id, isDone, props.TODOLIST_ID)
-                    }
-
+                {tasksToRender(props.filter).map(t => {
                     return (
-                        <div key={t.id}>
-                            <div className={s.taskContentContainer}>
-                                <div className={s.taskContent}>
-                                    <Checkbox checked={t.isDone}
-                                              changeStatus={changeTaskStatus}/>
-
-                                    <EditableSpan title={t.title}
-                                                  changeTitle={changeTaskTitle}/>
-                                </div>
-                                <IconButton onClick={removeTask}><Delete/></IconButton>
-                            </div>
-                        </div>
+                        <Task key={t.id}
+                              TODOLIST_ID={props.TODOLIST_ID}
+                              id={t.id}
+                              checked={t.isDone}
+                              title={t.title}
+                              removeTask={props.removeTask}
+                              changeTaskTitle={props.changeTaskTitle}
+                              changeTaskStatus={props.changeTaskStatus}/>
                     )
                 })}
             </div>
 
             <div className={s.buttonsContainer}>
-                <Button onClick={() => changeTodolistFilter('All')}
+                <Button onClick={changeTodolistFilterToAll}
                         active={props.filter === 'All'}
                         grouped>
                     All
                 </Button>
-                <Button onClick={() => changeTodolistFilter('Active')}
+
+                <Button onClick={changeTodolistFilterToActive}
                         active={props.filter === 'Active'}
                         grouped>
                     Active
                 </Button>
-                <Button onClick={() => changeTodolistFilter('Completed')}
+
+                <Button onClick={changeTodolistFilterToCompleted}
                         active={props.filter === 'Completed'}
                         grouped>
                     Completed
                 </Button>
+
             </div>
+
             <div className={s.buttonsContainer}>
                 <Button onClick={sortTasksByName}
                         grouped>
                     Sort by name
                 </Button>
             </div>
+
         </div>
     )
-}
+})
