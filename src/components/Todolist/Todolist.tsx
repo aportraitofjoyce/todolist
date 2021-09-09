@@ -24,87 +24,98 @@ type TodolistPropsType = {
 }
 
 export const Todolist: React.FC<TodolistPropsType> = React.memo((props) => {
-    const changeTodolistFilter = useCallback((filter: FilterValuesType) => props.changeTodolistFilter(filter, props.TODOLIST_ID),
-        [props.changeTodolistFilter, props.TODOLIST_ID])
+    const {
+        TODOLIST_ID,
+        title,
+        tasks,
+        filter,
+        removeTask,
+        addTask,
+        changeTaskStatus,
+        changeTodolistFilter,
+        removeTodolist,
+        changeTaskTitle,
+        changeTodolistTitle,
+        sortTasksByName
+    } = props
+    const changeFilterToAllHandler = useCallback(() => changeTodolistFilter('All', TODOLIST_ID),
+        [changeTodolistFilter, TODOLIST_ID])
 
-    const changeTodolistFilterToAll = useCallback(() => props.changeTodolistFilter('All', props.TODOLIST_ID),
-        [props.changeTodolistFilter, props.TODOLIST_ID])
+    const changeFilterToActiveHandler = useCallback(() => changeTodolistFilter('Active', TODOLIST_ID),
+        [changeTodolistFilter, TODOLIST_ID])
 
-    const changeTodolistFilterToActive = useCallback(() => props.changeTodolistFilter('Active', props.TODOLIST_ID),
-        [props.changeTodolistFilter, props.TODOLIST_ID])
+    const changeFilterToCompletedHandler = useCallback(() => changeTodolistFilter('Completed', TODOLIST_ID),
+        [changeTodolistFilter, TODOLIST_ID])
 
-    const changeTodolistFilterToCompleted = useCallback(() => props.changeTodolistFilter('Completed', props.TODOLIST_ID),
-        [props.changeTodolistFilter, props.TODOLIST_ID])
+    const removeTodolistButtonHandler = useCallback(() => removeTodolist(TODOLIST_ID),
+        [removeTodolist, TODOLIST_ID])
 
-    const removeTodolist = useCallback(() => props.removeTodolist(props.TODOLIST_ID),
-        [props.removeTodolist, props.TODOLIST_ID])
+    const addNewTaskHandler = useCallback((title: string) => addTask(title, TODOLIST_ID),
+        [addTask, TODOLIST_ID])
 
-    const addTask = useCallback((title: string) => props.addTask(title, props.TODOLIST_ID),
-        [props.addTask, props.TODOLIST_ID])
+    const taskEditHandler = useCallback((title: string) => changeTodolistTitle(title, TODOLIST_ID),
+        [changeTodolistTitle, TODOLIST_ID])
 
-    const changeTodolistTitle = useCallback((title: string) => props.changeTodolistTitle(title, props.TODOLIST_ID),
-        [props.changeTodolistTitle, props.TODOLIST_ID])
-
-    const sortTasksByName = useCallback(() => props.sortTasksByName(props.TODOLIST_ID),
-        [props.sortTasksByName, props.TODOLIST_ID])
+    const sortButtonHandler = useCallback(() => sortTasksByName(TODOLIST_ID),
+        [sortTasksByName, TODOLIST_ID])
 
     const tasksToRender = useCallback((filter: FilterValuesType) => {
         switch (filter) {
             case 'Completed':
-                return props.tasks.filter(t => t.isDone)
+                return tasks.filter(t => t.isDone)
             case 'Active':
-                return props.tasks.filter(t => !t.isDone)
+                return tasks.filter(t => !t.isDone)
             default:
-                return props.tasks
+                return tasks
         }
-    }, [props.tasks])
+    }, [tasks])
 
     return (
         <div className={s.todolistContainer}>
 
             <div className={s.titleContainer}>
-                <EditableSpan title={props.title}
-                              changeTitle={changeTodolistTitle}/>
+                <EditableSpan title={title}
+                              changeTitle={taskEditHandler}/>
 
-                <IconButton onClick={removeTodolist}>
+                <IconButton onClick={removeTodolistButtonHandler}>
                     <Delete/>
                 </IconButton>
             </div>
 
             <div className={s.addTaskContainer}>
-                <AddItemForm addItem={addTask}/>
+                <AddItemForm addItem={addNewTaskHandler}/>
             </div>
 
             <div>
-                {tasksToRender(props.filter).map(t => {
+                {tasksToRender(filter).map(t => {
                     return (
                         <Task key={t.id}
-                              TODOLIST_ID={props.TODOLIST_ID}
+                              TODOLIST_ID={TODOLIST_ID}
                               id={t.id}
                               checked={t.isDone}
                               title={t.title}
-                              removeTask={props.removeTask}
-                              changeTaskTitle={props.changeTaskTitle}
-                              changeTaskStatus={props.changeTaskStatus}/>
+                              removeTask={removeTask}
+                              changeTaskTitle={changeTaskTitle}
+                              changeTaskStatus={changeTaskStatus}/>
                     )
                 })}
             </div>
 
             <div className={s.buttonsContainer}>
-                <Button onClick={changeTodolistFilterToAll}
-                        active={props.filter === 'All'}
+                <Button onClick={changeFilterToAllHandler}
+                        active={filter === 'All'}
                         grouped>
                     All
                 </Button>
 
-                <Button onClick={changeTodolistFilterToActive}
-                        active={props.filter === 'Active'}
+                <Button onClick={changeFilterToActiveHandler}
+                        active={filter === 'Active'}
                         grouped>
                     Active
                 </Button>
 
-                <Button onClick={changeTodolistFilterToCompleted}
-                        active={props.filter === 'Completed'}
+                <Button onClick={changeFilterToCompletedHandler}
+                        active={filter === 'Completed'}
                         grouped>
                     Completed
                 </Button>
@@ -112,7 +123,7 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo((props) => {
             </div>
 
             <div className={s.buttonsContainer}>
-                <Button onClick={sortTasksByName}
+                <Button onClick={sortButtonHandler}
                         grouped>
                     Sort by name
                 </Button>

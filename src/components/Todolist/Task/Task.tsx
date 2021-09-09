@@ -16,26 +16,28 @@ type TaskPropsType = {
 }
 
 export const Task: React.FC<TaskPropsType> = React.memo((props) => {
-    const removeTask = useCallback(() => props.removeTask(props.id, props.TODOLIST_ID),
-        [props.id, props.TODOLIST_ID])
+    const {TODOLIST_ID, id, checked, title, removeTask, changeTaskTitle, changeTaskStatus} = props
 
-    const changeTaskTitle = useCallback((title: string) => props.changeTaskTitle(props.id, title, props.TODOLIST_ID),
-        [props.id, props.TODOLIST_ID])
+    const onButtonClickHandler = useCallback(() => removeTask(id, TODOLIST_ID),
+        [removeTask, id, TODOLIST_ID])
 
-    const changeTaskStatus = useCallback((isDone: boolean) => props.changeTaskStatus(props.id, isDone, props.TODOLIST_ID),
-        [props.id, props.TODOLIST_ID])
+    const spanHandler = useCallback((title: string) => changeTaskTitle(id, title, TODOLIST_ID),
+        [changeTaskTitle, id, TODOLIST_ID])
+
+    const checkboxHandler = useCallback((isDone: boolean) => changeTaskStatus(id, isDone, TODOLIST_ID),
+        [changeTaskStatus, id, TODOLIST_ID])
 
     return (
         <div className={s.taskContentContainer}>
             <div className={s.taskContent}>
-                <Checkbox checked={props.checked}
-                          changeTaskStatus={changeTaskStatus}/>
+                <Checkbox checked={checked}
+                          changeTaskStatus={checkboxHandler}/>
 
-                <EditableSpan title={props.title}
-                              changeTitle={changeTaskTitle}/>
+                <EditableSpan title={title}
+                              changeTitle={spanHandler}/>
             </div>
 
-            <IconButton onClick={removeTask}>
+            <IconButton onClick={onButtonClickHandler}>
                 <Delete/>
             </IconButton>
         </div>

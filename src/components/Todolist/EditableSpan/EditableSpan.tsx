@@ -7,17 +7,19 @@ type EditableSpanPropsType = {
 }
 
 export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo((props) => {
-    const [title, setTitle] = useState<string>(props.title)
+    const {title, changeTitle} = props
+
+    const [value, setValue] = useState<string>(title)
     const [editMode, setEditMode] = useState<boolean>(false)
 
     const onEditMode = useCallback(() => setEditMode(true), [])
 
     const offEditMode = useCallback(() => {
         setEditMode(false)
-        props.changeTitle(title)
-    }, [props.changeTitle, title])
+        changeTitle(value)
+    }, [changeTitle, value])
 
-    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => setTitle(e.currentTarget.value), [])
+    const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => setValue(e.currentTarget.value), [])
 
     const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') offEditMode()
@@ -25,11 +27,11 @@ export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo((props) 
 
     return (
         editMode
-            ? <Input value={title}
+            ? <Input value={value}
                      onBlur={offEditMode}
                      onChange={onChangeHandler}
                      onKeyPress={onKeyPressHandler}
                      autoFocus/>
-            : <span onDoubleClick={onEditMode}>{props.title}</span>
+            : <span onDoubleClick={onEditMode}>{title}</span>
     )
 })

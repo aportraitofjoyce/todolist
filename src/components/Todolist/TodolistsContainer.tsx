@@ -36,9 +36,7 @@ export type TasksType = {
 
 export const TodolistsContainer = () => {
     const tasks = useSelector<StateType, TasksType>(state => state.tasks)
-
     const todolists = useSelector<StateType, TodolistType[]>(state => state.todolists)
-
     const dispatch = useDispatch()
 
     const removeTask = useCallback((taskID: string, TODOLIST_ID: string) => {

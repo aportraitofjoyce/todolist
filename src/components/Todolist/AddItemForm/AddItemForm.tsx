@@ -8,23 +8,24 @@ type InputPropsType = {
 }
 
 export const AddItemForm: React.FC<InputPropsType> = React.memo((props) => {
-    const [title, setTitle] = useState<string>('')
+    const {addItem} = props
+    const [value, setValue] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 
     const onChangeHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-        setTitle(e.currentTarget.value)
+        setValue(e.currentTarget.value)
         error && setError(false)
     }, [error])
 
     const onClickHandler = useCallback(() => {
-        if (title.trim()) {
-            props.addItem(title.trim())
-            setTitle('')
+        if (value.trim()) {
+            addItem(value.trim())
+            setValue('')
         } else {
-            setTitle('')
+            setValue('')
             setError(true)
         }
-    }, [props.addItem, title])
+    }, [addItem, value])
 
     const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') onClickHandler()
@@ -32,7 +33,7 @@ export const AddItemForm: React.FC<InputPropsType> = React.memo((props) => {
 
     return (
         <div className={s.container}>
-            <Input value={title}
+            <Input value={value}
                    onChange={onChangeHandler}
                    onKeyPress={onKeyPressHandler}
                    error={error ? 'Field is required' : ''}/>
