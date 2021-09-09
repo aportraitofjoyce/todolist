@@ -1,32 +1,34 @@
-import {addTodolistAC, removeTodolistAC} from '../todolists-actions/todolists-actions'
+import {addTodolist, removeTodolist} from '../todolists-actions/todolists-actions'
 
-export const REMOVE_TASK = 'REMOVE_TASK'
-export const ADD_TASK = 'ADD_TASK'
-export const CHANGE_TASK_STATUS = 'CHANGE_TASK_STATUS'
-export const CHANGE_TASK_TITLE = 'CHANGE_TASK_TITLE'
-export const SORT_TASKS_BY_NAME = 'SORT_TASKS_BY_NAME'
+export enum TASKS_ACTIONS_TYPES {
+    REMOVE_TASK = 'REMOVE_TASK',
+    ADD_TASK = 'ADD_TASK',
+    CHANGE_TASK_STATUS = 'CHANGE_TASK_STATUS',
+    CHANGE_TASK_TITLE = 'CHANGE_TASK_TITLE',
+    SORT_TASKS_BY_NAME = 'SORT_TASKS_BY_NAME',
+}
 
-export const removeTaskAC = (taskID: string, TODOLIST_ID: string) => (
-    {type: REMOVE_TASK, taskID, TODOLIST_ID}
+export const removeTask = (taskID: string, TODOLIST_ID: string) => (
+    {type: TASKS_ACTIONS_TYPES.REMOVE_TASK, taskID, TODOLIST_ID}
 ) as const
-export const addTaskAC = (title: string, TODOLIST_ID: string) => (
-    {type: ADD_TASK, title, TODOLIST_ID}
+export const addTask = (title: string, TODOLIST_ID: string) => (
+    {type: TASKS_ACTIONS_TYPES.ADD_TASK, title, TODOLIST_ID}
 ) as const
-export const changeTaskStatusAC = (taskID: string, isDone: boolean, TODOLIST_ID: string) => (
-    {type: CHANGE_TASK_STATUS, taskID, isDone, TODOLIST_ID}
+export const changeTaskStatus = (taskID: string, isDone: boolean, TODOLIST_ID: string) => (
+    {type: TASKS_ACTIONS_TYPES.CHANGE_TASK_STATUS, taskID, isDone, TODOLIST_ID}
 ) as const
-export const changeTaskTitleAC = (taskID: string, title: string, TODOLIST_ID: string) => (
-    {type: CHANGE_TASK_TITLE, taskID, title, TODOLIST_ID}
+export const changeTaskTitle = (taskID: string, title: string, TODOLIST_ID: string) => (
+    {type: TASKS_ACTIONS_TYPES.CHANGE_TASK_TITLE, taskID, title, TODOLIST_ID}
 ) as const
-export const sortTasksByNameAC = (TODOLIST_ID: string) => (
-    {type: SORT_TASKS_BY_NAME, TODOLIST_ID}
+export const sortTasksByName = (TODOLIST_ID: string) => (
+    {type: TASKS_ACTIONS_TYPES.SORT_TASKS_BY_NAME, TODOLIST_ID}
 ) as const
 
 export type TasksActionsType =
-    ReturnType<typeof removeTaskAC> |
-    ReturnType<typeof addTaskAC> |
-    ReturnType<typeof changeTaskStatusAC> |
-    ReturnType<typeof changeTaskTitleAC> |
-    ReturnType<typeof sortTasksByNameAC> |
-    ReturnType<typeof addTodolistAC> |
-    ReturnType<typeof removeTodolistAC>
+    ReturnType<typeof removeTask> |
+    ReturnType<typeof addTask> |
+    ReturnType<typeof changeTaskStatus> |
+    ReturnType<typeof changeTaskTitle> |
+    ReturnType<typeof sortTasksByName> |
+    ReturnType<typeof addTodolist> |
+    ReturnType<typeof removeTodolist>

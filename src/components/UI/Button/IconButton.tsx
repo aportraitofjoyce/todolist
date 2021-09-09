@@ -11,9 +11,6 @@ export const IconButton: React.FC<IconButtonPropsType> = React.memo((props) => {
     const finalClassName = `${s.icon} ${className ? className : ''}`
 
     return (
-        <button
-            className={finalClassName}
-            {...rest}
-        />
+        <button className={finalClassName} {...rest}/>
     )
 })

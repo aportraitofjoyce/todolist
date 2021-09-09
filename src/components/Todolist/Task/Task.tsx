@@ -30,16 +30,11 @@ export const Task: React.FC<TaskPropsType> = React.memo((props) => {
     return (
         <div className={s.taskContentContainer}>
             <div className={s.taskContent}>
-                <Checkbox checked={checked}
-                          changeTaskStatus={checkboxHandler}/>
-
-                <EditableSpan title={title}
-                              changeTitle={spanHandler}/>
+                <Checkbox checked={checked} changeTaskStatus={checkboxHandler}/>
+                <EditableSpan title={title} changeTitle={spanHandler}/>
             </div>
 
-            <IconButton onClick={onButtonClickHandler}>
-                <Delete/>
-            </IconButton>
+            <IconButton onClick={onButtonClickHandler}><Delete/></IconButton>
         </div>
     )
 })

@@ -73,14 +73,9 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo((props) => {
 
     return (
         <div className={s.todolistContainer}>
-
             <div className={s.titleContainer}>
-                <EditableSpan title={title}
-                              changeTitle={taskEditHandler}/>
-
-                <IconButton onClick={removeTodolistButtonHandler}>
-                    <Delete/>
-                </IconButton>
+                <EditableSpan title={title} changeTitle={taskEditHandler}/>
+                <IconButton onClick={removeTodolistButtonHandler}><Delete/></IconButton>
             </div>
 
             <div className={s.addTaskContainer}>
@@ -88,48 +83,34 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo((props) => {
             </div>
 
             <div>
-                {tasksToRender(filter).map(t => {
-                    return (
-                        <Task key={t.id}
-                              TODOLIST_ID={TODOLIST_ID}
-                              id={t.id}
-                              checked={t.isDone}
-                              title={t.title}
-                              removeTask={removeTask}
-                              changeTaskTitle={changeTaskTitle}
-                              changeTaskStatus={changeTaskStatus}/>
-                    )
-                })}
+                {tasksToRender(filter).map(t => <Task key={t.id}
+                                                      TODOLIST_ID={TODOLIST_ID}
+                                                      id={t.id}
+                                                      checked={t.isDone}
+                                                      title={t.title}
+                                                      removeTask={removeTask}
+                                                      changeTaskTitle={changeTaskTitle}
+                                                      changeTaskStatus={changeTaskStatus}/>
+                )}
             </div>
 
             <div className={s.buttonsContainer}>
-                <Button onClick={changeFilterToAllHandler}
-                        active={filter === 'All'}
-                        grouped>
+                <Button onClick={changeFilterToAllHandler} active={filter === 'All'} grouped>
                     All
                 </Button>
 
-                <Button onClick={changeFilterToActiveHandler}
-                        active={filter === 'Active'}
-                        grouped>
+                <Button onClick={changeFilterToActiveHandler} active={filter === 'Active'} grouped>
                     Active
                 </Button>
 
-                <Button onClick={changeFilterToCompletedHandler}
-                        active={filter === 'Completed'}
-                        grouped>
+                <Button onClick={changeFilterToCompletedHandler} active={filter === 'Completed'} grouped>
                     Completed
                 </Button>
-
             </div>
 
             <div className={s.buttonsContainer}>
-                <Button onClick={sortButtonHandler}
-                        grouped>
-                    Sort by name
-                </Button>
+                <Button onClick={sortButtonHandler} grouped>Sort by name</Button>
             </div>
-
         </div>
     )
 })

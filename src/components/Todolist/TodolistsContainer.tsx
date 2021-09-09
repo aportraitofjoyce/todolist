@@ -5,15 +5,17 @@ import s from './Todolist.module.css'
 import {useDispatch, useSelector} from 'react-redux'
 import {StateType} from '../../store/store'
 import {
-    addTaskAC,
-    changeTaskStatusAC,
-    changeTaskTitleAC,
-    removeTaskAC, sortTasksByNameAC
+    addTask,
+    changeTaskStatus,
+    changeTaskTitle,
+    removeTask,
+    sortTasksByName
 } from '../../store/actions/tasks-actions/tasks-actions'
 import {
-    addTodolistAC,
-    changeTodolistFilterAC, changeTodolistTitleAC,
-    removeTodolistAC
+    addTodolist,
+    changeTodolistFilter,
+    changeTodolistTitle,
+    removeTodolist
 } from '../../store/actions/todolists-actions/todolists-actions'
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
@@ -37,48 +39,49 @@ export type TasksType = {
 export const TodolistsContainer = () => {
     const tasks = useSelector<StateType, TasksType>(state => state.tasks)
     const todolists = useSelector<StateType, TodolistType[]>(state => state.todolists)
+
     const dispatch = useDispatch()
 
-    const removeTask = useCallback((taskID: string, TODOLIST_ID: string) => {
-        dispatch(removeTaskAC(taskID, TODOLIST_ID))
+    const removeTaskHandler = useCallback((taskID: string, TODOLIST_ID: string) => {
+        dispatch(removeTask(taskID, TODOLIST_ID))
     }, [dispatch])
 
-    const addTask = useCallback((title: string, TODOLIST_ID: string) => {
-        dispatch(addTaskAC(title, TODOLIST_ID))
+    const addTaskHandler = useCallback((title: string, TODOLIST_ID: string) => {
+        dispatch(addTask(title, TODOLIST_ID))
     }, [dispatch])
 
-    const changeTaskStatus = useCallback((taskID: string, isDone: boolean, TODOLIST_ID: string) => {
-        dispatch(changeTaskStatusAC(taskID, isDone, TODOLIST_ID))
+    const changeTaskStatusHandler = useCallback((taskID: string, isDone: boolean, TODOLIST_ID: string) => {
+        dispatch(changeTaskStatus(taskID, isDone, TODOLIST_ID))
     }, [dispatch])
 
-    const changeTaskTitle = useCallback((taskID: string, title: string, TODOLIST_ID: string) => {
-        dispatch(changeTaskTitleAC(taskID, title, TODOLIST_ID))
+    const changeTaskTitleHandler = useCallback((taskID: string, title: string, TODOLIST_ID: string) => {
+        dispatch(changeTaskTitle(taskID, title, TODOLIST_ID))
     }, [dispatch])
 
-    const sortTasksByName = useCallback((TODOLIST_ID: string) => {
-        dispatch(sortTasksByNameAC(TODOLIST_ID))
+    const sortTasksByNameHandler = useCallback((TODOLIST_ID: string) => {
+        dispatch(sortTasksByName(TODOLIST_ID))
     }, [dispatch])
 
-    const addTodolist = useCallback((title: string) => {
-        dispatch(addTodolistAC(title))
+    const addTodolistHandler = useCallback((title: string) => {
+        dispatch(addTodolist(title))
     }, [dispatch])
 
-    const removeTodolist = useCallback((TODOLIST_ID: string) => {
-        dispatch(removeTodolistAC(TODOLIST_ID))
+    const removeTodolistHandler = useCallback((TODOLIST_ID: string) => {
+        dispatch(removeTodolist(TODOLIST_ID))
     }, [dispatch])
 
-    const changeTodolistFilter = useCallback((filter: FilterValuesType, TODOLIST_ID: string) => {
-        dispatch(changeTodolistFilterAC(filter, TODOLIST_ID))
+    const changeTodolistFilterHandler = useCallback((filter: FilterValuesType, TODOLIST_ID: string) => {
+        dispatch(changeTodolistFilter(filter, TODOLIST_ID))
     }, [dispatch])
 
-    const changeTodolistTitle = useCallback((title: string, TODOLIST_ID: string) => {
-        dispatch(changeTodolistTitleAC(title, TODOLIST_ID))
+    const changeTodolistTitleHandler = useCallback((title: string, TODOLIST_ID: string) => {
+        dispatch(changeTodolistTitle(title, TODOLIST_ID))
     }, [dispatch])
 
     return (
         <div className={'App'}>
             <div className={s.addTodolistContainer}>
-                <AddItemForm addItem={addTodolist}/>
+                <AddItemForm addItem={addTodolistHandler}/>
             </div>
 
             <div className={s.todolistsWrapper}>
@@ -88,16 +91,15 @@ export const TodolistsContainer = () => {
                         TODOLIST_ID={tdl.id}
                         title={tdl.title}
                         filter={tdl.filter}
-                        removeTask={removeTask}
-                        addTask={addTask}
-                        changeTaskStatus={changeTaskStatus}
-                        changeTodolistFilter={changeTodolistFilter}
-                        removeTodolist={removeTodolist}
+                        removeTask={removeTaskHandler}
+                        addTask={addTaskHandler}
+                        changeTaskStatus={changeTaskStatusHandler}
+                        changeTodolistFilter={changeTodolistFilterHandler}
+                        removeTodolist={removeTodolistHandler}
                         tasks={tasks[tdl.id]}
-                        changeTaskTitle={changeTaskTitle}
-                        changeTodolistTitle={changeTodolistTitle}
-                        sortTasksByName={sortTasksByName}
-                    />
+                        changeTaskTitle={changeTaskTitleHandler}
+                        changeTodolistTitle={changeTodolistTitleHandler}
+                        sortTasksByName={sortTasksByNameHandler}/>
                 )}
             </div>
         </div>
