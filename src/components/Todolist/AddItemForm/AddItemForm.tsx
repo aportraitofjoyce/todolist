@@ -9,6 +9,7 @@ type InputPropsType = {
 
 export const AddItemForm: React.FC<InputPropsType> = React.memo((props) => {
     const {addItem} = props
+
     const [value, setValue] = useState<string>('')
     const [error, setError] = useState<boolean>(false)
 

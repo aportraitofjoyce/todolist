@@ -38,6 +38,7 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo((props) => {
         changeTodolistTitle,
         sortTasksByName
     } = props
+
     const changeFilterToAllHandler = useCallback(() => changeTodolistFilter('All', TODOLIST_ID),
         [changeTodolistFilter, TODOLIST_ID])
 

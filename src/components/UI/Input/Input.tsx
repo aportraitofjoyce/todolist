@@ -10,8 +10,8 @@ type InputPropsType = DefaultInputPropsType & {
     spanClassName?: string
 }
 
-export const Input: React.FC<InputPropsType> = (
-    {
+export const Input: React.FC<InputPropsType> = (props) => {
+    const {
         type,
         onChange,
         onChangeText,
@@ -21,8 +21,8 @@ export const Input: React.FC<InputPropsType> = (
         className,
         spanClassName,
         ...restProps
-    }
-) => {
+    } = props
+
     const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
         onChange && onChange(e)
         onChangeText && onChangeText(e.currentTarget.value)
