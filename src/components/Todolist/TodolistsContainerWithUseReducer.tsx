@@ -17,18 +17,8 @@ import {
 } from '../../store/actions/todolists-actions/todolists-actions'
 import {tasksReducer} from '../../store/reducers/tasks-reducer/tasks-reducer'
 import {todolistsReducer} from '../../store/reducers/todolists-reducer/todolists-reducer'
-
-export type FilterValuesType = 'All' | 'Active' | 'Completed'
-export type TaskType = {
-    id: string
-    title: string
-    isDone: boolean
-}
-export type TodolistType = {
-    id: string
-    title: string
-    filter: FilterValuesType
-}
+import {FilterValuesType, TodolistType} from '../../types/todolists-types'
+import {TasksResponseType, TaskStatuses} from '../../api/tasks-api'
 
 export const TodolistsContainerWithUseReducer = () => {
     const [todolists, dispatchTodolists] = useReducer(todolistsReducer, [])
@@ -42,8 +32,8 @@ export const TodolistsContainerWithUseReducer = () => {
         dispatchTasks(addTask(title, TODOLIST_ID))
     }
 
-    const changeTaskStatusHandler = (taskID: string, isDone: boolean, TODOLIST_ID: string) => {
-        dispatchTasks(changeTaskStatus(taskID, isDone, TODOLIST_ID))
+    const changeTaskStatusHandler = (taskID: string, status: TaskStatuses, TODOLIST_ID: string) => {
+        dispatchTasks(changeTaskStatus(taskID, status, TODOLIST_ID))
     }
 
     const changeTaskTitleHandler = (taskID: string, title: string, TODOLIST_ID: string) => {
@@ -74,12 +64,12 @@ export const TodolistsContainerWithUseReducer = () => {
         dispatchTodolists(changeTodolistTitle(title, TODOLIST_ID))
     }
 
-    const tasksToRender = (todolist: TodolistType): TaskType[] => {
+    const tasksToRender = (todolist: TodolistType): TasksResponseType[] => {
         switch (todolist.filter) {
             case 'Completed':
-                return tasks[todolist.id].filter(t => t.isDone)
+                return tasks[todolist.id].filter(t => t.status)
             case 'Active':
-                return tasks[todolist.id].filter(t => !t.isDone)
+                return tasks[todolist.id].filter(t => !t.status)
             default:
                 return tasks[todolist.id]
         }

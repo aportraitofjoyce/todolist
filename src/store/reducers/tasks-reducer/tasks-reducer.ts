@@ -1,7 +1,8 @@
-import {TasksType, TaskType} from '../../../components/Todolist/TodolistsContainer'
 import {v1} from 'uuid'
 import {TASKS_ACTIONS_TYPES, TasksActionsType} from '../../actions/tasks-actions/tasks-actions'
 import {TODOLISTS_ACTIONS_TYPES} from '../../actions/todolists-actions/todolists-actions'
+import {TasksType} from '../../../types/tasks-types'
+import {TaskPriorities, TasksResponseType, TaskStatuses} from '../../../api/tasks-api'
 
 const initialState: TasksType = {}
 
@@ -16,14 +17,28 @@ export const tasksReducer = (state: TasksType = initialState, action: TasksActio
         case TASKS_ACTIONS_TYPES.ADD_TASK:
             return {
                 ...state,
-                [action.TODOLIST_ID]: [{id: v1(), title: action.title, isDone: false}, ...state[action.TODOLIST_ID]]
+                [action.TODOLIST_ID]: [
+                    {
+                        id: v1(),
+                        title: action.title,
+                        addedDate: '',
+                        order: 0,
+                        deadline: '',
+                        description: '',
+                        priority: TaskPriorities.Low,
+                        startDate: '',
+                        status: TaskStatuses.New,
+                        todoListId: action.TODOLIST_ID
+                    },
+                    ...state[action.TODOLIST_ID]
+                ]
             }
 
         case TASKS_ACTIONS_TYPES.CHANGE_TASK_STATUS:
             return {
                 ...state,
                 [action.TODOLIST_ID]: state[action.TODOLIST_ID]
-                    .map(t => (t.id === action.taskID ? {...t, isDone: action.isDone} : t))
+                    .map(t => (t.id === action.taskID ? {...t, status: action.status} : t))
             }
 
         case TASKS_ACTIONS_TYPES.CHANGE_TASK_TITLE:
@@ -37,7 +52,7 @@ export const tasksReducer = (state: TasksType = initialState, action: TasksActio
             return {
                 ...state,
                 [action.TODOLIST_ID]: [...state[action.TODOLIST_ID]]
-                    .sort((a: TaskType, b: TaskType) => a['title'] > b['title'] ? 1 : -1)
+                    .sort((a: TasksResponseType, b: TasksResponseType) => a['title'] > b['title'] ? 1 : -1)
             }
 
         case TODOLISTS_ACTIONS_TYPES.ADD_TODOLIST:

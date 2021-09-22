@@ -1,5 +1,5 @@
-import {TodolistType} from '../../../components/Todolist/TodolistsContainer'
 import {TodolistsActionsType, TODOLISTS_ACTIONS_TYPES} from '../../actions/todolists-actions/todolists-actions'
+import {TodolistType} from '../../../types/todolists-types'
 
 const initialState: TodolistType[] = []
 
@@ -11,7 +11,13 @@ export const todolistsReducer = (state: TodolistType[] = initialState, action: T
         case TODOLISTS_ACTIONS_TYPES.ADD_TODOLIST:
             return [
                 ...state,
-                {id: action.NEW_TODOLIST_ID, title: action.title, filter: 'All'}
+                {
+                    id: action.NEW_TODOLIST_ID,
+                    title: action.title,
+                    filter: 'All',
+                    addedDate: '',
+                    order: 0
+                }
             ]
 
         case TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_FILTER:

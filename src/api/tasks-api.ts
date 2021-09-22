@@ -1,17 +1,31 @@
 import {axiosInstance} from './axios-instance'
 
-type TasksResponseType = {
+export enum TaskStatuses {
+    New,
+    inProgress,
+    Completed,
+    Draft
+}
+
+export enum TaskPriorities {
+    Low,
+    Middle,
+    High,
+    Urgently,
+    Later
+}
+
+export type TasksResponseType = {
     description: string
     title: string
-    completed: boolean
-    status: number
-    priority: number
-    startDate: Date
-    deadline: Date
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
     id: string
     todoListId: string
     order: number
-    addedDate: Date
+    addedDate: string
 }
 type RequestTasksResponseType = {
     items: TasksResponseType[]
@@ -19,7 +33,7 @@ type RequestTasksResponseType = {
     error: string
 }
 
-type ResponseType<T> = {
+type ResponseType<T = {}> = {
     resultCode: number
     messages: string[]
     data: T
@@ -36,5 +50,5 @@ export const tasksAPI = {
         .put<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks/${taskID}`, {title}),
 
     deleteTask: (todoID: string, taskID: string) => axiosInstance
-        .delete<ResponseType<{}>>(`todo-lists/${todoID}/tasks/${taskID}`),
+        .delete<ResponseType>(`todo-lists/${todoID}/tasks/${taskID}`),
 }

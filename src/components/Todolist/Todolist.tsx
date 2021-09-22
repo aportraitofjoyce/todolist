@@ -1,21 +1,22 @@
 import React, {useCallback} from 'react'
 import s from './Todolist.module.css'
-import {FilterValuesType, TaskType} from './TodolistsContainer'
 import {AddItemForm} from './AddItemForm/AddItemForm'
 import {EditableSpan} from './EditableSpan/EditableSpan'
 import {Button} from '../UI/Button/Button'
 import {IconButton} from '../UI/Button/IconButton'
 import {Delete} from '../Icons/Delete/Delete'
 import {Task} from './Task/Task'
+import {FilterValuesType} from '../../types/todolists-types'
+import {TasksResponseType, TaskStatuses} from '../../api/tasks-api'
 
 type TodolistPropsType = {
     TODOLIST_ID: string
     title: string
-    tasks: TaskType[]
+    tasks: TasksResponseType[]
     filter: FilterValuesType
     removeTask: (taskID: string, TODOLIST_ID: string) => void
     addTask: (title: string, TODOLIST_ID: string) => void
-    changeTaskStatus: (taskID: string, isDone: boolean, TODOLIST_ID: string) => void
+    changeTaskStatus: (taskID: string, status: TaskStatuses, TODOLIST_ID: string) => void
     changeTodolistFilter: (filter: FilterValuesType, TODOLIST_ID: string) => void
     removeTodolist: (TODOLIST_ID: string) => void
     changeTaskTitle: (taskID: string, title: string, TODOLIST_ID: string) => void
@@ -63,9 +64,9 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo((props) => {
     const tasksToRender = useCallback((filter: FilterValuesType) => {
         switch (filter) {
             case 'Completed':
-                return tasks.filter(t => t.isDone)
+                return tasks.filter(t => t.status === TaskStatuses.Completed)
             case 'Active':
-                return tasks.filter(t => !t.isDone)
+                return tasks.filter(t => t.status !== TaskStatuses.Completed)
             default:
                 return tasks
         }
@@ -86,7 +87,7 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo((props) => {
                 {tasksToRender(filter).map(t => <Task key={t.id}
                                                       TODOLIST_ID={TODOLIST_ID}
                                                       id={t.id}
-                                                      checked={t.isDone}
+                                                      checked={t.status === TaskStatuses.Completed}
                                                       title={t.title}
                                                       removeTask={removeTask}
                                                       changeTaskTitle={changeTaskTitle}

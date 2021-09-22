@@ -2,12 +2,12 @@ import {
     todolistsReducer
 } from './todolists-reducer'
 import {v1} from 'uuid'
-import {FilterValuesType, TodolistType} from '../../../components/Todolist/TodolistsContainer'
 import {
     addTodolist,
     changeTodolistFilter,
     changeTodolistTitle, removeTodolist
 } from '../../actions/todolists-actions/todolists-actions'
+import {FilterValuesType, TodolistType} from '../../../types/todolists-types'
 
 let todolistID1: string
 let todolistID2: string
@@ -17,8 +17,8 @@ beforeEach(() => {
     todolistID1 = v1()
     todolistID2 = v1()
     startState = [
-        {id: todolistID1, title: 'What to learn', filter: 'All'},
-        {id: todolistID2, title: 'What to buy', filter: 'All'}
+        {id: todolistID1, title: 'What to learn', filter: 'All', order: 0, addedDate: ''},
+        {id: todolistID2, title: 'What to buy', filter: 'All', order: 0, addedDate: ''}
     ]
 })
 

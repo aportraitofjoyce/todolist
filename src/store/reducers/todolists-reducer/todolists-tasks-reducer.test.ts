@@ -1,7 +1,8 @@
-import {TasksType, TodolistType} from '../../../components/Todolist/TodolistsContainer'
 import {todolistsReducer} from './todolists-reducer'
 import {tasksReducer} from '../tasks-reducer/tasks-reducer'
 import {addTodolist} from '../../actions/todolists-actions/todolists-actions'
+import {TodolistType} from '../../../types/todolists-types'
+import {TasksType} from '../../../types/tasks-types'
 
 
 test('ids should be equals', () => {

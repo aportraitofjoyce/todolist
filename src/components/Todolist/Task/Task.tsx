@@ -4,6 +4,7 @@ import {Checkbox} from '../../UI/Checkbox/Checkbox'
 import {EditableSpan} from '../EditableSpan/EditableSpan'
 import {IconButton} from '../../UI/Button/IconButton'
 import {Delete} from '../../Icons/Delete/Delete'
+import {TaskStatuses} from '../../../api/tasks-api'
 
 type TaskPropsType = {
     TODOLIST_ID: string
@@ -12,7 +13,7 @@ type TaskPropsType = {
     title: string
     removeTask: (id: string, TODOLIST_ID: string) => void
     changeTaskTitle: (id: string, title: string, TODOLIST_ID: string) => void
-    changeTaskStatus: (id: string, isDone: boolean, TODOLIST_ID: string) => void
+    changeTaskStatus: (id: string, status: TaskStatuses, TODOLIST_ID: string) => void
 }
 
 export const Task: React.FC<TaskPropsType> = React.memo((props) => {
@@ -24,7 +25,7 @@ export const Task: React.FC<TaskPropsType> = React.memo((props) => {
     const spanHandler = useCallback((title: string) => changeTaskTitle(id, title, TODOLIST_ID),
         [changeTaskTitle, id, TODOLIST_ID])
 
-    const checkboxHandler = useCallback((isDone: boolean) => changeTaskStatus(id, isDone, TODOLIST_ID),
+    const checkboxHandler = useCallback((status: boolean) => changeTaskStatus(id, status ? TaskStatuses.Completed : TaskStatuses.inProgress, TODOLIST_ID),
         [changeTaskStatus, id, TODOLIST_ID])
 
     return (

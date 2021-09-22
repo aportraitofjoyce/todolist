@@ -1,4 +1,5 @@
 import {addTodolist, removeTodolist} from '../todolists-actions/todolists-actions'
+import {TaskStatuses} from '../../../api/tasks-api'
 
 export enum TASKS_ACTIONS_TYPES {
     REMOVE_TASK = 'REMOVE_TASK',
@@ -23,8 +24,8 @@ export const removeTask = (taskID: string, TODOLIST_ID: string) => (
 export const addTask = (title: string, TODOLIST_ID: string) => (
     {type: TASKS_ACTIONS_TYPES.ADD_TASK, title, TODOLIST_ID}
 ) as const
-export const changeTaskStatus = (taskID: string, isDone: boolean, TODOLIST_ID: string) => (
-    {type: TASKS_ACTIONS_TYPES.CHANGE_TASK_STATUS, taskID, isDone, TODOLIST_ID}
+export const changeTaskStatus = (taskID: string, status: TaskStatuses, TODOLIST_ID: string) => (
+    {type: TASKS_ACTIONS_TYPES.CHANGE_TASK_STATUS, taskID, status, TODOLIST_ID}
 ) as const
 export const changeTaskTitle = (taskID: string, title: string, TODOLIST_ID: string) => (
     {type: TASKS_ACTIONS_TYPES.CHANGE_TASK_TITLE, taskID, title, TODOLIST_ID}

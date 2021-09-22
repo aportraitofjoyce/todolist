@@ -3,7 +3,7 @@ import s from './Checkbox.module.css'
 
 type CheckboxPropsType = {
     checked: boolean
-    changeTaskStatus: (isDone: boolean) => void
+    changeTaskStatus: (status: boolean) => void
 }
 
 export const Checkbox: React.FC<CheckboxPropsType> = React.memo((props) => {
