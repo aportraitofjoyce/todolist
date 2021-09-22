@@ -8,6 +8,15 @@ export enum TASKS_ACTIONS_TYPES {
     SORT_TASKS_BY_NAME = 'SORT_TASKS_BY_NAME',
 }
 
+export type TasksActionsType =
+    ReturnType<typeof removeTask>
+    | ReturnType<typeof addTask>
+    | ReturnType<typeof changeTaskStatus>
+    | ReturnType<typeof changeTaskTitle>
+    | ReturnType<typeof sortTasksByName>
+    | ReturnType<typeof addTodolist>
+    | ReturnType<typeof removeTodolist>
+
 export const removeTask = (taskID: string, TODOLIST_ID: string) => (
     {type: TASKS_ACTIONS_TYPES.REMOVE_TASK, taskID, TODOLIST_ID}
 ) as const
@@ -23,12 +32,3 @@ export const changeTaskTitle = (taskID: string, title: string, TODOLIST_ID: stri
 export const sortTasksByName = (TODOLIST_ID: string) => (
     {type: TASKS_ACTIONS_TYPES.SORT_TASKS_BY_NAME, TODOLIST_ID}
 ) as const
-
-export type TasksActionsType =
-    ReturnType<typeof removeTask> |
-    ReturnType<typeof addTask> |
-    ReturnType<typeof changeTaskStatus> |
-    ReturnType<typeof changeTaskTitle> |
-    ReturnType<typeof sortTasksByName> |
-    ReturnType<typeof addTodolist> |
-    ReturnType<typeof removeTodolist>

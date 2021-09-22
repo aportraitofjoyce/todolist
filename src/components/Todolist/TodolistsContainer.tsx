@@ -1,9 +1,8 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import {Todolist} from './Todolist'
 import {AddItemForm} from './AddItemForm/AddItemForm'
 import s from './Todolist.module.css'
 import {useDispatch, useSelector} from 'react-redux'
-import {StateType} from '../../store/store'
 import {
     addTask,
     changeTaskStatus,
@@ -17,6 +16,9 @@ import {
     changeTodolistTitle,
     removeTodolist
 } from '../../store/actions/todolists-actions/todolists-actions'
+import {todolistsAPI} from '../../api/todolists-api'
+import {StateType} from '../../types/common-types'
+import {tasksAPI} from '../../api/tasks-api'
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
 
@@ -77,6 +79,18 @@ export const TodolistsContainer = () => {
     const changeTodolistTitleHandler = useCallback((title: string, TODOLIST_ID: string) => {
         dispatch(changeTodolistTitle(title, TODOLIST_ID))
     }, [dispatch])
+
+    useEffect(() => {
+        //todolistsAPI.requestTodolists().then(result => console.log(result.data))
+        //todolistsAPI.createTodolist('New').then(result => console.log(result.data.data.item))
+        //todolistsAPI.deleteTodolist('3b36fdf1-ea63-48a6-98f8-61b96ab582c0').then(result => console.log(result.data))
+        //todolistsAPI.updateTodolist('b0a27143-b69f-4a7c-8ee8-0f7aec3132b7', 'test').then(result => console.log(result))
+
+        tasksAPI.requestTasks('b666734c-0203-4046-90c6-096d740661e9').then(response => console.log(response.data))
+        //tasksAPI.deleteTask('b666734c-0203-4046-90c6-096d740661e9', '3546a83a-2973-4234-85af-0440d112922b').then(response => console.log(response))
+        //tasksAPI.createTask('b666734c-0203-4046-90c6-096d740661e9', 'test').then(response => console.log(response.data))
+        //tasksAPI.updateTask('b666734c-0203-4046-90c6-096d740661e9', '2642eba0-dda4-4cf4-902d-b7c83918e575', 'new task name').then(response => console.log(response))
+    }, [])
 
     return (
         <div className={'App'}>

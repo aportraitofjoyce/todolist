@@ -1,4 +1,4 @@
-import {StateType} from '../store/store'
+import {StateType} from '../types/common-types'
 
 export const loadState = () => {
     try {
