@@ -1,4 +1,3 @@
-import {v1} from 'uuid'
 import {FilterValuesType} from '../../../types/todolists-types'
 import {todolistsAPI, TodolistsResponseType} from '../../../api/todolists-api'
 import {ThunkType} from '../../../types/common-types'
@@ -22,15 +21,15 @@ export const removeTodolist = (TODOLIST_ID: string) => ({
     type: TODOLISTS_ACTIONS_TYPES.REMOVE_TODOLIST, payload: {TODOLIST_ID}
 }) as const
 
-export const addTodolist = (title: string) => ({
-    type: TODOLISTS_ACTIONS_TYPES.ADD_TODOLIST, payload: {title, NEW_TODOLIST_ID: v1()}
+export const addTodolist = (todolist: TodolistsResponseType) => ({
+    type: TODOLISTS_ACTIONS_TYPES.ADD_TODOLIST, payload: {todolist}
 }) as const
 
 export const changeTodolistFilter = (filter: FilterValuesType, TODOLIST_ID: string) => ({
     type: TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_FILTER, payload: {filter, TODOLIST_ID}
 }) as const
 
-export const changeTodolistTitle = (title: string, TODOLIST_ID: string) => ({
+export const changeTodolistTitle = (TODOLIST_ID: string, title: string) => ({
     type: TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_TITLE, payload: {title, TODOLIST_ID}
 }) as const
 
@@ -43,3 +42,19 @@ export const getTodolists = (): ThunkType => async dispatch => {
     const response = await todolistsAPI.requestTodolists()
     dispatch(setTodolists(response.data))
 }
+
+export const deleteTodolist = (TODOLIST_ID: string): ThunkType => async dispatch => {
+    await todolistsAPI.deleteTodolist(TODOLIST_ID)
+    dispatch(removeTodolist(TODOLIST_ID))
+}
+
+export const createTodolist = (title: string): ThunkType => async dispatch => {
+    const response = await todolistsAPI.createTodolist(title)
+    dispatch(addTodolist(response.data.data.item))
+}
+
+export const updateTodolistTitle = (TODOLIST_ID: string, title: string): ThunkType => async dispatch => {
+    await todolistsAPI.updateTodolist(TODOLIST_ID, title)
+    dispatch(changeTodolistTitle(TODOLIST_ID, title))
+}
+

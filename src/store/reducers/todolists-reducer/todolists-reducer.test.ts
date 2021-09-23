@@ -30,11 +30,17 @@ test('Correct todolist should be removed', () => {
 })
 
 test('Correct todolist should be added', () => {
-    let newTodolistTitle = 'New Todolist'
-    const endState = todolistsReducer(startState, addTodolist(newTodolistTitle))
+    const newTodolist = {
+        id: '100',
+        title: 'What to learn',
+        order: 0,
+        addedDate: ''
+    }
+
+    const endState = todolistsReducer(startState, addTodolist(newTodolist))
 
     expect(endState.length).toBe(3)
-    expect(endState[2].title).toBe(newTodolistTitle)
+    expect(endState[0].id).toBe(newTodolist.id)
 })
 
 test('Correct filter of todolist should be changed', () => {

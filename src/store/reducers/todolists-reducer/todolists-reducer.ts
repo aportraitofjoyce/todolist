@@ -9,15 +9,7 @@ export const todolistsReducer = (state: TodolistType[] = initialState, action: T
             return [...state.filter(tdl => tdl.id !== action.payload.TODOLIST_ID)]
 
         case TODOLISTS_ACTIONS_TYPES.ADD_TODOLIST:
-            return [...state,
-                {
-                    id: action.payload.NEW_TODOLIST_ID,
-                    title: action.payload.title,
-                    filter: 'All',
-                    addedDate: '',
-                    order: 0
-                }
-            ]
+            return [{...action.payload.todolist, filter: 'All'}, ...state]
 
         case TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_FILTER:
             return [...state.map(tdl => tdl.id === action.payload.TODOLIST_ID ? {

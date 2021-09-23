@@ -34,7 +34,7 @@ export const changeTaskStatus = (taskID: string, status: TaskStatuses, TODOLIST_
     type: TASKS_ACTIONS_TYPES.CHANGE_TASK_STATUS, payload: {taskID, status, TODOLIST_ID}
 }) as const
 
-export const changeTaskTitle = (taskID: string, title: string, TODOLIST_ID: string) => ({
+export const changeTaskTitle = (TODOLIST_ID: string, taskID: string, title: string) => ({
     type: TASKS_ACTIONS_TYPES.CHANGE_TASK_TITLE, payload: {taskID, title, TODOLIST_ID}
 }) as const
 
@@ -60,4 +60,9 @@ export const deleteTask = (taskID: string, TODOLIST_ID: string): ThunkType => as
 export const createTask = (TODOLIST_ID: string, title: string): ThunkType => async dispatch => {
     const response = await tasksAPI.createTask(TODOLIST_ID, title)
     dispatch(addTask(response.data.data.item))
+}
+
+export const updateTaskTitle = (TODOLIST_ID: string, taskID: string, title: string): ThunkType => async dispatch => {
+    await tasksAPI.updateTask(TODOLIST_ID, taskID, title)
+    dispatch(changeTaskTitle(TODOLIST_ID, taskID, title))
 }

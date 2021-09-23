@@ -45,9 +45,9 @@ export const TodolistsContainerWithUseReducer = () => {
     }
 
     const addTodolistHandler = (title: string) => {
-        const action = addTodolist(title)
-        dispatchTodolists(action)
-        dispatchTasks(action)
+        // const action = addTodolist(title)
+        // dispatchTodolists(action)
+        // dispatchTasks(action)
     }
 
     const removeTodolistHandler = (TODOLIST_ID: string) => {
