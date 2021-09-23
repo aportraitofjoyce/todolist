@@ -5,7 +5,7 @@ import {v1} from 'uuid'
 import {
     addTodolist,
     changeTodolistFilter,
-    changeTodolistTitle, removeTodolist
+    changeTodolistTitle, removeTodolist, setTodolists
 } from '../../actions/todolists-actions/todolists-actions'
 import {FilterValuesType, TodolistType} from '../../../types/todolists-types'
 
@@ -51,4 +51,12 @@ test('Correct todolist should change its name', () => {
 
     expect(endState[0].title).toBe('What to learn')
     expect(endState[1].title).toBe(newTodolistTitle)
+})
+
+test('Requested todolists should be added correctly', () => {
+    const endState = todolistsReducer([], setTodolists(startState))
+
+    expect(endState.length).toBe(2)
+    expect(endState[0].title).toBe('What to learn')
+    expect(endState[0].filter).toBe('All')
 })

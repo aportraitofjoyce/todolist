@@ -5,7 +5,7 @@ import {TodolistType} from '../../../types/todolists-types'
 import {TasksType} from '../../../types/tasks-types'
 
 
-test('ids should be equals', () => {
+test('ID\'s should be equals', () => {
     const startTasksState: TasksType = {}
     const startTodolistsState: Array<TodolistType> = []
 
@@ -18,6 +18,6 @@ test('ids should be equals', () => {
     const idFromTasks = keys[0]
     const idFromTodolists = endTodolistsState[0].id
 
-    expect(idFromTasks).toBe(action.NEW_TODOLIST_ID)
-    expect(idFromTodolists).toBe(action.NEW_TODOLIST_ID)
+    expect(idFromTasks).toBe(action.payload.NEW_TODOLIST_ID)
+    expect(idFromTodolists).toBe(action.payload.NEW_TODOLIST_ID)
 })

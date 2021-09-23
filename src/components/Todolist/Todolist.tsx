@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import s from './Todolist.module.css'
 import {AddItemForm} from './AddItemForm/AddItemForm'
 import {EditableSpan} from './EditableSpan/EditableSpan'
@@ -8,6 +8,8 @@ import {Delete} from '../Icons/Delete/Delete'
 import {Task} from './Task/Task'
 import {FilterValuesType} from '../../types/todolists-types'
 import {TasksResponseType, TaskStatuses} from '../../api/tasks-api'
+import {useDispatch} from 'react-redux'
+import {getTasks} from '../../store/actions/tasks-actions/tasks-actions'
 
 type TodolistPropsType = {
     TODOLIST_ID: string
@@ -40,6 +42,8 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
         sortTasksByName
     } = props
 
+    const dispatch = useDispatch()
+
     const changeFilterToAllHandler = useCallback(() => changeTodolistFilter('All', TODOLIST_ID),
         [changeTodolistFilter, TODOLIST_ID])
 
@@ -71,6 +75,10 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
                 return tasks
         }
     }, [tasks])
+
+    useEffect(() => {
+        dispatch(getTasks(TODOLIST_ID))
+    }, [dispatch, TODOLIST_ID])
 
     return (
         <div className={s.todolistContainer}>

@@ -49,6 +49,6 @@ export const tasksAPI = {
     updateTask: (todoID: string, taskID: string, title: string) => axiosInstance
         .put<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks/${taskID}`, {title}),
 
-    deleteTask: (todoID: string, taskID: string) => axiosInstance
+    deleteTask: (taskID: string, todoID: string) => axiosInstance
         .delete<ResponseType>(`todo-lists/${todoID}/tasks/${taskID}`),
 }

@@ -3,7 +3,6 @@ import {Todolist} from './Todolist'
 import {AddItemForm} from './AddItemForm/AddItemForm'
 import s from './Todolist.module.css'
 import {
-    addTask,
     changeTaskStatus,
     changeTaskTitle,
     removeTask,
@@ -29,7 +28,8 @@ export const TodolistsContainerWithUseReducer = () => {
     }
 
     const addTaskHandler = (title: string, TODOLIST_ID: string) => {
-        dispatchTasks(addTask(title, TODOLIST_ID))
+        // Error
+        //dispatchTasks(createTask(TODOLIST_ID, title))
     }
 
     const changeTaskStatusHandler = (taskID: string, status: TaskStatuses, TODOLIST_ID: string) => {
