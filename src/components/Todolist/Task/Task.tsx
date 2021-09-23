@@ -16,7 +16,7 @@ type TaskPropsType = {
     changeTaskStatus: (id: string, status: TaskStatuses, TODOLIST_ID: string) => void
 }
 
-export const Task: React.FC<TaskPropsType> = React.memo((props) => {
+export const Task: React.FC<TaskPropsType> = React.memo(props => {
     const {TODOLIST_ID, id, checked, title, removeTask, changeTaskTitle, changeTaskStatus} = props
 
     const onButtonClickHandler = useCallback(() => removeTask(id, TODOLIST_ID),

@@ -96,8 +96,7 @@ export const TodolistsContainer = () => {
                         tasks={tasks[tdl.id]}
                         changeTaskTitle={changeTaskTitleHandler}
                         changeTodolistTitle={changeTodolistTitleHandler}
-                        sortTasksByName={sortTasksByNameHandler}/>
-                )}
+                        sortTasksByName={sortTasksByNameHandler}/>)}
             </div>
         </div>
     )

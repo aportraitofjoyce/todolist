@@ -3,11 +3,11 @@ import {Button} from '../../UI/Button/Button'
 import {Input} from '../../UI/Input/Input'
 import s from './AddItemForm.module.css'
 
-type InputPropsType = {
+type AddItemFormPropsType = {
     addItem: (title: string) => void
 }
 
-export const AddItemForm: React.FC<InputPropsType> = React.memo((props) => {
+export const AddItemForm: React.FC<AddItemFormPropsType> = React.memo(props => {
     const {addItem} = props
 
     const [value, setValue] = useState<string>('')
@@ -31,6 +31,7 @@ export const AddItemForm: React.FC<InputPropsType> = React.memo((props) => {
     const onKeyPressHandler = useCallback((e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') onClickHandler()
     }, [onClickHandler])
+
 
     return (
         <div className={s.container}>

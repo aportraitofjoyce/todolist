@@ -24,7 +24,7 @@ type TodolistPropsType = {
     sortTasksByName: (TODOLIST_ID: string) => void
 }
 
-export const Todolist: React.FC<TodolistPropsType> = React.memo((props) => {
+export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
     const {
         TODOLIST_ID,
         title,

@@ -10,7 +10,7 @@ type InputPropsType = DefaultInputPropsType & {
     spanClassName?: string
 }
 
-export const Input: React.FC<InputPropsType> = (props) => {
+export const Input: React.FC<InputPropsType> = props => {
     const {
         type,
         onChange,

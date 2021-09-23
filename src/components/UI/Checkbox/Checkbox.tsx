@@ -6,7 +6,7 @@ type CheckboxPropsType = {
     changeTaskStatus: (status: boolean) => void
 }
 
-export const Checkbox: React.FC<CheckboxPropsType> = React.memo((props) => {
+export const Checkbox: React.FC<CheckboxPropsType> = React.memo(props => {
     const {checked, changeTaskStatus} = props
 
     const onCheckboxChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
