@@ -9,7 +9,6 @@ import {
     sortTasksByName
 } from '../../store/actions/tasks-actions/tasks-actions'
 import {
-    addTodolist,
     changeTodolistFilter,
     changeTodolistTitle,
     removeTodolist
@@ -33,7 +32,7 @@ export const TodolistsContainerWithUseReducer = () => {
     }
 
     const changeTaskStatusHandler = (taskID: string, status: TaskStatuses, TODOLIST_ID: string) => {
-        dispatchTasks(changeTaskStatus(taskID, status, TODOLIST_ID))
+        dispatchTasks(changeTaskStatus(TODOLIST_ID, taskID, status))
     }
 
     const changeTaskTitleHandler = (taskID: string, title: string, TODOLIST_ID: string) => {

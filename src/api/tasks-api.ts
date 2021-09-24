@@ -27,6 +27,7 @@ export type TasksResponseType = {
     order: number
     addedDate: string
 }
+
 type RequestTasksResponseType = {
     items: TasksResponseType[]
     totalCount: number
@@ -46,8 +47,8 @@ export const tasksAPI = {
     createTask: (todoID: string, title: string) => axiosInstance
         .post<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks`, {title}),
 
-    updateTask: (todoID: string, taskID: string, title: string) => axiosInstance
-        .put<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks/${taskID}`, {title}),
+    updateTask: (todoID: string, taskID: string, task: TasksResponseType) => axiosInstance
+        .put<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks/${taskID}`, task),
 
     deleteTask: (taskID: string, todoID: string) => axiosInstance
         .delete<ResponseType>(`todo-lists/${todoID}/tasks/${taskID}`),

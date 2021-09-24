@@ -30,12 +30,12 @@ export const addTask = (task: TasksResponseType) => ({
     type: TASKS_ACTIONS_TYPES.ADD_TASK, payload: {task}
 }) as const
 
-export const changeTaskStatus = (taskID: string, status: TaskStatuses, TODOLIST_ID: string) => ({
-    type: TASKS_ACTIONS_TYPES.CHANGE_TASK_STATUS, payload: {taskID, status, TODOLIST_ID}
+export const changeTaskStatus = (TODOLIST_ID: string, taskID: string, status: TaskStatuses) => ({
+    type: TASKS_ACTIONS_TYPES.CHANGE_TASK_STATUS, payload: {TODOLIST_ID, taskID, status}
 }) as const
 
 export const changeTaskTitle = (TODOLIST_ID: string, taskID: string, title: string) => ({
-    type: TASKS_ACTIONS_TYPES.CHANGE_TASK_TITLE, payload: {taskID, title, TODOLIST_ID}
+    type: TASKS_ACTIONS_TYPES.CHANGE_TASK_TITLE, payload: {TODOLIST_ID, taskID, title}
 }) as const
 
 export const sortTasksByName = (TODOLIST_ID: string) => ({
@@ -62,7 +62,21 @@ export const createTask = (TODOLIST_ID: string, title: string): ThunkType => asy
     dispatch(addTask(response.data.data.item))
 }
 
-export const updateTaskTitle = (TODOLIST_ID: string, taskID: string, title: string): ThunkType => async dispatch => {
-    await tasksAPI.updateTask(TODOLIST_ID, taskID, title)
-    dispatch(changeTaskTitle(TODOLIST_ID, taskID, title))
-}
+// TODO: Need to compose Update Task titles and statuses
+export const updateTaskTitle = (TODOLIST_ID: string, taskID: string, title: string): ThunkType =>
+    async (dispatch, getState) => {
+        const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
+        if (!task) return
+
+        await tasksAPI.updateTask(TODOLIST_ID, taskID, {...task, title})
+        dispatch(changeTaskTitle(TODOLIST_ID, taskID, title))
+    }
+
+export const updateTaskStatus = (TODOLIST_ID: string, taskID: string, status: TaskStatuses): ThunkType =>
+    async (dispatch, getState) => {
+        const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
+        if (!task) return
+
+        await tasksAPI.updateTask(TODOLIST_ID, taskID, {...task, status})
+        dispatch(changeTaskStatus(TODOLIST_ID, taskID, status))
+    }

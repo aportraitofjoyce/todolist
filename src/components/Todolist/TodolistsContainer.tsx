@@ -4,10 +4,10 @@ import {AddItemForm} from './AddItemForm/AddItemForm'
 import s from './Todolist.module.css'
 import {useDispatch, useSelector} from 'react-redux'
 import {
-    changeTaskStatus,
     createTask,
     deleteTask,
     sortTasksByName,
+    updateTaskStatus,
     updateTaskTitle
 } from '../../store/actions/tasks-actions/tasks-actions'
 import {
@@ -41,7 +41,7 @@ export const TodolistsContainer = () => {
     }, [dispatch])
 
     const changeTaskStatusHandler = useCallback((taskID: string, status: TaskStatuses, TODOLIST_ID: string) => {
-        dispatch(changeTaskStatus(taskID, status, TODOLIST_ID))
+        dispatch(updateTaskStatus(TODOLIST_ID, taskID, status))
     }, [dispatch])
 
     const changeTaskTitleHandler = useCallback((taskID: string, title: string, TODOLIST_ID: string) => {

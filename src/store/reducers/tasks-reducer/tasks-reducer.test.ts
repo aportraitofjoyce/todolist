@@ -195,7 +195,7 @@ test('status of specified task should be changed', () => {
 })
 
 test('title of specified task should be changed', () => {
-    const endState = tasksReducer(startState, changeTaskTitle('2', 'cofee', 'TD2'))
+    const endState = tasksReducer(startState, changeTaskTitle('2', 'TD2', 'cofee'))
 
     expect(endState['TD2'].length).toBe(3)
     expect(endState['TD2'][1].title).toBe('cofee')
@@ -209,7 +209,19 @@ test('tasks of specified todolist should be sorted by name', () => {
 })
 
 test('new array should be added when new todolist is added', () => {
-    const endState = tasksReducer(startState, addTodolist('new todolist'))
+    const newTask = {
+        id: '100',
+        title: 'juice',
+        status: 0,
+        addedDate: '',
+        deadline: '',
+        description: '',
+        order: 0,
+        startDate: '',
+        priority: 0,
+        todoListId: 'TD2'
+    }
+    const endState = tasksReducer(startState, addTodolist(newTask))
     const keys = Object.keys(endState)
     const newKey = keys.find(k => k !== 'TD1' && k !== 'TD2')
 
