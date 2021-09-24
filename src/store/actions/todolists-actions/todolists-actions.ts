@@ -17,6 +17,7 @@ export type TodolistsActionsType =
     | ReturnType<typeof changeTodolistTitle>
     | ReturnType<typeof setTodolists>
 
+// Actions
 export const removeTodolist = (TODOLIST_ID: string) => ({
     type: TODOLISTS_ACTIONS_TYPES.REMOVE_TODOLIST, payload: {TODOLIST_ID}
 }) as const
@@ -37,7 +38,7 @@ export const setTodolists = (todolists: TodolistsResponseType[]) => ({
     type: TODOLISTS_ACTIONS_TYPES.SET_TODOLISTS, payload: {todolists}
 }) as const
 
-// Thunk
+// Thunks
 export const getTodolists = (): ThunkType => async dispatch => {
     const response = await todolistsAPI.requestTodolists()
     dispatch(setTodolists(response.data))

@@ -188,14 +188,14 @@ test('correct task should be added to correct array', () => {
 })
 
 test('status of specified task should be changed', () => {
-    const endState = tasksReducer(startState, changeTaskStatus('2', 2, 'TD2'))
+    const endState = tasksReducer(startState, changeTaskStatus('TD2', '2', 2))
 
     expect(endState['TD2'].length).toBe(3)
     expect(endState['TD2'][1].status).toBe(2)
 })
 
 test('title of specified task should be changed', () => {
-    const endState = tasksReducer(startState, changeTaskTitle('2', 'TD2', 'cofee'))
+    const endState = tasksReducer(startState, changeTaskTitle('TD2', '2', 'cofee'))
 
     expect(endState['TD2'].length).toBe(3)
     expect(endState['TD2'][1].title).toBe('cofee')
