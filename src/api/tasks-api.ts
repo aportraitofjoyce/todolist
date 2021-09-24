@@ -40,6 +40,15 @@ type ResponseType<T = {}> = {
     data: T
 }
 
+export type UpdatedTaskType = {
+    description: string
+    title: string
+    status: TaskStatuses
+    priority: TaskPriorities
+    startDate: string
+    deadline: string
+}
+
 export const tasksAPI = {
     requestTasks: (todoID: string) => axiosInstance
         .get<RequestTasksResponseType>(`todo-lists/${todoID}/tasks`),
@@ -47,7 +56,7 @@ export const tasksAPI = {
     createTask: (todoID: string, title: string) => axiosInstance
         .post<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks`, {title}),
 
-    updateTask: (todoID: string, taskID: string, task: TasksResponseType) => axiosInstance
+    updateTask: (todoID: string, taskID: string, task: UpdatedTaskType) => axiosInstance
         .put<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks/${taskID}`, task),
 
     deleteTask: (taskID: string, todoID: string) => axiosInstance

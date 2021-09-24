@@ -6,8 +6,8 @@ import {
     changeTaskStatus,
     changeTaskTitle, removeTask, setTasks,
     sortTasksByName
-} from '../../actions/tasks-actions/tasks-actions'
-import {addTodolist, removeTodolist, setTodolists} from '../../actions/todolists-actions/todolists-actions'
+} from '../../actions/tasks-actions'
+import {addTodolist, removeTodolist, setTodolists} from '../../actions/todolists-actions'
 import {TasksType} from '../../../types/tasks-types'
 
 let startState: TasksType

@@ -1,6 +1,6 @@
-import {addTodolist, removeTodolist, setTodolists} from '../todolists-actions/todolists-actions'
-import {tasksAPI, TasksResponseType, TaskStatuses} from '../../../api/tasks-api'
-import {ThunkType} from '../../../types/common-types'
+import {addTodolist, removeTodolist, setTodolists} from './todolists-actions'
+import {TaskPriorities, tasksAPI, TasksResponseType, TaskStatuses, UpdatedTaskType} from '../../api/tasks-api'
+import {ThunkType} from '../../types/common-types'
 
 export enum TASKS_ACTIONS_TYPES {
     REMOVE_TASK = 'REMOVE_TASK',
@@ -67,17 +67,43 @@ export const createTask = (TODOLIST_ID: string, title: string): ThunkType => asy
 export const updateTaskTitle = (TODOLIST_ID: string, taskID: string, title: string): ThunkType =>
     async (dispatch, getState) => {
         const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
-        if (!task) return
+        if (task) {
+            const updatedTask: UpdatedTaskType = {
+                description: task.description,
+                deadline: task.deadline,
+                status: task.status,
+                priority: task.priority,
+                startDate: task.startDate,
+                title,
+            }
 
-        await tasksAPI.updateTask(TODOLIST_ID, taskID, {...task, title})
-        dispatch(changeTaskTitle(TODOLIST_ID, taskID, title))
+            await tasksAPI.updateTask(TODOLIST_ID, taskID, updatedTask)
+            dispatch(changeTaskTitle(TODOLIST_ID, taskID, title))
+        }
     }
 
 export const updateTaskStatus = (TODOLIST_ID: string, taskID: string, status: TaskStatuses): ThunkType =>
     async (dispatch, getState) => {
         const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
-        if (!task) return
-
-        await tasksAPI.updateTask(TODOLIST_ID, taskID, {...task, status})
-        dispatch(changeTaskStatus(TODOLIST_ID, taskID, status))
+        if (task) {
+            const updatedTask: UpdatedTaskType = {
+                description: task.description,
+                deadline: task.deadline,
+                priority: task.priority,
+                startDate: task.startDate,
+                title: task.title,
+                status
+            }
+            await tasksAPI.updateTask(TODOLIST_ID, taskID, updatedTask)
+            dispatch(changeTaskStatus(TODOLIST_ID, taskID, status))
+        }
     }
+
+/*
+export const updateTask = (TODOLIST_ID: string, taskID: string): ThunkType =>
+    async (dispatch, getState) => {
+        const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
+        if (task) {
+            await tasksAPI.updateTask(TODOLIST_ID, taskID, task)
+        }
+    }*/

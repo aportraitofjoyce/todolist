@@ -9,14 +9,14 @@ import {
     sortTasksByName,
     updateTaskStatus,
     updateTaskTitle
-} from '../../store/actions/tasks-actions/tasks-actions'
+} from '../../store/actions/tasks-actions'
 import {
     changeTodolistFilter,
     createTodolist,
     deleteTodolist,
     getTodolists,
     updateTodolistTitle,
-} from '../../store/actions/todolists-actions/todolists-actions'
+} from '../../store/actions/todolists-actions'
 import {StateType} from '../../types/common-types'
 import {FilterValuesType, TodolistType} from '../../types/todolists-types'
 import {TasksType} from '../../types/tasks-types'

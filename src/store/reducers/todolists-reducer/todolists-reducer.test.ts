@@ -6,7 +6,7 @@ import {
     addTodolist,
     changeTodolistFilter,
     changeTodolistTitle, removeTodolist, setTodolists
-} from '../../actions/todolists-actions/todolists-actions'
+} from '../../actions/todolists-actions'
 import {FilterValuesType, TodolistType} from '../../../types/todolists-types'
 
 let todolistID1: string

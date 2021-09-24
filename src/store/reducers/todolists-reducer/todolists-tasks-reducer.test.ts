@@ -1,6 +1,6 @@
 import {todolistsReducer} from './todolists-reducer'
 import {tasksReducer} from '../tasks-reducer/tasks-reducer'
-import {addTodolist} from '../../actions/todolists-actions/todolists-actions'
+import {addTodolist} from '../../actions/todolists-actions'
 import {TodolistType} from '../../../types/todolists-types'
 import {TasksType} from '../../../types/tasks-types'
 

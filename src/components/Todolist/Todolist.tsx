@@ -9,7 +9,7 @@ import {Task} from './Task/Task'
 import {FilterValuesType} from '../../types/todolists-types'
 import {TasksResponseType, TaskStatuses} from '../../api/tasks-api'
 import {useDispatch} from 'react-redux'
-import {getTasks} from '../../store/actions/tasks-actions/tasks-actions'
+import {getTasks} from '../../store/actions/tasks-actions'
 
 type TodolistPropsType = {
     TODOLIST_ID: string

@@ -1,6 +1,6 @@
-import {FilterValuesType} from '../../../types/todolists-types'
-import {todolistsAPI, TodolistsResponseType} from '../../../api/todolists-api'
-import {ThunkType} from '../../../types/common-types'
+import {FilterValuesType} from '../../types/todolists-types'
+import {todolistsAPI, TodolistsResponseType} from '../../api/todolists-api'
+import {ThunkType} from '../../types/common-types'
 
 export enum TODOLISTS_ACTIONS_TYPES {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
