@@ -3,7 +3,7 @@ import {TodolistType} from '../../../types/todolists-types'
 
 const initialState: TodolistType[] = []
 
-export const todolistsReducer = (state: TodolistType[] = initialState, action: TodolistsActionsType): TodolistType[] => {
+export const todolistsReducer = (state = initialState, action: TodolistsActionsType): TodolistType[] => {
     switch (action.type) {
         case TODOLISTS_ACTIONS_TYPES.SET_TODOLISTS:
             return action.payload.todolists.map(tdl => ({...tdl, filter: 'All'}))

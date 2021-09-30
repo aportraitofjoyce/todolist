@@ -5,7 +5,7 @@ import {TasksResponseType} from '../../../api/tasks-api'
 
 const initialState: TasksType = {}
 
-export const tasksReducer = (state: TasksType = initialState, action: TasksActionsType): TasksType => {
+export const tasksReducer = (state = initialState, action: TasksActionsType): TasksType => {
     switch (action.type) {
         case TODOLISTS_ACTIONS_TYPES.SET_TODOLISTS:
             const stateCopy = {...state}
