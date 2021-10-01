@@ -1,14 +1,16 @@
 import React, {useCallback, useEffect, useState} from 'react'
-import s from './Snackbar.module.css'
+import s from './Alerts.module.css'
 
 type SnackbarPropsType = {
+    type: 'error' | 'success'
     text: string | null
     open: boolean
     onClose: () => void
 }
 
+// TODO: Alerts have combined state and hiding all in one time. Need to implement id deps
 export const Snackbar: React.FC<SnackbarPropsType> = React.memo(props => {
-    const {text, open, onClose} = props
+    const {type, text, open, onClose} = props
     const [isOpen, setIsOpen] = useState<boolean>(open)
 
     const closeSnackbar = useCallback(() => {
@@ -18,7 +20,6 @@ export const Snackbar: React.FC<SnackbarPropsType> = React.memo(props => {
 
     useEffect(() => {
         setIsOpen(open)
-
         const timeoutID = setTimeout(() => {
             closeSnackbar()
         }, 5000)
@@ -26,11 +27,12 @@ export const Snackbar: React.FC<SnackbarPropsType> = React.memo(props => {
         return () => clearTimeout(timeoutID)
     }, [closeSnackbar, open])
 
+
     return (
         <>
             {isOpen &&
-			<div className={s.snackbarContainer}>
-				<div>{text ? text : 'I am Snackbar'}</div>
+			<div className={`${s.snackbarContainer} ${type === 'error' && s.error}`}>
+				<div>{text ? text : 'I am Alert'}</div>
 				<span onClick={closeSnackbar}>x</span>
 			</div>}
         </>

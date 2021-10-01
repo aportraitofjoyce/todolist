@@ -52,79 +52,119 @@ export const setTasks = (tasks: TasksResponseType[], TODOLIST_ID: string) => ({
 
 // Thunks
 export const getTasks = (TODOLIST_ID: string): ThunkType => async dispatch => {
-    dispatch(setAppStatus('loading'))
-    const response = await tasksAPI.requestTasks(TODOLIST_ID)
-    dispatch(setTasks(response.data.items, TODOLIST_ID))
-    dispatch(setAppStatus('succeeded'))
+    try {
+        dispatch(setAppStatus('loading'))
+        const response = await tasksAPI.requestTasks(TODOLIST_ID)
+
+        dispatch(setTasks(response.items, TODOLIST_ID))
+        dispatch(setAppStatus('succeeded'))
+
+    } catch {
+        dispatch(setAppStatus('failed'))
+        dispatch(setAppError('Network Error'))
+    }
 }
 
 export const deleteTask = (taskID: string, TODOLIST_ID: string): ThunkType => async dispatch => {
-    dispatch(setAppStatus('loading'))
-    await tasksAPI.deleteTask(taskID, TODOLIST_ID)
-    dispatch(removeTask(taskID, TODOLIST_ID))
-    dispatch(setAppStatus('succeeded'))
+    try {
+        dispatch(setAppStatus('loading'))
+        const response = await tasksAPI.deleteTask(taskID, TODOLIST_ID)
+
+        if (response.resultCode === 0) {
+            dispatch(removeTask(taskID, TODOLIST_ID))
+            dispatch(setAppStatus('succeeded'))
+        } else {
+            dispatch(setAppStatus('failed'))
+            dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+        }
+
+    } catch {
+        dispatch(setAppStatus('failed'))
+        dispatch(setAppError('Network Error'))
+    }
 }
 
 export const createTask = (TODOLIST_ID: string, title: string): ThunkType => async dispatch => {
-    dispatch(setAppStatus('loading'))
+    try {
+        dispatch(setAppStatus('loading'))
+        const response = await tasksAPI.createTask(TODOLIST_ID, title)
 
-    const response = await tasksAPI.createTask(TODOLIST_ID, title)
-    if (response.data.resultCode === 0) {
-        dispatch(addTask(response.data.data.item))
-        dispatch(setAppStatus('succeeded'))
-    }
+        if (response.resultCode === 0) {
+            dispatch(addTask(response.data.item))
+            dispatch(setAppStatus('succeeded'))
+        } else {
+            dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+            dispatch(setAppStatus('failed'))
+        }
 
-    if (response.data.messages.length) {
-        dispatch(setAppError(response.data.messages[0]))
+    } catch {
         dispatch(setAppStatus('failed'))
+        dispatch(setAppError('Network Error'))
     }
 }
 
-// TODO: Need to compose Update Task titles and statuses
 export const updateTaskTitle = (TODOLIST_ID: string, taskID: string, title: string): ThunkType =>
     async (dispatch, getState) => {
-        dispatch(setAppStatus('loading'))
-        const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
-        if (task) {
-            const updatedTask: UpdatedTaskType = {
-                description: task.description,
-                deadline: task.deadline,
-                status: task.status,
-                priority: task.priority,
-                startDate: task.startDate,
-                title,
+        try {
+            dispatch(setAppStatus('loading'))
+            const task = getState()
+                .tasks[TODOLIST_ID].find(task => task.id === taskID)
+
+            if (task) {
+                const updatedTask: UpdatedTaskType = {
+                    description: task.description,
+                    deadline: task.deadline,
+                    status: task.status,
+                    priority: task.priority,
+                    startDate: task.startDate,
+                    title,
+                }
+
+                const response = await tasksAPI.updateTask(TODOLIST_ID, taskID, updatedTask)
+
+                if (response.resultCode === 0) {
+                    dispatch(changeTaskTitle(TODOLIST_ID, taskID, title))
+                    dispatch(setAppStatus('succeeded'))
+                } else {
+                    dispatch(setAppStatus('failed'))
+                    dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+                }
             }
 
-            await tasksAPI.updateTask(TODOLIST_ID, taskID, updatedTask)
-            dispatch(changeTaskTitle(TODOLIST_ID, taskID, title))
-            dispatch(setAppStatus('succeeded'))
+        } catch {
+            dispatch(setAppStatus('failed'))
+            dispatch(setAppError('Network Error'))
         }
     }
 
 export const updateTaskStatus = (TODOLIST_ID: string, taskID: string, status: TaskStatuses): ThunkType =>
     async (dispatch, getState) => {
-        dispatch(setAppStatus('loading'))
-        const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
-        if (task) {
-            const updatedTask: UpdatedTaskType = {
-                description: task.description,
-                deadline: task.deadline,
-                priority: task.priority,
-                startDate: task.startDate,
-                title: task.title,
-                status
+        try {
+            dispatch(setAppStatus('loading'))
+            const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
+
+            if (task) {
+                const updatedTask: UpdatedTaskType = {
+                    description: task.description,
+                    deadline: task.deadline,
+                    priority: task.priority,
+                    startDate: task.startDate,
+                    title: task.title,
+                    status
+                }
+                const response = await tasksAPI.updateTask(TODOLIST_ID, taskID, updatedTask)
+
+                if (response.resultCode === 0) {
+                    dispatch(changeTaskStatus(TODOLIST_ID, taskID, status))
+                    dispatch(setAppStatus('succeeded'))
+                } else {
+                    dispatch(setAppStatus('failed'))
+                    dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+                }
             }
-            await tasksAPI.updateTask(TODOLIST_ID, taskID, updatedTask)
-            dispatch(changeTaskStatus(TODOLIST_ID, taskID, status))
-            dispatch(setAppStatus('succeeded'))
+
+        } catch {
+            dispatch(setAppStatus('failed'))
+            dispatch(setAppError('Network Error'))
         }
     }
-
-/*
-export const updateTask = (TODOLIST_ID: string, taskID: string): ThunkType =>
-    async (dispatch, getState) => {
-        const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
-        if (task) {
-            await tasksAPI.updateTask(TODOLIST_ID, taskID, task)
-        }
-    }*/

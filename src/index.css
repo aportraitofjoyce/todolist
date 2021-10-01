@@ -3,9 +3,10 @@
 :root {
     --black: #222;
     --black-light: #333;
-    --white: #fff;
+    --white: whitesmoke;
     --primary: #4c945c;
     --secondary: #ffc443;
+    --error: #a63333;
     --fira-sans: 'Fira Sans', sans-serif;
 }
 
@@ -35,4 +36,5 @@ h1 {
     text-align: center;
     margin: 24px 0;
     text-transform: uppercase;
+    color: var(--secondary);
 }

@@ -51,14 +51,18 @@ export type UpdatedTaskType = {
 
 export const tasksAPI = {
     requestTasks: (todoID: string) => axiosInstance
-        .get<RequestTasksResponseType>(`todo-lists/${todoID}/tasks`),
+        .get<RequestTasksResponseType>(`todo-lists/${todoID}/tasks`)
+        .then(response => response.data),
 
     createTask: (todoID: string, title: string) => axiosInstance
-        .post<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks`, {title}),
+        .post<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks`, {title})
+        .then(response => response.data),
 
     updateTask: (todoID: string, taskID: string, task: UpdatedTaskType) => axiosInstance
-        .put<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks/${taskID}`, task),
+        .put<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks/${taskID}`, task)
+        .then(response => response.data),
 
     deleteTask: (taskID: string, todoID: string) => axiosInstance
-        .delete<ResponseType>(`todo-lists/${todoID}/tasks/${taskID}`),
+        .delete<ResponseType>(`todo-lists/${todoID}/tasks/${taskID}`)
+        .then(response => response.data),
 }

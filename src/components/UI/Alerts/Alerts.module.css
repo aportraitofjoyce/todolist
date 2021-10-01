@@ -1,3 +1,8 @@
+.alertsWrapper {
+    position: fixed;
+    display: flex;
+}
+
 .snackbarContainer {
     width: 288px;
     background-color: var(--primary);
@@ -18,13 +23,13 @@
     margin-left: 8px;
 }
 
+.error {
+    background-color: var(--error);
+}
+
 @keyframes show {
     0% {
-        opacity: 0.3;
-    }
-
-    50% {
-        opacity: 0.6;
+        opacity: 0;
     }
 
     100% {

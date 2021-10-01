@@ -9,7 +9,7 @@
 }
 
 .checkbox:hover {
-    border-color: #434343;
+    opacity: 0.8;
 }
 
 .checkbox:checked {

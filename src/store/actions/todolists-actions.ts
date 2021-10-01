@@ -43,38 +43,72 @@ export const setTodolists = (todolists: TodolistsResponseType[]) => ({
 
 // Thunks
 export const getTodolists = (): ThunkType => async dispatch => {
-    dispatch(setAppStatus('loading'))
-    const response = await todolistsAPI.requestTodolists()
-    dispatch(setTodolists(response.data))
-    dispatch(setAppStatus('succeeded'))
+    try {
+        dispatch(setAppStatus('loading'))
+        const response = await todolistsAPI.requestTodolists()
+
+        dispatch(setTodolists(response))
+        dispatch(setAppStatus('succeeded'))
+
+    } catch {
+        dispatch(setAppStatus('failed'))
+        dispatch(setAppError('Network Error'))
+    }
 }
 
 export const deleteTodolist = (TODOLIST_ID: string): ThunkType => async dispatch => {
-    dispatch(setAppStatus('loading'))
-    await todolistsAPI.deleteTodolist(TODOLIST_ID)
-    dispatch(removeTodolist(TODOLIST_ID))
-    dispatch(setAppStatus('succeeded'))
+    try {
+        dispatch(setAppStatus('loading'))
+        const response = await todolistsAPI.deleteTodolist(TODOLIST_ID)
+
+        if (response.resultCode === 0) {
+            dispatch(removeTodolist(TODOLIST_ID))
+            dispatch(setAppStatus('succeeded'))
+        } else {
+            dispatch(setAppStatus('failed'))
+            dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+        }
+
+    } catch {
+        dispatch(setAppStatus('failed'))
+        dispatch(setAppError('Network Error'))
+    }
 }
 
 export const createTodolist = (title: string): ThunkType => async dispatch => {
-    dispatch(setAppStatus('loading'))
-    const response = await todolistsAPI.createTodolist(title)
+    try {
+        dispatch(setAppStatus('loading'))
+        const response = await todolistsAPI.createTodolist(title)
 
-    if (response.data.resultCode === 0) {
-        dispatch(addTodolist(response.data.data.item))
-        dispatch(setAppStatus('succeeded'))
-    }
+        if (response.resultCode === 0) {
+            dispatch(addTodolist(response.data.item))
+            dispatch(setAppStatus('succeeded'))
+        } else {
+            dispatch(setAppStatus('failed'))
+            dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+        }
 
-    if (response.data.messages.length) {
-        dispatch(setAppError(response.data.messages[0]))
+    } catch {
         dispatch(setAppStatus('failed'))
+        dispatch(setAppError('Network Error'))
     }
-
 }
 
 export const updateTodolistTitle = (TODOLIST_ID: string, title: string): ThunkType => async dispatch => {
-    dispatch(setAppStatus('loading'))
-    await todolistsAPI.updateTodolist(TODOLIST_ID, title)
-    dispatch(changeTodolistTitle(TODOLIST_ID, title))
-    dispatch(setAppStatus('succeeded'))
+    try {
+        dispatch(setAppStatus('loading'))
+        const response = await todolistsAPI.updateTodolist(TODOLIST_ID, title)
+
+        if (response.resultCode === 0) {
+            dispatch(changeTodolistTitle(TODOLIST_ID, title))
+            dispatch(setAppStatus('succeeded'))
+        } else {
+            dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+            dispatch(setAppStatus('failed'))
+        }
+
+    } catch {
+        dispatch(setAppStatus('failed'))
+        dispatch(setAppError('Network Error'))
+    }
 }

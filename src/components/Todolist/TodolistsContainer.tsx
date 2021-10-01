@@ -77,19 +77,17 @@ export const TodolistsContainer = () => {
             </div>
 
             <div className={s.todolistsWrapper}>
-                {todolists.map(tdl =>
-                    <Todolist
-                        key={tdl.id}
-                        todolist={tdl}
-                        tasks={tasks[tdl.id]}
-                        removeTask={removeTaskHandler}
-                        addTask={addTaskHandler}
-                        changeTaskStatus={changeTaskStatusHandler}
-                        changeTodolistFilter={changeTodolistFilterHandler}
-                        removeTodolist={removeTodolistHandler}
-                        changeTaskTitle={changeTaskTitleHandler}
-                        changeTodolistTitle={changeTodolistTitleHandler}
-                        sortTasksByName={sortTasksByNameHandler}/>)}
+                {todolists.map(tdl => <Todolist key={tdl.id}
+                                                todolist={tdl}
+                                                tasks={tasks[tdl.id]}
+                                                removeTask={removeTaskHandler}
+                                                addTask={addTaskHandler}
+                                                changeTaskStatus={changeTaskStatusHandler}
+                                                changeTodolistFilter={changeTodolistFilterHandler}
+                                                removeTodolist={removeTodolistHandler}
+                                                changeTaskTitle={changeTaskTitleHandler}
+                                                changeTodolistTitle={changeTodolistTitleHandler}
+                                                sortTasksByName={sortTasksByNameHandler}/>)}
             </div>
         </div>
     )

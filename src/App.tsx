@@ -4,7 +4,7 @@ import {useSelector} from 'react-redux'
 import {StateType} from './types/common-types'
 import {AppStatusType} from './types/app-types'
 import {Progress} from './components/UI/Progress/Progress'
-import {ErrorSnackbar} from './components/UI/Snackbar/ErrorSnackbar'
+import {Alerts} from './components/UI/Alerts/Alerts'
 
 export const App = () => {
     const appStatus = useSelector<StateType, AppStatusType>(state => state.app.status)
@@ -12,7 +12,7 @@ export const App = () => {
     return (
         <>
             {appStatus === 'loading' && <Progress/>}
-            <ErrorSnackbar/>
+            <Alerts/>
             <TodolistsContainer/>
         </>
     )

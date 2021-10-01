@@ -12,5 +12,5 @@ export const ErrorSnackbar: React.FC = React.memo(() => {
         dispatch(setAppError(null))
     }, [dispatch])
 
-    return <Snackbar text={error} open={!!error} onClose={onCloseHandler}/>
+    return <Snackbar type={'error'} text={error} open={!!error} onClose={onCloseHandler}/>
 })

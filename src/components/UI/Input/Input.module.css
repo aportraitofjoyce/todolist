@@ -20,7 +20,7 @@
 }
 
 .inputError {
-    border-color: #ff9c9c;
+    border-color: var(--error);
 }
 
 .inputError:hover, .inputError:focus {
@@ -28,5 +28,6 @@
 }
 
 .errorMessage {
-    color: red;
+    padding-top: 8px;
+    color: var(--error);
 }
