@@ -57,6 +57,7 @@ export const tasksReducer = (state = initialState, action: TasksActionsType): Ta
             }
 
         case TASKS_ACTIONS_TYPES.SORT_TASKS_BY_NAME:
+            // Local sort
             return {
                 ...state,
                 [action.payload.TODOLIST_ID]: [...state[action.payload.TODOLIST_ID]]

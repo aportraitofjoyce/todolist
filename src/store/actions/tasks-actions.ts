@@ -1,6 +1,7 @@
 import {addTodolist, removeTodolist, setTodolists} from './todolists-actions'
-import {TaskPriorities, tasksAPI, TasksResponseType, TaskStatuses, UpdatedTaskType} from '../../api/tasks-api'
+import {tasksAPI, TasksResponseType, TaskStatuses, UpdatedTaskType} from '../../api/tasks-api'
 import {ThunkType} from '../../types/common-types'
+import {setAppError, setAppStatus} from './app-actions'
 
 export enum TASKS_ACTIONS_TYPES {
     REMOVE_TASK = 'REMOVE_TASK',
@@ -21,6 +22,7 @@ export type TasksActionsType =
     | ReturnType<typeof removeTodolist>
     | ReturnType<typeof setTodolists>
     | ReturnType<typeof setTasks>
+
 
 // Actions
 export const removeTask = (taskID: string, TODOLIST_ID: string) => ({
@@ -47,25 +49,41 @@ export const setTasks = (tasks: TasksResponseType[], TODOLIST_ID: string) => ({
     type: TASKS_ACTIONS_TYPES.SET_TASKS, payload: {tasks, TODOLIST_ID}
 }) as const
 
+
 // Thunks
 export const getTasks = (TODOLIST_ID: string): ThunkType => async dispatch => {
+    dispatch(setAppStatus('loading'))
     const response = await tasksAPI.requestTasks(TODOLIST_ID)
     dispatch(setTasks(response.data.items, TODOLIST_ID))
+    dispatch(setAppStatus('succeeded'))
 }
 
 export const deleteTask = (taskID: string, TODOLIST_ID: string): ThunkType => async dispatch => {
+    dispatch(setAppStatus('loading'))
     await tasksAPI.deleteTask(taskID, TODOLIST_ID)
     dispatch(removeTask(taskID, TODOLIST_ID))
+    dispatch(setAppStatus('succeeded'))
 }
 
 export const createTask = (TODOLIST_ID: string, title: string): ThunkType => async dispatch => {
+    dispatch(setAppStatus('loading'))
+
     const response = await tasksAPI.createTask(TODOLIST_ID, title)
-    dispatch(addTask(response.data.data.item))
+    if (response.data.resultCode === 0) {
+        dispatch(addTask(response.data.data.item))
+        dispatch(setAppStatus('succeeded'))
+    }
+
+    if (response.data.messages.length) {
+        dispatch(setAppError(response.data.messages[0]))
+        dispatch(setAppStatus('failed'))
+    }
 }
 
 // TODO: Need to compose Update Task titles and statuses
 export const updateTaskTitle = (TODOLIST_ID: string, taskID: string, title: string): ThunkType =>
     async (dispatch, getState) => {
+        dispatch(setAppStatus('loading'))
         const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
         if (task) {
             const updatedTask: UpdatedTaskType = {
@@ -79,11 +97,13 @@ export const updateTaskTitle = (TODOLIST_ID: string, taskID: string, title: stri
 
             await tasksAPI.updateTask(TODOLIST_ID, taskID, updatedTask)
             dispatch(changeTaskTitle(TODOLIST_ID, taskID, title))
+            dispatch(setAppStatus('succeeded'))
         }
     }
 
 export const updateTaskStatus = (TODOLIST_ID: string, taskID: string, status: TaskStatuses): ThunkType =>
     async (dispatch, getState) => {
+        dispatch(setAppStatus('loading'))
         const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
         if (task) {
             const updatedTask: UpdatedTaskType = {
@@ -96,6 +116,7 @@ export const updateTaskStatus = (TODOLIST_ID: string, taskID: string, status: Ta
             }
             await tasksAPI.updateTask(TODOLIST_ID, taskID, updatedTask)
             dispatch(changeTaskStatus(TODOLIST_ID, taskID, status))
+            dispatch(setAppStatus('succeeded'))
         }
     }
 

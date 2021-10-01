@@ -1,6 +1,7 @@
 import {FilterValuesType} from '../../types/todolists-types'
 import {todolistsAPI, TodolistsResponseType} from '../../api/todolists-api'
 import {ThunkType} from '../../types/common-types'
+import {setAppStatus} from './app-actions'
 
 export enum TODOLISTS_ACTIONS_TYPES {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
@@ -16,6 +17,7 @@ export type TodolistsActionsType =
     | ReturnType<typeof changeTodolistFilter>
     | ReturnType<typeof changeTodolistTitle>
     | ReturnType<typeof setTodolists>
+
 
 // Actions
 export const removeTodolist = (TODOLIST_ID: string) => ({
@@ -38,24 +40,32 @@ export const setTodolists = (todolists: TodolistsResponseType[]) => ({
     type: TODOLISTS_ACTIONS_TYPES.SET_TODOLISTS, payload: {todolists}
 }) as const
 
+
 // Thunks
 export const getTodolists = (): ThunkType => async dispatch => {
+    dispatch(setAppStatus('loading'))
     const response = await todolistsAPI.requestTodolists()
     dispatch(setTodolists(response.data))
+    dispatch(setAppStatus('succeeded'))
 }
 
 export const deleteTodolist = (TODOLIST_ID: string): ThunkType => async dispatch => {
+    dispatch(setAppStatus('loading'))
     await todolistsAPI.deleteTodolist(TODOLIST_ID)
     dispatch(removeTodolist(TODOLIST_ID))
+    dispatch(setAppStatus('succeeded'))
 }
 
 export const createTodolist = (title: string): ThunkType => async dispatch => {
+    dispatch(setAppStatus('loading'))
     const response = await todolistsAPI.createTodolist(title)
     dispatch(addTodolist(response.data.data.item))
+    dispatch(setAppStatus('succeeded'))
 }
 
 export const updateTodolistTitle = (TODOLIST_ID: string, title: string): ThunkType => async dispatch => {
+    dispatch(setAppStatus('loading'))
     await todolistsAPI.updateTodolist(TODOLIST_ID, title)
     dispatch(changeTodolistTitle(TODOLIST_ID, title))
+    dispatch(setAppStatus('succeeded'))
 }
-
