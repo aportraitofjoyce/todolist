@@ -1,7 +1,7 @@
 import {FilterValuesType} from '../../types/todolists-types'
 import {todolistsAPI, TodolistsResponseType} from '../../api/todolists-api'
 import {ThunkType} from '../../types/common-types'
-import {setAppStatus} from './app-actions'
+import {setAppError, setAppStatus} from './app-actions'
 
 export enum TODOLISTS_ACTIONS_TYPES {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
@@ -59,8 +59,17 @@ export const deleteTodolist = (TODOLIST_ID: string): ThunkType => async dispatch
 export const createTodolist = (title: string): ThunkType => async dispatch => {
     dispatch(setAppStatus('loading'))
     const response = await todolistsAPI.createTodolist(title)
-    dispatch(addTodolist(response.data.data.item))
-    dispatch(setAppStatus('succeeded'))
+
+    if (response.data.resultCode === 0) {
+        dispatch(addTodolist(response.data.data.item))
+        dispatch(setAppStatus('succeeded'))
+    }
+
+    if (response.data.messages.length) {
+        dispatch(setAppError(response.data.messages[0]))
+        dispatch(setAppStatus('failed'))
+    }
+
 }
 
 export const updateTodolistTitle = (TODOLIST_ID: string, title: string): ThunkType => async dispatch => {

@@ -80,15 +80,13 @@ export const TodolistsContainer = () => {
                 {todolists.map(tdl =>
                     <Todolist
                         key={tdl.id}
-                        TODOLIST_ID={tdl.id}
-                        title={tdl.title}
-                        filter={tdl.filter}
+                        todolist={tdl}
+                        tasks={tasks[tdl.id]}
                         removeTask={removeTaskHandler}
                         addTask={addTaskHandler}
                         changeTaskStatus={changeTaskStatusHandler}
                         changeTodolistFilter={changeTodolistFilterHandler}
                         removeTodolist={removeTodolistHandler}
-                        tasks={tasks[tdl.id]}
                         changeTaskTitle={changeTaskTitleHandler}
                         changeTodolistTitle={changeTodolistTitleHandler}
                         sortTasksByName={sortTasksByNameHandler}/>)}
