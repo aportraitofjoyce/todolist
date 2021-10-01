@@ -20,7 +20,7 @@ import {
 import {StateType} from '../../types/common-types'
 import {FilterValuesType, TodolistType} from '../../types/todolists-types'
 import {TasksType} from '../../types/tasks-types'
-import {TaskStatuses} from '../../api/tasks-api'
+import {TaskStatuses} from '../../types/server-response-types'
 
 export const TodolistsContainer = () => {
     const tasks = useSelector<StateType, TasksType>(state => state.tasks)
@@ -32,40 +32,40 @@ export const TodolistsContainer = () => {
         dispatch(getTodolists())
     }, [dispatch])
 
-    const removeTaskHandler = useCallback(async (taskID: string, TODOLIST_ID: string) => {
-        dispatch(deleteTask(taskID, TODOLIST_ID))
+    const removeTaskHandler = useCallback(async (taskID: string, todolistID: string) => {
+        dispatch(deleteTask(taskID, todolistID))
     }, [dispatch])
 
-    const addTaskHandler = useCallback((title: string, TODOLIST_ID: string) => {
-        dispatch(createTask(TODOLIST_ID, title))
+    const addTaskHandler = useCallback((title: string, todolistID: string) => {
+        dispatch(createTask(todolistID, title))
     }, [dispatch])
 
-    const changeTaskStatusHandler = useCallback((taskID: string, status: TaskStatuses, TODOLIST_ID: string) => {
-        dispatch(updateTaskStatus(TODOLIST_ID, taskID, status))
+    const changeTaskStatusHandler = useCallback((taskID: string, status: TaskStatuses, todolistID: string) => {
+        dispatch(updateTaskStatus(todolistID, taskID, status))
     }, [dispatch])
 
-    const changeTaskTitleHandler = useCallback((taskID: string, title: string, TODOLIST_ID: string) => {
-        dispatch(updateTaskTitle(TODOLIST_ID, taskID, title))
+    const changeTaskTitleHandler = useCallback((taskID: string, title: string, todolistID: string) => {
+        dispatch(updateTaskTitle(todolistID, taskID, title))
     }, [dispatch])
 
-    const sortTasksByNameHandler = useCallback((TODOLIST_ID: string) => {
-        dispatch(sortTasksByName(TODOLIST_ID))
+    const sortTasksByNameHandler = useCallback((todolistID: string) => {
+        dispatch(sortTasksByName(todolistID))
     }, [dispatch])
 
     const addTodolistHandler = useCallback((title: string) => {
         dispatch(createTodolist(title))
     }, [dispatch])
 
-    const removeTodolistHandler = useCallback((TODOLIST_ID: string) => {
-        dispatch(deleteTodolist(TODOLIST_ID))
+    const removeTodolistHandler = useCallback((todolistID: string) => {
+        dispatch(deleteTodolist(todolistID))
     }, [dispatch])
 
-    const changeTodolistFilterHandler = useCallback((filter: FilterValuesType, TODOLIST_ID: string) => {
-        dispatch(changeTodolistFilter(filter, TODOLIST_ID))
+    const changeTodolistFilterHandler = useCallback((filter: FilterValuesType, todolistID: string) => {
+        dispatch(changeTodolistFilter(filter, todolistID))
     }, [dispatch])
 
-    const changeTodolistTitleHandler = useCallback((title: string, TODOLIST_ID: string) => {
-        dispatch(updateTodolistTitle(TODOLIST_ID, title))
+    const changeTodolistTitleHandler = useCallback((title: string, todolistID: string) => {
+        dispatch(updateTodolistTitle(todolistID, title))
     }, [dispatch])
 
     return (

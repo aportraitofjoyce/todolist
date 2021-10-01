@@ -3,7 +3,7 @@ import {APP_ACTIONS_TYPES, AppActionsType} from '../../actions/app-actions'
 
 const initialState: AppReducerType = {
     status: 'idle',
-    error: 'I am test ERROR and i live only 5 seconds'
+    error: 'I\'m test and my life is short'
 }
 
 export const appReducer = (state = initialState, action: AppActionsType): AppReducerType => {

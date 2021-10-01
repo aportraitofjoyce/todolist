@@ -1,19 +1,6 @@
 import {axiosInstance} from './axios-instance'
-
-export enum TaskStatuses {
-    New,
-    inProgress,
-    Completed,
-    Draft
-}
-
-export enum TaskPriorities {
-    Low,
-    Middle,
-    High,
-    Urgently,
-    Later
-}
+import {AppStatusType} from '../types/app-types'
+import {ServerResponseType, TaskPriorities, TaskStatuses} from '../types/server-response-types'
 
 export type TasksResponseType = {
     description: string
@@ -26,18 +13,13 @@ export type TasksResponseType = {
     todoListId: string
     order: number
     addedDate: string
+    entityStatus: AppStatusType
 }
 
 type RequestTasksResponseType = {
     items: TasksResponseType[]
     totalCount: number
     error: string
-}
-
-type ResponseType<T = {}> = {
-    resultCode: number
-    messages: string[]
-    data: T
 }
 
 export type UpdatedTaskType = {
@@ -55,14 +37,14 @@ export const tasksAPI = {
         .then(response => response.data),
 
     createTask: (todoID: string, title: string) => axiosInstance
-        .post<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks`, {title})
+        .post<ServerResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks`, {title})
         .then(response => response.data),
 
     updateTask: (todoID: string, taskID: string, task: UpdatedTaskType) => axiosInstance
-        .put<ResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks/${taskID}`, task)
+        .put<ServerResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks/${taskID}`, task)
         .then(response => response.data),
 
     deleteTask: (taskID: string, todoID: string) => axiosInstance
-        .delete<ResponseType>(`todo-lists/${todoID}/tasks/${taskID}`)
+        .delete<ServerResponseType>(`todo-lists/${todoID}/tasks/${taskID}`)
         .then(response => response.data),
 }

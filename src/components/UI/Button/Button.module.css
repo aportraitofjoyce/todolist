@@ -13,8 +13,15 @@
     text-transform: uppercase;
 }
 
-.default:hover {
+.default:hover,
+.icon:hover {
     opacity: 0.8;
+}
+
+.default:disabled,
+.icon:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
 }
 
 .grouped {
@@ -35,8 +42,4 @@
     border-radius: 4px;
     height: 40px;
     outline: none;
-}
-
-.icon:hover {
-    opacity: 0.8;
 }

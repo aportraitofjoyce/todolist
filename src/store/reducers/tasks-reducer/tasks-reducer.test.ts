@@ -9,6 +9,7 @@ import {
 } from '../../actions/tasks-actions'
 import {addTodolist, removeTodolist, setTodolists} from '../../actions/todolists-actions'
 import {TasksType} from '../../../types/tasks-types'
+import {TasksResponseType} from '../../../api/tasks-api'
 
 let startState: TasksType
 
@@ -25,6 +26,7 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD1'
             },
             {
@@ -37,6 +39,7 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD1'
             },
             {
@@ -49,6 +52,7 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD1'
             }
         ],
@@ -63,6 +67,7 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD2'
             },
             {
@@ -75,6 +80,7 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD2'
             },
             {
@@ -87,6 +93,7 @@ beforeEach(() => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD2'
             }
         ]
@@ -108,6 +115,7 @@ test('correct task should be deleted from correct array', () => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD1'
             },
             {
@@ -120,6 +128,7 @@ test('correct task should be deleted from correct array', () => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD1'
             },
             {
@@ -132,6 +141,7 @@ test('correct task should be deleted from correct array', () => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD1'
             }
         ],
@@ -146,6 +156,7 @@ test('correct task should be deleted from correct array', () => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD2'
             },
             {
@@ -158,6 +169,7 @@ test('correct task should be deleted from correct array', () => {
                 order: 0,
                 startDate: '',
                 priority: 0,
+                entityStatus: 'idle',
                 todoListId: 'TD2'
             }
         ]
@@ -165,8 +177,7 @@ test('correct task should be deleted from correct array', () => {
 })
 
 test('correct task should be added to correct array', () => {
-    // const endState = tasksReducer(startState, addTask('juice', 'TD2'))
-    const newTask = {
+    const newTask: TasksResponseType = {
         id: '100',
         title: 'juice',
         status: 0,
@@ -176,7 +187,8 @@ test('correct task should be added to correct array', () => {
         order: 0,
         startDate: '',
         priority: 0,
-        todoListId: 'TD2'
+        entityStatus: 'idle',
+        todoListId: 'TD2',
     }
     const endState = tasksReducer(startState, addTask(newTask))
 

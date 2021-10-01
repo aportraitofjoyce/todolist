@@ -24,7 +24,8 @@ export const Snackbar: React.FC<SnackbarPropsType> = React.memo(props => {
             closeSnackbar()
         }, 5000)
 
-        return () => clearTimeout(timeoutID)
+        if (!isOpen) clearTimeout(timeoutID)
+        else return () => clearTimeout(timeoutID)
     }, [closeSnackbar, open])
 
 
@@ -33,7 +34,7 @@ export const Snackbar: React.FC<SnackbarPropsType> = React.memo(props => {
             {isOpen &&
 			<div className={`${s.snackbarContainer} ${type === 'error' && s.error}`}>
 				<div>{text ? text : 'I am Alert'}</div>
-				<span onClick={closeSnackbar}>x</span>
+				<span onClick={closeSnackbar}>X</span>
 			</div>}
         </>
     )

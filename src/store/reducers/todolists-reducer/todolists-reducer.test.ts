@@ -3,7 +3,7 @@ import {
 } from './todolists-reducer'
 import {v1} from 'uuid'
 import {
-    addTodolist,
+    addTodolist, changeTodolistEntityStatus,
     changeTodolistFilter,
     changeTodolistTitle, removeTodolist, setTodolists
 } from '../../actions/todolists-actions'
@@ -17,8 +17,8 @@ beforeEach(() => {
     todolistID1 = v1()
     todolistID2 = v1()
     startState = [
-        {id: todolistID1, title: 'What to learn', filter: 'All', status: 'idle', order: 0, addedDate: ''},
-        {id: todolistID2, title: 'What to buy', filter: 'All', status: 'idle', order: 0, addedDate: ''}
+        {id: todolistID1, title: 'What to learn', filter: 'All', entityStatus: 'idle', order: 0, addedDate: ''},
+        {id: todolistID2, title: 'What to buy', filter: 'All', entityStatus: 'idle', order: 0, addedDate: ''}
     ]
 })
 
@@ -65,4 +65,10 @@ test('Requested todolists should be added correctly', () => {
     expect(endState.length).toBe(2)
     expect(endState[0].title).toBe('What to learn')
     expect(endState[0].filter).toBe('All')
+})
+
+test('Todolists entity status should be changed', () => {
+    const endState = todolistsReducer(startState, changeTodolistEntityStatus(todolistID1, 'loading'))
+
+    expect(endState[0].entityStatus).toBe('loading')
 })

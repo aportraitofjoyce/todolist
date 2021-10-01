@@ -1,7 +1,10 @@
 import {addTodolist, removeTodolist, setTodolists} from './todolists-actions'
-import {tasksAPI, TasksResponseType, TaskStatuses, UpdatedTaskType} from '../../api/tasks-api'
+import {tasksAPI, TasksResponseType, UpdatedTaskType} from '../../api/tasks-api'
 import {ThunkType} from '../../types/common-types'
 import {setAppError, setAppStatus} from './app-actions'
+import {AppStatusType} from '../../types/app-types'
+import {networkErrorsHandler, serverErrorsHandler} from '../../utils/error-utils'
+import {ServerStatuses, TaskStatuses} from '../../types/server-response-types'
 
 export enum TASKS_ACTIONS_TYPES {
     REMOVE_TASK = 'REMOVE_TASK',
@@ -9,7 +12,8 @@ export enum TASKS_ACTIONS_TYPES {
     CHANGE_TASK_STATUS = 'CHANGE_TASK_STATUS',
     CHANGE_TASK_TITLE = 'CHANGE_TASK_TITLE',
     SORT_TASKS_BY_NAME = 'SORT_TASKS_BY_NAME',
-    SET_TASKS = 'SET_TASKS'
+    SET_TASKS = 'SET_TASKS',
+    CHANGE_TASK_ENTITY_STATUS = 'CHANGE_TASK_ENTITY_STATUS'
 }
 
 export type TasksActionsType =
@@ -22,93 +26,96 @@ export type TasksActionsType =
     | ReturnType<typeof removeTodolist>
     | ReturnType<typeof setTodolists>
     | ReturnType<typeof setTasks>
+    | ReturnType<typeof changeTaskEntityStatus>
 
 
 // Actions
-export const removeTask = (taskID: string, TODOLIST_ID: string) => ({
-    type: TASKS_ACTIONS_TYPES.REMOVE_TASK, payload: {taskID, TODOLIST_ID}
+export const removeTask = (taskID: string, todolistID: string) => ({
+    type: TASKS_ACTIONS_TYPES.REMOVE_TASK, payload: {taskID, todolistID}
 }) as const
 
 export const addTask = (task: TasksResponseType) => ({
     type: TASKS_ACTIONS_TYPES.ADD_TASK, payload: {task}
 }) as const
 
-export const changeTaskStatus = (TODOLIST_ID: string, taskID: string, status: TaskStatuses) => ({
-    type: TASKS_ACTIONS_TYPES.CHANGE_TASK_STATUS, payload: {TODOLIST_ID, taskID, status}
+export const changeTaskStatus = (todolistID: string, taskID: string, status: TaskStatuses) => ({
+    type: TASKS_ACTIONS_TYPES.CHANGE_TASK_STATUS, payload: {todolistID, taskID, status}
 }) as const
 
-export const changeTaskTitle = (TODOLIST_ID: string, taskID: string, title: string) => ({
-    type: TASKS_ACTIONS_TYPES.CHANGE_TASK_TITLE, payload: {TODOLIST_ID, taskID, title}
+export const changeTaskTitle = (todolistID: string, taskID: string, title: string) => ({
+    type: TASKS_ACTIONS_TYPES.CHANGE_TASK_TITLE, payload: {todolistID, taskID, title}
 }) as const
 
-export const sortTasksByName = (TODOLIST_ID: string) => ({
-    type: TASKS_ACTIONS_TYPES.SORT_TASKS_BY_NAME, payload: {TODOLIST_ID}
+export const sortTasksByName = (todolistID: string) => ({
+    type: TASKS_ACTIONS_TYPES.SORT_TASKS_BY_NAME, payload: {todolistID}
 }) as const
 
-export const setTasks = (tasks: TasksResponseType[], TODOLIST_ID: string) => ({
-    type: TASKS_ACTIONS_TYPES.SET_TASKS, payload: {tasks, TODOLIST_ID}
+export const setTasks = (tasks: TasksResponseType[], todolistID: string) => ({
+    type: TASKS_ACTIONS_TYPES.SET_TASKS, payload: {tasks, todolistID}
+}) as const
+
+export const changeTaskEntityStatus = (todolistID: string, taskID: string, entityStatus: AppStatusType) => ({
+    type: TASKS_ACTIONS_TYPES.CHANGE_TASK_ENTITY_STATUS, payload: {todolistID, taskID, entityStatus}
 }) as const
 
 
 // Thunks
-export const getTasks = (TODOLIST_ID: string): ThunkType => async dispatch => {
+export const getTasks = (todolistID: string): ThunkType => async dispatch => {
     try {
         dispatch(setAppStatus('loading'))
-        const response = await tasksAPI.requestTasks(TODOLIST_ID)
+        const response = await tasksAPI.requestTasks(todolistID)
 
-        dispatch(setTasks(response.items, TODOLIST_ID))
+        dispatch(setTasks(response.items, todolistID))
         dispatch(setAppStatus('succeeded'))
 
     } catch {
-        dispatch(setAppStatus('failed'))
-        dispatch(setAppError('Network Error'))
+        networkErrorsHandler('Network Error', dispatch)
     }
 }
 
-export const deleteTask = (taskID: string, TODOLIST_ID: string): ThunkType => async dispatch => {
+export const deleteTask = (taskID: string, todolistID: string): ThunkType => async dispatch => {
     try {
         dispatch(setAppStatus('loading'))
-        const response = await tasksAPI.deleteTask(taskID, TODOLIST_ID)
+        dispatch(changeTaskEntityStatus(todolistID, taskID, 'loading'))
+        const response = await tasksAPI.deleteTask(taskID, todolistID)
 
-        if (response.resultCode === 0) {
-            dispatch(removeTask(taskID, TODOLIST_ID))
+        if (response.resultCode === ServerStatuses.Success) {
+            dispatch(removeTask(taskID, todolistID))
             dispatch(setAppStatus('succeeded'))
+            dispatch(changeTaskEntityStatus(todolistID, taskID, 'succeeded'))
         } else {
-            dispatch(setAppStatus('failed'))
-            dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+            dispatch(changeTaskEntityStatus(todolistID, taskID, 'failed'))
+            serverErrorsHandler(response, dispatch)
         }
 
     } catch {
-        dispatch(setAppStatus('failed'))
-        dispatch(setAppError('Network Error'))
+        networkErrorsHandler('Network Error', dispatch)
     }
 }
 
-export const createTask = (TODOLIST_ID: string, title: string): ThunkType => async dispatch => {
+export const createTask = (todolistID: string, title: string): ThunkType => async dispatch => {
     try {
         dispatch(setAppStatus('loading'))
-        const response = await tasksAPI.createTask(TODOLIST_ID, title)
+        const response = await tasksAPI.createTask(todolistID, title)
 
-        if (response.resultCode === 0) {
+        if (response.resultCode === ServerStatuses.Success) {
             dispatch(addTask(response.data.item))
             dispatch(setAppStatus('succeeded'))
         } else {
-            dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
-            dispatch(setAppStatus('failed'))
+            serverErrorsHandler(response, dispatch)
         }
 
     } catch {
-        dispatch(setAppStatus('failed'))
-        dispatch(setAppError('Network Error'))
+        networkErrorsHandler('Network Error', dispatch)
     }
 }
 
-export const updateTaskTitle = (TODOLIST_ID: string, taskID: string, title: string): ThunkType =>
+export const updateTaskTitle = (todolistID: string, taskID: string, title: string): ThunkType =>
     async (dispatch, getState) => {
         try {
             dispatch(setAppStatus('loading'))
             const task = getState()
-                .tasks[TODOLIST_ID].find(task => task.id === taskID)
+                .tasks[todolistID].find(task => task.id === taskID)
 
             if (task) {
                 const updatedTask: UpdatedTaskType = {
@@ -120,28 +127,26 @@ export const updateTaskTitle = (TODOLIST_ID: string, taskID: string, title: stri
                     title,
                 }
 
-                const response = await tasksAPI.updateTask(TODOLIST_ID, taskID, updatedTask)
+                const response = await tasksAPI.updateTask(todolistID, taskID, updatedTask)
 
-                if (response.resultCode === 0) {
-                    dispatch(changeTaskTitle(TODOLIST_ID, taskID, title))
+                if (response.resultCode === ServerStatuses.Success) {
+                    dispatch(changeTaskTitle(todolistID, taskID, title))
                     dispatch(setAppStatus('succeeded'))
                 } else {
-                    dispatch(setAppStatus('failed'))
-                    dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+                    serverErrorsHandler(response, dispatch)
                 }
             }
 
         } catch {
-            dispatch(setAppStatus('failed'))
-            dispatch(setAppError('Network Error'))
+            networkErrorsHandler('Network Error', dispatch)
         }
     }
 
-export const updateTaskStatus = (TODOLIST_ID: string, taskID: string, status: TaskStatuses): ThunkType =>
+export const updateTaskStatus = (todolistID: string, taskID: string, status: TaskStatuses): ThunkType =>
     async (dispatch, getState) => {
         try {
             dispatch(setAppStatus('loading'))
-            const task = getState().tasks[TODOLIST_ID].find(task => task.id === taskID)
+            const task = getState().tasks[todolistID].find(task => task.id === taskID)
 
             if (task) {
                 const updatedTask: UpdatedTaskType = {
@@ -152,19 +157,17 @@ export const updateTaskStatus = (TODOLIST_ID: string, taskID: string, status: Ta
                     title: task.title,
                     status
                 }
-                const response = await tasksAPI.updateTask(TODOLIST_ID, taskID, updatedTask)
+                const response = await tasksAPI.updateTask(todolistID, taskID, updatedTask)
 
-                if (response.resultCode === 0) {
-                    dispatch(changeTaskStatus(TODOLIST_ID, taskID, status))
+                if (response.resultCode === ServerStatuses.Success) {
+                    dispatch(changeTaskStatus(todolistID, taskID, status))
                     dispatch(setAppStatus('succeeded'))
                 } else {
-                    dispatch(setAppStatus('failed'))
-                    dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+                    serverErrorsHandler(response, dispatch)
                 }
             }
 
         } catch {
-            dispatch(setAppStatus('failed'))
-            dispatch(setAppError('Network Error'))
+            networkErrorsHandler('Network Error', dispatch)
         }
     }

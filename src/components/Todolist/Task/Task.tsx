@@ -4,38 +4,37 @@ import {Checkbox} from '../../UI/Checkbox/Checkbox'
 import {EditableSpan} from '../EditableSpan/EditableSpan'
 import {IconButton} from '../../UI/Button/IconButton'
 import {Delete} from '../../Icons/Delete/Delete'
-import {TaskStatuses} from '../../../api/tasks-api'
+import {TasksResponseType} from '../../../api/tasks-api'
+import {TaskStatuses} from '../../../types/server-response-types'
 
 type TaskPropsType = {
-    TODOLIST_ID: string
-    id: string
-    checked: boolean
-    title: string
+    todolistID: string
+    task: TasksResponseType
     removeTask: (id: string, TODOLIST_ID: string) => void
     changeTaskTitle: (id: string, title: string, TODOLIST_ID: string) => void
     changeTaskStatus: (id: string, status: TaskStatuses, TODOLIST_ID: string) => void
 }
 
 export const Task: React.FC<TaskPropsType> = React.memo(props => {
-    const {TODOLIST_ID, id, checked, title, removeTask, changeTaskTitle, changeTaskStatus} = props
+    const {todolistID, task, removeTask, changeTaskTitle, changeTaskStatus} = props
 
-    const onButtonClickHandler = useCallback(() => removeTask(id, TODOLIST_ID),
-        [removeTask, id, TODOLIST_ID])
+    const onButtonClickHandler = useCallback(() => removeTask(task.id, todolistID),
+        [removeTask, task.id, todolistID])
 
-    const spanHandler = useCallback((title: string) => changeTaskTitle(id, title, TODOLIST_ID),
-        [changeTaskTitle, id, TODOLIST_ID])
+    const spanHandler = useCallback((title: string) => changeTaskTitle(task.id, title, todolistID),
+        [changeTaskTitle, task.id, todolistID])
 
-    const checkboxHandler = useCallback((status: boolean) => changeTaskStatus(id, status ? TaskStatuses.Completed : TaskStatuses.inProgress, TODOLIST_ID),
-        [changeTaskStatus, id, TODOLIST_ID])
+    const checkboxHandler = useCallback((status: boolean) => changeTaskStatus(task.id, status ? TaskStatuses.Completed : TaskStatuses.inProgress, todolistID),
+        [changeTaskStatus, task.id, todolistID])
 
     return (
         <div className={s.taskContentContainer}>
             <div className={s.taskContent}>
-                <Checkbox checked={checked} changeTaskStatus={checkboxHandler}/>
-                <EditableSpan title={title} changeTitle={spanHandler}/>
+                <Checkbox checked={task.status === TaskStatuses.Completed} changeTaskStatus={checkboxHandler}/>
+                <EditableSpan title={task.title} changeTitle={spanHandler}/>
             </div>
 
-            <IconButton onClick={onButtonClickHandler}><Delete/></IconButton>
+            <IconButton onClick={onButtonClickHandler} disabled={task.entityStatus === 'loading'}><Delete/></IconButton>
         </div>
     )
 })

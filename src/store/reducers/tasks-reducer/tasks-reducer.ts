@@ -21,12 +21,12 @@ export const tasksReducer = (state = initialState, action: TasksActionsType): Ta
         case TASKS_ACTIONS_TYPES.SET_TASKS:
             return {
                 ...state,
-                [action.payload.TODOLIST_ID]: action.payload.tasks
+                [action.payload.todolistID]: action.payload.tasks.map(t => ({...t, entityStatus: 'idle'}))
             }
 
         case TODOLISTS_ACTIONS_TYPES.REMOVE_TODOLIST:
             // Destruct state and return without removed todolist
-            const {[action.payload.TODOLIST_ID]: any, ...newState} = state
+            const {[action.payload.todolistID]: any, ...newState} = state
             return newState
 
         case TASKS_ACTIONS_TYPES.ADD_TASK:
@@ -38,21 +38,21 @@ export const tasksReducer = (state = initialState, action: TasksActionsType): Ta
         case TASKS_ACTIONS_TYPES.REMOVE_TASK:
             return {
                 ...state,
-                [action.payload.TODOLIST_ID]: state[action.payload.TODOLIST_ID]
+                [action.payload.todolistID]: state[action.payload.todolistID]
                     .filter(t => t.id !== action.payload.taskID)
             }
 
         case TASKS_ACTIONS_TYPES.CHANGE_TASK_TITLE:
             return {
                 ...state,
-                [action.payload.TODOLIST_ID]: state[action.payload.TODOLIST_ID]
+                [action.payload.todolistID]: state[action.payload.todolistID]
                     .map(t => (t.id === action.payload.taskID ? {...t, title: action.payload.title} : t))
             }
 
         case TASKS_ACTIONS_TYPES.CHANGE_TASK_STATUS:
             return {
                 ...state,
-                [action.payload.TODOLIST_ID]: state[action.payload.TODOLIST_ID]
+                [action.payload.todolistID]: state[action.payload.todolistID]
                     .map(t => (t.id === action.payload.taskID ? {...t, status: action.payload.status} : t))
             }
 
@@ -60,8 +60,15 @@ export const tasksReducer = (state = initialState, action: TasksActionsType): Ta
             // Local sort
             return {
                 ...state,
-                [action.payload.TODOLIST_ID]: [...state[action.payload.TODOLIST_ID]]
+                [action.payload.todolistID]: [...state[action.payload.todolistID]]
                     .sort((a: TasksResponseType, b: TasksResponseType) => a['title'] > b['title'] ? 1 : -1)
+            }
+
+        case TASKS_ACTIONS_TYPES.CHANGE_TASK_ENTITY_STATUS:
+            return {
+                ...state,
+                [action.payload.todolistID]: state[action.payload.todolistID]
+                    .map(t => (t.id === action.payload.taskID ? {...t, entityStatus: action.payload.entityStatus} : t))
             }
 
         default:

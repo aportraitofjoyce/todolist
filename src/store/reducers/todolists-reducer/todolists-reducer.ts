@@ -6,23 +6,27 @@ const initialState: TodolistType[] = []
 export const todolistsReducer = (state = initialState, action: TodolistsActionsType): TodolistType[] => {
     switch (action.type) {
         case TODOLISTS_ACTIONS_TYPES.SET_TODOLISTS:
-            return action.payload.todolists.map(tdl => ({...tdl, filter: 'All', status: 'idle'}))
+            return action.payload.todolists.map(tdl => ({...tdl, filter: 'All', entityStatus: 'idle'}))
 
         case TODOLISTS_ACTIONS_TYPES.ADD_TODOLIST:
-            return [{...action.payload.todolist, filter: 'All', status: 'idle'}, ...state]
+            return [{...action.payload.todolist, filter: 'All', entityStatus: 'idle'}, ...state]
 
         case TODOLISTS_ACTIONS_TYPES.REMOVE_TODOLIST:
-            return [...state.filter(tdl => tdl.id !== action.payload.TODOLIST_ID)]
+            return [...state.filter(tdl => tdl.id !== action.payload.todolistID)]
 
         case TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_TITLE:
-            return [...state.map(tdl => tdl.id === action.payload.TODOLIST_ID
+            return [...state.map(tdl => tdl.id === action.payload.todolistID
                 ? {...tdl, title: action.payload.title} : tdl)]
 
         case TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_FILTER:
-            return [...state.map(tdl => tdl.id === action.payload.TODOLIST_ID ? {
+            return [...state.map(tdl => tdl.id === action.payload.todolistID ? {
                 ...tdl,
                 filter: action.payload.filter
             } : tdl)]
+
+        case TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_ENTITY_STATUS:
+            return [...state.map(tdl => tdl.id === action.payload.todolistID
+                ? {...tdl, entityStatus: action.payload.status} : tdl)]
 
         default:
             return state

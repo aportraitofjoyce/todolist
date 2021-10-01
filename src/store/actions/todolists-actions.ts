@@ -1,14 +1,18 @@
 import {FilterValuesType} from '../../types/todolists-types'
 import {todolistsAPI, TodolistsResponseType} from '../../api/todolists-api'
 import {ThunkType} from '../../types/common-types'
-import {setAppError, setAppStatus} from './app-actions'
+import {setAppStatus} from './app-actions'
+import {AppStatusType} from '../../types/app-types'
+import {networkErrorsHandler, serverErrorsHandler} from '../../utils/error-utils'
+import {ServerStatuses} from '../../types/server-response-types'
 
 export enum TODOLISTS_ACTIONS_TYPES {
     REMOVE_TODOLIST = 'REMOVE_TODOLIST',
     ADD_TODOLIST = 'ADD_TODOLIST',
     CHANGE_TODOLIST_FILTER = 'CHANGE_TODOLIST_FILTER',
     CHANGE_TODOLIST_TITLE = 'CHANGE_TODOLIST_TITLE',
-    SET_TODOLISTS = 'SET_TODOLISTS'
+    SET_TODOLISTS = 'SET_TODOLISTS',
+    CHANGE_TODOLIST_ENTITY_STATUS = 'CHANGE_TODOLIST_ENTITY_STATUS'
 }
 
 export type TodolistsActionsType =
@@ -17,27 +21,32 @@ export type TodolistsActionsType =
     | ReturnType<typeof changeTodolistFilter>
     | ReturnType<typeof changeTodolistTitle>
     | ReturnType<typeof setTodolists>
+    | ReturnType<typeof changeTodolistEntityStatus>
 
 
 // Actions
-export const removeTodolist = (TODOLIST_ID: string) => ({
-    type: TODOLISTS_ACTIONS_TYPES.REMOVE_TODOLIST, payload: {TODOLIST_ID}
+export const removeTodolist = (todolistID: string) => ({
+    type: TODOLISTS_ACTIONS_TYPES.REMOVE_TODOLIST, payload: {todolistID}
 }) as const
 
 export const addTodolist = (todolist: TodolistsResponseType) => ({
     type: TODOLISTS_ACTIONS_TYPES.ADD_TODOLIST, payload: {todolist}
 }) as const
 
-export const changeTodolistFilter = (filter: FilterValuesType, TODOLIST_ID: string) => ({
-    type: TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_FILTER, payload: {filter, TODOLIST_ID}
+export const changeTodolistFilter = (filter: FilterValuesType, todolistID: string) => ({
+    type: TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_FILTER, payload: {filter, todolistID}
 }) as const
 
-export const changeTodolistTitle = (TODOLIST_ID: string, title: string) => ({
-    type: TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_TITLE, payload: {title, TODOLIST_ID}
+export const changeTodolistTitle = (todolistID: string, title: string) => ({
+    type: TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_TITLE, payload: {title, todolistID}
 }) as const
 
 export const setTodolists = (todolists: TodolistsResponseType[]) => ({
     type: TODOLISTS_ACTIONS_TYPES.SET_TODOLISTS, payload: {todolists}
+}) as const
+
+export const changeTodolistEntityStatus = (todolistID: string, status: AppStatusType) => ({
+    type: TODOLISTS_ACTIONS_TYPES.CHANGE_TODOLIST_ENTITY_STATUS, payload: {todolistID, status}
 }) as const
 
 
@@ -51,27 +60,27 @@ export const getTodolists = (): ThunkType => async dispatch => {
         dispatch(setAppStatus('succeeded'))
 
     } catch {
-        dispatch(setAppStatus('failed'))
-        dispatch(setAppError('Network Error'))
+        networkErrorsHandler('Network Error', dispatch)
     }
 }
 
-export const deleteTodolist = (TODOLIST_ID: string): ThunkType => async dispatch => {
+export const deleteTodolist = (todolistID: string): ThunkType => async dispatch => {
     try {
         dispatch(setAppStatus('loading'))
-        const response = await todolistsAPI.deleteTodolist(TODOLIST_ID)
+        dispatch(changeTodolistEntityStatus(todolistID, 'loading'))
+        const response = await todolistsAPI.deleteTodolist(todolistID)
 
-        if (response.resultCode === 0) {
-            dispatch(removeTodolist(TODOLIST_ID))
+        if (response.resultCode === ServerStatuses.Success) {
+            dispatch(removeTodolist(todolistID))
             dispatch(setAppStatus('succeeded'))
+            dispatch(changeTodolistEntityStatus(todolistID, 'succeeded'))
         } else {
-            dispatch(setAppStatus('failed'))
-            dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+            dispatch(changeTodolistEntityStatus(todolistID, 'failed'))
+            serverErrorsHandler(response, dispatch)
         }
 
     } catch {
-        dispatch(setAppStatus('failed'))
-        dispatch(setAppError('Network Error'))
+        networkErrorsHandler('Network Error', dispatch)
     }
 }
 
@@ -80,35 +89,31 @@ export const createTodolist = (title: string): ThunkType => async dispatch => {
         dispatch(setAppStatus('loading'))
         const response = await todolistsAPI.createTodolist(title)
 
-        if (response.resultCode === 0) {
+        if (response.resultCode === ServerStatuses.Success) {
             dispatch(addTodolist(response.data.item))
             dispatch(setAppStatus('succeeded'))
         } else {
-            dispatch(setAppStatus('failed'))
-            dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
+            serverErrorsHandler(response, dispatch)
         }
 
     } catch {
-        dispatch(setAppStatus('failed'))
-        dispatch(setAppError('Network Error'))
+        networkErrorsHandler('Network Error', dispatch)
     }
 }
 
-export const updateTodolistTitle = (TODOLIST_ID: string, title: string): ThunkType => async dispatch => {
+export const updateTodolistTitle = (todolistID: string, title: string): ThunkType => async dispatch => {
     try {
         dispatch(setAppStatus('loading'))
-        const response = await todolistsAPI.updateTodolist(TODOLIST_ID, title)
+        const response = await todolistsAPI.updateTodolist(todolistID, title)
 
-        if (response.resultCode === 0) {
-            dispatch(changeTodolistTitle(TODOLIST_ID, title))
+        if (response.resultCode === ServerStatuses.Success) {
+            dispatch(changeTodolistTitle(todolistID, title))
             dispatch(setAppStatus('succeeded'))
         } else {
-            dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
-            dispatch(setAppStatus('failed'))
+            serverErrorsHandler(response, dispatch)
         }
 
     } catch {
-        dispatch(setAppStatus('failed'))
-        dispatch(setAppError('Network Error'))
+        networkErrorsHandler('Network Error', dispatch)
     }
 }
