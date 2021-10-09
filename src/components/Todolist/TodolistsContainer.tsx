@@ -21,10 +21,11 @@ import {StateType} from '../../types/common-types'
 import {FilterValuesType, TodolistType} from '../../types/todolists-types'
 import {TasksType} from '../../types/tasks-types'
 import {TaskStatuses} from '../../types/server-response-types'
+import {useAppDispatch, useAppSelector} from '../../hooks/hooks'
 
 export const TodolistsContainer = () => {
-    const tasks = useSelector<StateType, TasksType>(state => state.tasks)
-    const todolists = useSelector<StateType, TodolistType[]>(state => state.todolists)
+    const tasks = useAppSelector(state => state.tasks)
+    const todolists = useAppSelector(state => state.todolists)
 
     const dispatch = useDispatch()
 
