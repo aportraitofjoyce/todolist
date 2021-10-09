@@ -31,7 +31,7 @@ export type UpdatedTaskType = {
     deadline: string
 }
 
-export const tasksAPI = {
+/*export const tasksAPI = {
     requestTasks: (todoID: string) => axiosInstance
         .get<RequestTasksResponseType>(`todo-lists/${todoID}/tasks`)
         .then(response => response.data),
@@ -46,5 +46,23 @@ export const tasksAPI = {
 
     deleteTask: (taskID: string, todoID: string) => axiosInstance
         .delete<ServerResponseType>(`todo-lists/${todoID}/tasks/${taskID}`)
+        .then(response => response.data),
+}*/
+
+export const tasksAPI = {
+    requestTasks: (todoID: string) => axiosInstance
+        .get<any>(`todo-lists/${todoID}/tasks`)
+        .then(response => response.data),
+
+    createTask: (todoID: string, title: string) => axiosInstance
+        .post<any>(`todo-lists/${todoID}/tasks`, {title})
+        .then(response => response.data),
+
+    updateTask: (todoID: string, taskID: string, task: UpdatedTaskType) => axiosInstance
+        .put<any>(`todo-lists/${todoID}/tasks/${taskID}`, task)
+        .then(response => response.data),
+
+    deleteTask: (taskID: string, todoID: string) => axiosInstance
+        .delete<any>(`todo-lists/${todoID}/tasks/${taskID}`)
         .then(response => response.data),
 }

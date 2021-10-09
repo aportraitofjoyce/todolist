@@ -37,3 +37,17 @@
 .addTaskContainer {
     margin-bottom: 24px;
 }
+
+.taskContentContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.taskContent {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-grow: 1;
+}

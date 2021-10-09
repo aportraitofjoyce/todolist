@@ -52,7 +52,7 @@ test('Correct filter of todolist should be changed', () => {
 })
 
 test('Correct todolist should change its name', () => {
-    let newTodolistTitle = 'New Todolist'
+    let newTodolistTitle = 'New Todolists'
     const endState = todolistsReducer(startState, changeTodolistTitle(todolistID2, newTodolistTitle))
 
     expect(endState[0].title).toBe('What to learn')

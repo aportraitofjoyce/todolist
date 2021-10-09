@@ -34,18 +34,16 @@ export const Input: React.FC<InputPropsType> = props => {
     }
 
     const finalSpanClassName = `${s.errorMessage} ${spanClassName ? spanClassName : ''}`
-    const finalInputClassName = `${error ? s.inputError : ''} ${s.input} ${className ? className : ''}`
+    const finalInputClassName = `${error ? s.inputError : ''} ${s.default} ${className ? className : ''}`
 
     return (
         <div className={s.container}>
-            <input
-                type={'text'}
-                onChange={onChangeCallback}
-                onKeyPress={onKeyPressCallback}
-                className={finalInputClassName}
-                placeholder={'Введите текст...'}
-                {...restProps}
-            />
+            <input type={type || 'text'}
+                   onChange={onChangeCallback}
+                   onKeyPress={onKeyPressCallback}
+                   className={finalInputClassName}
+                   placeholder={'Введите текст...'}
+                   {...restProps}/>
             {error && <span className={finalSpanClassName}>{error}</span>}
         </div>
     )

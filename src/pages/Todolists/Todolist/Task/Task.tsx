@@ -1,11 +1,11 @@
 import React, {useCallback} from 'react'
-import s from './Task.module.css'
-import {Checkbox} from '../../UI/Checkbox/Checkbox'
-import {EditableSpan} from '../EditableSpan/EditableSpan'
-import {IconButton} from '../../UI/Button/IconButton'
-import {Delete} from '../../Icons/Delete/Delete'
-import {TasksResponseType} from '../../../api/tasks-api'
-import {TaskStatuses} from '../../../types/server-response-types'
+import s from '../../Todolists.module.css'
+import {TasksResponseType} from '../../../../api/tasks-api'
+import {TaskStatuses} from '../../../../types/server-response-types'
+import {Checkbox} from '../../../../components/UI/Checkbox/Checkbox'
+import {EditableSpan} from '../../../../components/UI/EditableSpan/EditableSpan'
+import {IconButton} from '../../../../components/UI/Button/IconButton'
+import {Delete} from '../../../../components/Icons/Delete/Delete'
 
 type TaskPropsType = {
     todolistID: string
@@ -30,7 +30,7 @@ export const Task: React.FC<TaskPropsType> = React.memo(props => {
     return (
         <div className={s.taskContentContainer}>
             <div className={s.taskContent}>
-                <Checkbox checked={task.status === TaskStatuses.Completed} changeTaskStatus={checkboxHandler}/>
+                <Checkbox checked={task.status === TaskStatuses.Completed} onChangeCallback={checkboxHandler}/>
                 <EditableSpan title={task.title} changeTitle={spanHandler}/>
             </div>
 

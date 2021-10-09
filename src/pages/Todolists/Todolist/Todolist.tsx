@@ -1,16 +1,17 @@
 import React, {useCallback, useEffect} from 'react'
-import s from './Todolist.module.css'
-import {AddItemForm} from './AddItemForm/AddItemForm'
-import {EditableSpan} from './EditableSpan/EditableSpan'
-import {Button} from '../UI/Button/Button'
-import {IconButton} from '../UI/Button/IconButton'
-import {Delete} from '../Icons/Delete/Delete'
+import s from '../Todolists.module.css'
 import {Task} from './Task/Task'
-import {FilterValuesType, TodolistType} from '../../types/todolists-types'
-import {TasksResponseType} from '../../api/tasks-api'
 import {useDispatch} from 'react-redux'
-import {getTasks} from '../../store/actions/tasks-actions'
-import {TaskStatuses} from '../../types/server-response-types'
+import {FilterValuesType, TodolistType} from '../../../types/todolists-types'
+import {TasksResponseType} from '../../../api/tasks-api'
+import {TaskStatuses} from '../../../types/server-response-types'
+import {getTasks} from '../../../store/actions/tasks-actions'
+import {EditableSpan} from '../../../components/UI/EditableSpan/EditableSpan'
+import {IconButton} from '../../../components/UI/Button/IconButton'
+import {Delete} from '../../../components/Icons/Delete/Delete'
+import {AddItemForm} from '../../../components/UI/AddItemForm/AddItemForm'
+import {Button} from '../../../components/UI/Button/Button'
+
 
 type TodolistPropsType = {
     todolist: TodolistType

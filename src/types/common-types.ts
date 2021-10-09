@@ -1,9 +1,8 @@
 import { ThunkAction } from 'redux-thunk'
-import {rootReducer} from '../store/reducers/root-reducer'
 import {TasksActionsType} from '../store/actions/tasks-actions'
 import {TodolistsActionsType} from '../store/actions/todolists-actions'
 import {AppActionsType} from '../store/actions/app-actions'
-import {store} from '../store/store'
+import {rootReducer, store} from '../store/store'
 
 // State
 export type StateType = ReturnType<typeof rootReducer>

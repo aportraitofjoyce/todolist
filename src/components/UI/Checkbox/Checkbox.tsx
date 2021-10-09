@@ -1,19 +1,22 @@
-import React, {ChangeEvent} from 'react'
+import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes} from 'react'
 import s from './Checkbox.module.css'
 
-type CheckboxPropsType = {
-    checked: boolean
-    changeTaskStatus: (status: boolean) => void
+type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+
+type CheckboxPropsType = DefaultInputPropsType & {
+    onChangeCallback?: (status: boolean) => void
 }
 
 export const Checkbox: React.FC<CheckboxPropsType> = React.memo(props => {
-    const {checked, changeTaskStatus} = props
+    const {onChangeCallback, onChange, ...restProps} = props
+
     const onCheckboxChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        changeTaskStatus(e.currentTarget.checked)
+        onChange && onChange(e)
+        onChangeCallback && onChangeCallback(e.currentTarget.checked)
     }
 
     return <input type='checkbox'
-                  checked={checked}
                   onChange={onCheckboxChangeHandler}
-                  className={s.checkbox}/>
+                  className={s.checkbox}
+                  {...restProps}/>
 })

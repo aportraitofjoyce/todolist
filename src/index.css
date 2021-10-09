@@ -17,18 +17,18 @@
 }
 
 #root {
-    font-family: var(--fira-sans);
-    font-weight: 400;
+    width: 1024px;
+    margin: 24px;
+}
+
+body {
     display: flex;
     justify-content: center;
     background-color: var(--black);
     color: var(--white);
+    font-family: var(--fira-sans);
+    font-weight: 400;
     min-height: 100vh;
-}
-
-.App {
-    width: 1024px;
-    padding: 24px;
 }
 
 h1 {
@@ -37,4 +37,32 @@ h1 {
     margin: 24px 0;
     text-transform: uppercase;
     color: var(--secondary);
+}
+
+p {
+    padding-bottom: 16px;
+}
+
+input {
+    font-family: var(--fira-sans);
+    border: none;
+    border-bottom: 2px solid var(--white);
+    background-color: transparent;
+    color: var(--white);
+    font-size: 16px;
+    outline: none;
+    padding: 8px 0;
+}
+
+input:hover, .input:focus {
+    border-color: var(--secondary);
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px var(--black) inset;
+    -webkit-text-fill-color: var(--white) !important;
+}
+
+a {
+    color: cornflowerblue;
 }

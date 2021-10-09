@@ -1,8 +1,6 @@
-import React, {useCallback, useEffect} from 'react'
-import {Todolist} from './Todolist'
-import {AddItemForm} from './AddItemForm/AddItemForm'
-import s from './Todolist.module.css'
-import {useDispatch, useSelector} from 'react-redux'
+import React, {FC, useCallback, useEffect} from 'react'
+import s from './Todolists.module.css'
+import {useDispatch} from 'react-redux'
 import {
     createTask,
     deleteTask,
@@ -17,13 +15,13 @@ import {
     getTodolists,
     updateTodolistTitle,
 } from '../../store/actions/todolists-actions'
-import {StateType} from '../../types/common-types'
-import {FilterValuesType, TodolistType} from '../../types/todolists-types'
-import {TasksType} from '../../types/tasks-types'
+import {FilterValuesType} from '../../types/todolists-types'
 import {TaskStatuses} from '../../types/server-response-types'
-import {useAppDispatch, useAppSelector} from '../../hooks/hooks'
+import {useAppSelector} from '../../hooks/hooks'
+import {AddItemForm} from '../../components/UI/AddItemForm/AddItemForm'
+import {Todolist} from './Todolist/Todolist'
 
-export const TodolistsContainer = () => {
+export const Todolists: FC = () => {
     const tasks = useAppSelector(state => state.tasks)
     const todolists = useAppSelector(state => state.todolists)
 
@@ -70,7 +68,7 @@ export const TodolistsContainer = () => {
     }, [dispatch])
 
     return (
-        <div className={'App'}>
+        <div>
             <h1>Todolist</h1>
 
             <div className={s.addTodolistContainer}>

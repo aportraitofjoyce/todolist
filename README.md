@@ -1,6 +1,6 @@
-# Getting Started with Create React TodolistsContainer
+# Getting Started with Create React Todolists
 
-This project was bootstrapped with [Create React TodolistsContainer](https://github.com/facebook/create-react-app).
+This project was bootstrapped with [Create React Todolists](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
@@ -48,6 +48,6 @@ customize it when you are ready for it.
 ## Learn More
 
 You can learn more in
-the [Create React TodolistsContainer documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+the [Create React Todolists documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).

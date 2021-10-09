@@ -1,17 +1,15 @@
-import {applyMiddleware, compose, createStore} from 'redux'
+import {applyMiddleware, combineReducers, compose, createStore} from 'redux'
 import thunk from 'redux-thunk'
-import {rootReducer} from './reducers/root-reducer'
+import {todolistsReducer} from './reducers/todolists-reducer/todolists-reducer'
+import {tasksReducer} from './reducers/tasks-reducer/tasks-reducer'
+import {appReducer} from './reducers/app-reducer/app-reducer'
+
+export const rootReducer = combineReducers({
+    todolists: todolistsReducer,
+    tasks: tasksReducer,
+    app: appReducer
+})
 
 const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
 export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
-
-// @ts-ignore
-window.store = store
-
-/*
-export const store = createStore(rootReducer, loadState())
-
-store.subscribe(() => {
-    saveState(store.getState())
-})*/
