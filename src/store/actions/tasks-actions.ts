@@ -1,7 +1,7 @@
 import {addTodolist, removeTodolist, setTodolists} from './todolists-actions'
 import {tasksAPI, TasksResponseType, UpdatedTaskType} from '../../api/tasks-api'
 import {ThunkType} from '../../types/common-types'
-import {setAppError, setAppStatus} from './app-actions'
+import {setAppStatus} from './app-actions'
 import {AppStatusType} from '../../types/app-types'
 import {networkErrorsHandler, serverErrorsHandler} from '../../utils/error-utils'
 import {ServerStatuses, TaskStatuses} from '../../types/server-response-types'

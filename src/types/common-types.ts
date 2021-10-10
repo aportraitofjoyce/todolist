@@ -3,6 +3,7 @@ import {TasksActionsType} from '../store/actions/tasks-actions'
 import {TodolistsActionsType} from '../store/actions/todolists-actions'
 import {AppActionsType} from '../store/actions/app-actions'
 import {rootReducer, store} from '../store/store'
+import {AuthActionsType} from '../store/actions/auth-actions'
 
 // State
 export type StateType = ReturnType<typeof rootReducer>
@@ -11,7 +12,7 @@ export type StateType = ReturnType<typeof rootReducer>
 export type AppDispatch = typeof store.dispatch
 
 // Actions
-export type ActionsType = TasksActionsType | TodolistsActionsType | AppActionsType
+export type ActionsType = TasksActionsType | TodolistsActionsType | AppActionsType |AuthActionsType
 
 // Thunk
 export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, StateType, unknown, ActionsType>

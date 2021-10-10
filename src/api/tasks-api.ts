@@ -1,6 +1,7 @@
 import {axiosInstance} from './axios-instance'
 import {AppStatusType} from '../types/app-types'
 import {ServerResponseType, TaskPriorities, TaskStatuses} from '../types/server-response-types'
+import {AxiosResponse} from 'axios'
 
 export type TasksResponseType = {
     description: string
@@ -31,38 +32,20 @@ export type UpdatedTaskType = {
     deadline: string
 }
 
-/*export const tasksAPI = {
+export const tasksAPI = {
     requestTasks: (todoID: string) => axiosInstance
         .get<RequestTasksResponseType>(`todo-lists/${todoID}/tasks`)
         .then(response => response.data),
 
     createTask: (todoID: string, title: string) => axiosInstance
-        .post<ServerResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks`, {title})
+        .post<{ title: string }, AxiosResponse<ServerResponseType<{ item: TasksResponseType }>>>(`todo-lists/${todoID}/tasks`, {title})
         .then(response => response.data),
 
     updateTask: (todoID: string, taskID: string, task: UpdatedTaskType) => axiosInstance
-        .put<ServerResponseType<{ item: TasksResponseType }>>(`todo-lists/${todoID}/tasks/${taskID}`, task)
+        .put<UpdatedTaskType, AxiosResponse<ServerResponseType<{ item: TasksResponseType }>>>(`todo-lists/${todoID}/tasks/${taskID}`, task)
         .then(response => response.data),
 
     deleteTask: (taskID: string, todoID: string) => axiosInstance
         .delete<ServerResponseType>(`todo-lists/${todoID}/tasks/${taskID}`)
-        .then(response => response.data),
-}*/
-
-export const tasksAPI = {
-    requestTasks: (todoID: string) => axiosInstance
-        .get<any>(`todo-lists/${todoID}/tasks`)
-        .then(response => response.data),
-
-    createTask: (todoID: string, title: string) => axiosInstance
-        .post<any>(`todo-lists/${todoID}/tasks`, {title})
-        .then(response => response.data),
-
-    updateTask: (todoID: string, taskID: string, task: UpdatedTaskType) => axiosInstance
-        .put<any>(`todo-lists/${todoID}/tasks/${taskID}`, task)
-        .then(response => response.data),
-
-    deleteTask: (taskID: string, todoID: string) => axiosInstance
-        .delete<any>(`todo-lists/${todoID}/tasks/${taskID}`)
         .then(response => response.data),
 }

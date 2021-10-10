@@ -1,8 +1,10 @@
 import React, {FC} from 'react'
 import {Input} from '../../components/UI/Input/Input'
 import {Button} from '../../components/UI/Button/Button'
-import {Field, useFormik} from 'formik'
+import {useFormik} from 'formik'
 import {Checkbox} from '../../components/UI/Checkbox/Checkbox'
+import {useDispatch} from 'react-redux'
+import {login} from '../../store/actions/auth-actions'
 
 type FormInitValues = {
     email: string
@@ -11,6 +13,8 @@ type FormInitValues = {
 }
 
 export const Login: FC = () => {
+    const dispatch = useDispatch()
+
     const validate = (values: FormInitValues) => {
         const errors = {} as FormInitValues
         if (!values.email) errors.email = 'Email is required'
@@ -27,7 +31,7 @@ export const Login: FC = () => {
         },
         validate,
         onSubmit: values => {
-            alert(JSON.stringify(values))
+            dispatch(login(values))
             formik.resetForm()
         }
     })
