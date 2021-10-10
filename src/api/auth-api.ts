@@ -9,6 +9,12 @@ export type LoginParamsType = {
     captcha?: string
 }
 
+export type MeDataResponseType = {
+    id: number
+    email: string
+    login: string
+}
+
 export const authAPI = {
     login: (data: LoginParamsType) => axiosInstance
         .post<LoginParamsType, AxiosResponse<ServerResponseType<{ userId: number }>>>('/auth/login', data)
@@ -16,5 +22,9 @@ export const authAPI = {
 
     logout: () => axiosInstance
         .delete<ServerResponseType>('/auth/login')
+        .then(response => response.data),
+
+    me: () => axiosInstance
+        .get<ServerResponseType<MeDataResponseType>>('/auth/me')
         .then(response => response.data)
 }

@@ -20,18 +20,22 @@ import {TaskStatuses} from '../../types/server-response-types'
 import {useAppSelector} from '../../hooks/hooks'
 import {AddItemForm} from '../../components/UI/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
+import {Redirect} from 'react-router-dom'
+import {PATH} from '../../routes/routes'
+import {me} from '../../store/actions/auth-actions'
 
 export const Todolists: FC = () => {
     const tasks = useAppSelector(state => state.tasks)
     const todolists = useAppSelector(state => state.todolists)
-
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const dispatch = useDispatch()
 
     useEffect(() => {
+        if (!isLoggedIn) return
         dispatch(getTodolists())
     }, [dispatch])
 
-    const removeTaskHandler = useCallback(async (taskID: string, todolistID: string) => {
+    const removeTaskHandler = useCallback((taskID: string, todolistID: string) => {
         dispatch(deleteTask(taskID, todolistID))
     }, [dispatch])
 
@@ -66,6 +70,8 @@ export const Todolists: FC = () => {
     const changeTodolistTitleHandler = useCallback((title: string, todolistID: string) => {
         dispatch(updateTodolistTitle(todolistID, title))
     }, [dispatch])
+
+    if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>
 
     return (
         <div>

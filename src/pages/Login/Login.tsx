@@ -5,6 +5,9 @@ import {useFormik} from 'formik'
 import {Checkbox} from '../../components/UI/Checkbox/Checkbox'
 import {useDispatch} from 'react-redux'
 import {login} from '../../store/actions/auth-actions'
+import {useAppSelector} from '../../hooks/hooks'
+import {Redirect} from 'react-router-dom'
+import {PATH} from '../../routes/routes'
 
 type FormInitValues = {
     email: string
@@ -13,13 +16,14 @@ type FormInitValues = {
 }
 
 export const Login: FC = () => {
+    const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
     const dispatch = useDispatch()
 
     const validate = (values: FormInitValues) => {
         const errors = {} as FormInitValues
         if (!values.email) errors.email = 'Email is required'
         if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) errors.email = 'Invalid email address'
-        if (!values.password || values.password.length < 5 || values.password.length > 20) errors.password = 'Must be 5-20 characters'
+        if (!values.password || values.password.length < 3 || values.password.length > 20) errors.password = 'Must be 3-20 characters'
         return errors
     }
 
@@ -36,8 +40,11 @@ export const Login: FC = () => {
         }
     })
 
+    if (isLoggedIn) return <Redirect to={PATH.TODOLIST}/>
+
     return (
         <div>
+
             <div style={{margin: '40px 0'}}>
                 <p>To log in get registered <a href={'https://social-network.samuraijs.com/'}
                                                target={'_blank'}>here</a>

@@ -11,11 +11,9 @@ export const App = () => {
         <>
             <Provider store={store}>
                 <BrowserRouter>
-
                     <Alerts/>
                     <Navigation/>
                     <AppRouter/>
-
                 </BrowserRouter>
             </Provider>
         </>
