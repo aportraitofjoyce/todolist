@@ -14,6 +14,7 @@ type RoutesType = {
     component: FunctionComponent
     exact?: boolean
 }
+
 export const privateRoutes: RoutesType[] = [
     {path: PATH.TODOLIST, component: Todolists, exact: true},
 ]

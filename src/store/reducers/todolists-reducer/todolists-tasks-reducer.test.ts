@@ -13,7 +13,7 @@ test('ID\'s should be equals', () => {
         addedDate: ''
     }
 
-    const action = addTodolist(newTodolist)
+    const action = addTodolist({todolist: newTodolist})
 
     const endTasksState = tasksReducer(startTasksState, action)
     const endTodolistsState = todolistsReducer(startTodolistsState, action)

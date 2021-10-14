@@ -1,14 +1,13 @@
 import React, {FC} from 'react'
 import {Link} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
-import {useAppSelector} from '../../hooks/hooks'
-import {useDispatch} from 'react-redux'
+import {useAppDispatch, useAppSelector} from '../../hooks/hooks'
 import {Button} from '../UI/Button/Button'
 import {logout} from '../../store/reducers/auth-reducer/auth-reducer'
 
 export const Navigation: FC = () => {
     const {isLoggedIn, login} = useAppSelector(state => state.auth)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const logoutHandler = () => dispatch(logout())
 

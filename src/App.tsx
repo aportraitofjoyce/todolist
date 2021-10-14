@@ -8,14 +8,12 @@ import {Navigation} from './components/Navigation/Navigation'
 
 export const App = () => {
     return (
-        <>
-            <Provider store={store}>
-                <BrowserRouter>
-                    <Alerts/>
-                    <Navigation/>
-                    <AppRouter/>
-                </BrowserRouter>
-            </Provider>
-        </>
+        <Provider store={store}>
+            <BrowserRouter>
+                <Alerts/>
+                <Navigation/>
+                <AppRouter/>
+            </BrowserRouter>
+        </Provider>
     )
 }

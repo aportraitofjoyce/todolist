@@ -3,11 +3,11 @@ import {AppDispatch} from '../store/store'
 import {setAppError, setAppStatus} from '../store/reducers/app-reducer/app-reducer'
 
 export const networkErrorsHandler = (message: string, dispatch: AppDispatch) => {
-    dispatch(setAppStatus('failed'))
-    dispatch(setAppError(message))
+    dispatch(setAppStatus({status: 'failed'}))
+    dispatch(setAppError({error: message}))
 }
 
 export const serverErrorsHandler = <T>(response: ServerResponseType<T>, dispatch: AppDispatch) => {
-    dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
-    dispatch(setAppStatus('failed'))
+    dispatch(setAppError({error: response.messages[0] || 'Unrecognized error'}))
+    dispatch(setAppStatus({status: 'failed'}))
 }

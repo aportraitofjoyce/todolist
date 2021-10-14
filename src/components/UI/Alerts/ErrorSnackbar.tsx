@@ -9,7 +9,7 @@ export const ErrorSnackbar: React.FC = React.memo(() => {
     const dispatch = useDispatch()
 
     const onCloseHandler = useCallback(() => {
-        dispatch(setAppError(null))
+        dispatch(setAppError({error: null}))
     }, [dispatch])
 
     return <Snackbar type={'error'} text={error} open={!!error} onClose={onCloseHandler}/>

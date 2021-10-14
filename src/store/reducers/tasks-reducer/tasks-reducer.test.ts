@@ -98,7 +98,7 @@ beforeEach(() => {
 })
 
 test('correct task should be deleted from correct array', () => {
-    const endState = tasksReducer(startState, removeTask('2', 'TD2'))
+    const endState = tasksReducer(startState, removeTask({taskID: '2', todolistID: 'TD2'}))
 
     expect(endState).toEqual({
         'TD1': [
@@ -187,7 +187,7 @@ test('correct task should be added to correct array', () => {
         entityStatus: 'idle',
         todoListId: 'TD2',
     }
-    const endState = tasksReducer(startState, addTask(newTask))
+    const endState = tasksReducer(startState, addTask({task: newTask}))
 
     expect(endState['TD1'].length).toBe(3)
     expect(endState['TD2'].length).toBe(4)
@@ -197,28 +197,28 @@ test('correct task should be added to correct array', () => {
 })
 
 test('status of specified task should be changed', () => {
-    const endState = tasksReducer(startState, changeTaskStatus('TD2', '2', 2))
+    const endState = tasksReducer(startState, changeTaskStatus({todolistID: 'TD2', taskID: '2', status: 2}))
 
     expect(endState['TD2'].length).toBe(3)
     expect(endState['TD2'][1].status).toBe(2)
 })
 
 test('title of specified task should be changed', () => {
-    const endState = tasksReducer(startState, changeTaskTitle('TD2', '2', 'cofee'))
+    const endState = tasksReducer(startState, changeTaskTitle({todolistID: 'TD2', taskID: '2', title: 'cofee'}))
 
     expect(endState['TD2'].length).toBe(3)
     expect(endState['TD2'][1].title).toBe('cofee')
 })
 
 test('tasks of specified todolist should be sorted by name', () => {
-    const endState = tasksReducer(startState, sortTasksByName('TD2'))
+    const endState = tasksReducer(startState, sortTasksByName({todolistID: 'TD2'}))
 
     expect(endState['TD2'].length).toBe(3)
     expect(endState['TD2'][0].title).toBe('bread')
 })
 
 test('new array should be added when new todolist is added', () => {
-    const newTask = {
+    const newTodo = {
         id: '100',
         title: 'juice',
         status: 0,
@@ -230,7 +230,7 @@ test('new array should be added when new todolist is added', () => {
         priority: 0,
         todoListId: 'TD2'
     }
-    const endState = tasksReducer(startState, addTodolist(newTask))
+    const endState = tasksReducer(startState, addTodolist({todolist: newTodo}))
     const keys = Object.keys(endState)
     const newKey = keys.find(k => k !== 'TD1' && k !== 'TD2')
 
@@ -243,7 +243,7 @@ test('new array should be added when new todolist is added', () => {
 })
 
 test('property with todolistId should be deleted', () => {
-    const action = removeTodolist('TD2')
+    const action = removeTodolist({todolistID: 'TD2'})
     const endState = tasksReducer(startState, action)
     const keys = Object.keys(endState)
 
@@ -252,10 +252,10 @@ test('property with todolistId should be deleted', () => {
 })
 
 test('Empty arrays of tasks should be added after set todolists', () => {
-    const action = setTodolists([
-        {id: '1', title: 'What to learn', order: 0, addedDate: ''},
-        {id: '2', title: 'What to buy', order: 0, addedDate: ''}
-    ])
+    const action = setTodolists({todolists: [
+            {id: '1', title: 'What to learn', order: 0, addedDate: ''},
+            {id: '2', title: 'What to buy', order: 0, addedDate: ''}
+        ]})
 
     const endState = tasksReducer({}, action)
     const keys = Object.keys(endState)
@@ -266,7 +266,7 @@ test('Empty arrays of tasks should be added after set todolists', () => {
 })
 
 test('Tasks should be added for selected todolist', () => {
-    const action = setTasks(startState['TD1'], 'TD1')
+    const action = setTasks({tasks: startState['TD1'], todolistID: 'TD1'})
     const endState = tasksReducer({'TD1': [], 'TD2': []}, action)
 
     expect(endState['TD1'].length).toBe(3)

@@ -54,11 +54,11 @@ export const {
 
 export const getTodolists = () => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus('loading'))
+        dispatch(setAppStatus({status: 'loading'}))
         const response = await todolistsAPI.requestTodolists()
 
         dispatch(setTodolists({todolists: response}))
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
 
     } catch {
         networkErrorsHandler('Network Error', dispatch)
@@ -67,13 +67,13 @@ export const getTodolists = () => async (dispatch: AppDispatch) => {
 
 export const deleteTodolist = (todolistID: string) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus('loading'))
+        dispatch(setAppStatus({status: 'loading'}))
         dispatch(changeTodolistEntityStatus({todolistID, status: 'loading'}))
         const response = await todolistsAPI.deleteTodolist(todolistID)
 
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(removeTodolist({todolistID}))
-            dispatch(setAppStatus('succeeded'))
+            dispatch(setAppStatus({status: 'succeeded'}))
             dispatch(changeTodolistEntityStatus({todolistID, status: 'succeeded'}))
         } else {
             dispatch(changeTodolistEntityStatus({todolistID, status: 'failed'}))
@@ -87,12 +87,12 @@ export const deleteTodolist = (todolistID: string) => async (dispatch: AppDispat
 
 export const createTodolist = (title: string) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus('loading'))
+        dispatch(setAppStatus({status: 'loading'}))
         const response = await todolistsAPI.createTodolist(title)
 
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(addTodolist({todolist: response.data.item}))
-            dispatch(setAppStatus('succeeded'))
+            dispatch(setAppStatus({status: 'succeeded'}))
         } else {
             serverErrorsHandler(response, dispatch)
         }
@@ -104,12 +104,12 @@ export const createTodolist = (title: string) => async (dispatch: AppDispatch) =
 
 export const updateTodolistTitle = (todolistID: string, title: string) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus('loading'))
+        dispatch(setAppStatus({status: 'loading'}))
         const response = await todolistsAPI.updateTodolist(todolistID, title)
 
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(changeTodolistTitle({todolistID, title}))
-            dispatch(setAppStatus('succeeded'))
+            dispatch(setAppStatus({status: 'succeeded'}))
         } else {
             serverErrorsHandler(response, dispatch)
         }

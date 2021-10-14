@@ -99,11 +99,11 @@ export const {
 
 export const getTasks = (todolistID: string) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus('loading'))
+        dispatch(setAppStatus({status: 'loading'}))
         const response = await tasksAPI.requestTasks(todolistID)
 
         dispatch(setTasks({tasks: response.items, todolistID}))
-        dispatch(setAppStatus('succeeded'))
+        dispatch(setAppStatus({status: 'succeeded'}))
 
     } catch {
         networkErrorsHandler('Network Error', dispatch)
@@ -112,13 +112,13 @@ export const getTasks = (todolistID: string) => async (dispatch: AppDispatch) =>
 
 export const deleteTask = (taskID: string, todolistID: string) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus('loading'))
+        dispatch(setAppStatus({status: 'loading'}))
         dispatch(changeTaskEntityStatus({todolistID, taskID, entityStatus: 'loading'}))
         const response = await tasksAPI.deleteTask(taskID, todolistID)
 
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(removeTask({taskID, todolistID}))
-            dispatch(setAppStatus('succeeded'))
+            dispatch(setAppStatus({status: 'succeeded'}))
             dispatch(changeTaskEntityStatus({todolistID, taskID, entityStatus: 'succeeded'}))
         } else {
             dispatch(changeTaskEntityStatus({todolistID, taskID, entityStatus: 'failed'}))
@@ -132,12 +132,12 @@ export const deleteTask = (taskID: string, todolistID: string) => async (dispatc
 
 export const createTask = (todolistID: string, title: string) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus('loading'))
+        dispatch(setAppStatus({status: 'loading'}))
         const response = await tasksAPI.createTask(todolistID, title)
 
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(addTask({task: response.data.item}))
-            dispatch(setAppStatus('succeeded'))
+            dispatch(setAppStatus({status: 'succeeded'}))
         } else {
             serverErrorsHandler(response, dispatch)
         }
@@ -149,7 +149,7 @@ export const createTask = (todolistID: string, title: string) => async (dispatch
 
 export const updateTaskTitle = (todolistID: string, taskID: string, title: string) => async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
-        dispatch(setAppStatus('loading'))
+        dispatch(setAppStatus({status: 'loading'}))
         const task = getState()
             .tasks[todolistID].find(task => task.id === taskID)
 
@@ -167,7 +167,7 @@ export const updateTaskTitle = (todolistID: string, taskID: string, title: strin
 
             if (response.resultCode === ServerStatuses.Success) {
                 dispatch(changeTaskTitle({todolistID, taskID, title}))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppStatus({status: 'succeeded'}))
             } else {
                 serverErrorsHandler(response, dispatch)
             }
@@ -180,7 +180,7 @@ export const updateTaskTitle = (todolistID: string, taskID: string, title: strin
 
 export const updateTaskStatus = (todolistID: string, taskID: string, status: TaskStatuses) => async (dispatch: AppDispatch, getState: () => RootState) => {
     try {
-        dispatch(setAppStatus('loading'))
+        dispatch(setAppStatus({status: 'loading'}))
         const task = getState().tasks[todolistID].find(task => task.id === taskID)
 
         if (task) {
@@ -196,7 +196,7 @@ export const updateTaskStatus = (todolistID: string, taskID: string, status: Tas
 
             if (response.resultCode === ServerStatuses.Success) {
                 dispatch(changeTaskStatus({todolistID, taskID, status}))
-                dispatch(setAppStatus('succeeded'))
+                dispatch(setAppStatus({status: 'succeeded'}))
             } else {
                 serverErrorsHandler(response, dispatch)
             }
