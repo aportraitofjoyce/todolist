@@ -4,8 +4,7 @@ import {AppStatusType, setAppStatus} from '../app-reducer/app-reducer'
 import {ServerStatuses, TaskStatuses} from '../../../types/server-response-types'
 import {networkErrorsHandler, serverErrorsHandler} from '../../../utils/error-utils'
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {addTodolist, removeTodolist, setTodolists, TodolistType} from '../todolists-reducer/todolists-reducer'
-import {TodolistsResponseType} from '../../../api/todolists-api'
+import {addTodolist, removeTodolist, setTodolists} from '../todolists-reducer/todolists-reducer'
 
 export type TasksType = {
     [key: string]: TasksResponseType[]
@@ -14,7 +13,7 @@ const initialState: TasksType = {}
 
 const slice = createSlice({
     name: 'tasks',
-    initialState: initialState,
+    initialState,
     reducers: {
         removeTask: (state, action: PayloadAction<{ taskID: string, todolistID: string }>) => {
             return {
@@ -66,22 +65,16 @@ const slice = createSlice({
     },
 
     extraReducers: builder => builder
-        .addCase(setTodolists.type, (state, action: PayloadAction<{ todolists: TodolistType[] }>) => {
-            const stateCopy = {...state}
-            action.payload.todolists.forEach(tdl => stateCopy[tdl.id] = [])
-            return stateCopy
+        .addCase(setTodolists, (state, action) => {
+            action.payload.todolists.forEach(tdl => state[tdl.id] = [])
         })
 
-        .addCase(addTodolist.type, (state, action: PayloadAction<{ todolist: TodolistsResponseType }>) => {
-            return {
-                ...state,
-                [action.payload.todolist.id]: []
-            }
+        .addCase(addTodolist, (state, action) => {
+            state[action.payload.todolist.id] = []
         })
 
-        .addCase(removeTodolist.type, (state, action: PayloadAction<{ todolistID: string }>) => {
-            const {[action.payload.todolistID]: any, ...newState} = state
-            return newState
+        .addCase(removeTodolist, (state, action) => {
+            delete state[action.payload.todolistID]
         })
 })
 
@@ -104,7 +97,6 @@ export const getTasks = (todolistID: string) => async (dispatch: AppDispatch) =>
 
         dispatch(setTasks({tasks: response.items, todolistID}))
         dispatch(setAppStatus({status: 'succeeded'}))
-
     } catch {
         networkErrorsHandler('Network Error', dispatch)
     }

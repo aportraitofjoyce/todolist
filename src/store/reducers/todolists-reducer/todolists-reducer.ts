@@ -4,6 +4,7 @@ import {todolistsAPI, TodolistsResponseType} from '../../../api/todolists-api'
 import {ServerStatuses} from '../../../types/server-response-types'
 import {networkErrorsHandler, serverErrorsHandler} from '../../../utils/error-utils'
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {getTasks} from '../tasks-reducer/tasks-reducer'
 
 export type TodolistType = TodolistsResponseType & {
     filter: FilterValuesType
@@ -15,7 +16,7 @@ const initialState: TodolistType[] = []
 
 const slice = createSlice({
     name: 'todolist',
-    initialState: initialState,
+    initialState,
     reducers: {
         removeTodolist: (state, action: PayloadAction<{ todolistID: string }>) => {
             return state.filter(tdl => tdl.id !== action.payload.todolistID)
@@ -52,14 +53,14 @@ export const {
     changeTodolistEntityStatus
 } = slice.actions
 
+// TODO: Need to set tasks before right after todolist, because now they could be fetched before todolists render
 export const getTodolists = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppStatus({status: 'loading'}))
         const response = await todolistsAPI.requestTodolists()
-
         dispatch(setTodolists({todolists: response}))
         dispatch(setAppStatus({status: 'succeeded'}))
-
+        //response.forEach(tdl => dispatch(getTasks(tdl.id)))
     } catch {
         networkErrorsHandler('Network Error', dispatch)
     }

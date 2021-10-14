@@ -1,10 +1,10 @@
 import React from 'react'
-import {Alerts} from './components/UI/Alerts/Alerts'
 import {BrowserRouter} from 'react-router-dom'
 import {Provider} from 'react-redux'
-import {store} from './store/store'
-import {AppRouter} from './components/AppRouter'
-import {Navigation} from './components/Navigation/Navigation'
+import {store} from '../store/store'
+import {AppRouter} from './AppRouter'
+import {Navigation} from '../components/Navigation/Navigation'
+import {Alerts} from '../components/UI/Alerts/Alerts'
 
 export const App = () => {
     return (

@@ -24,8 +24,7 @@ export const Snackbar: React.FC<SnackbarPropsType> = React.memo(props => {
             closeSnackbar()
         }, 5000)
 
-        if (!isOpen) clearTimeout(timeoutID)
-        else return () => clearTimeout(timeoutID)
+        return () => clearTimeout(timeoutID)
     }, [closeSnackbar, open])
 
 

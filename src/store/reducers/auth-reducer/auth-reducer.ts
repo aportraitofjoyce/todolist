@@ -18,7 +18,7 @@ const initialState: InitialStateType = {
 
 const slice = createSlice({
     name: 'auth',
-    initialState: initialState,
+    initialState,
     reducers: {
         setIsLoggedIn: (state, action: PayloadAction<{ status: boolean }>) => {
             state.isLoggedIn = action.payload.status
@@ -26,7 +26,7 @@ const slice = createSlice({
         setAuthData: (state, action: PayloadAction<{ data: MeDataResponseType }>) => {
             return {...action.payload.data, isLoggedIn: true}
         }
-    }
+    },
 })
 
 export const authReducer = slice.reducer
@@ -47,7 +47,7 @@ export const login = (data: LoginParamsType) => async (dispatch: AppDispatch) =>
     }
 }
 
-export const me = () => async (dispatch: AppDispatch) => {
+export const checkAuth = () => async (dispatch: AppDispatch) => {
     try {
         dispatch(setAppStatus({status: 'loading'}))
         const response = await authAPI.me()
@@ -70,7 +70,7 @@ export const logout = () => async (dispatch: AppDispatch) => {
         dispatch(setAppStatus({status: 'loading'}))
         const response = await authAPI.logout()
         if (response.resultCode === ServerStatuses.Success) {
-            dispatch(setIsLoggedIn({status: true}))
+            dispatch(setIsLoggedIn({status: false}))
             dispatch(setAppStatus({status: 'succeeded'}))
         } else {
             serverErrorsHandler(response, dispatch)

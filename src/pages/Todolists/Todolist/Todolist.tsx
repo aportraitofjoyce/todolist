@@ -10,7 +10,7 @@ import {Delete} from '../../../components/Icons/Delete/Delete'
 import {AddItemForm} from '../../../components/UI/AddItemForm/AddItemForm'
 import {Button} from '../../../components/UI/Button/Button'
 import {getTasks} from '../../../store/reducers/tasks-reducer/tasks-reducer'
-import {FilterValuesType, TodolistType} from '../../../store/reducers/todolists-reducer/todolists-reducer'
+import {FilterValuesType, getTodolists, TodolistType} from '../../../store/reducers/todolists-reducer/todolists-reducer'
 
 
 type TodolistPropsType = {
@@ -76,7 +76,7 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
 
     useEffect(() => {
         dispatch(getTasks(todolist.id))
-    }, [dispatch, todolist.id])
+    }, [])
 
     return (
         <div className={s.todolistContainer}>

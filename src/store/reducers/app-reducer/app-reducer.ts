@@ -10,13 +10,13 @@ export type InitialStateType = {
 
 const initialState: InitialStateType = {
     status: 'idle',
-    error: 'I\'m test and my life is short',
+    error: null,
     isInitialized: false
 }
 
 const slice = createSlice({
     name: 'app',
-    initialState: initialState,
+    initialState,
     reducers: {
         setAppStatus: (state, action: PayloadAction<{ status: AppStatusType }>) => {
             state.status = action.payload.status

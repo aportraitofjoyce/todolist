@@ -3,19 +3,18 @@ import {Redirect, Route, Switch} from 'react-router-dom'
 import {PATH} from '../routes/routes'
 import {Todolists} from '../pages/Todolists/Todolists'
 import {Login} from '../pages/Login/Login'
-import {Progress} from './UI/Progress/Progress'
-import {useAppSelector} from '../hooks/hooks'
+import {useAppDispatch, useAppSelector} from '../hooks/hooks'
 import {Error} from '../pages/Error/Error'
-import {useDispatch} from 'react-redux'
-import {me} from '../store/reducers/auth-reducer/auth-reducer'
+import {checkAuth} from '../store/reducers/auth-reducer/auth-reducer'
+import {Progress} from '../components/UI/Progress/Progress'
 
 export const AppRouter: FC = () => {
     const appStatus = useAppSelector(state => state.app.status)
     const isInitialized = useAppSelector(state => state.app.isInitialized)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
-        dispatch(me())
+        dispatch(checkAuth())
     }, [dispatch])
 
     if (!isInitialized) return <Progress/>
