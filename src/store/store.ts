@@ -1,9 +1,10 @@
-import {applyMiddleware, combineReducers, compose, createStore} from 'redux'
-import thunk from 'redux-thunk'
+import {combineReducers} from 'redux'
+import thunk, {ThunkAction} from 'redux-thunk'
 import {todolistsReducer} from './reducers/todolists-reducer/todolists-reducer'
-import {tasksReducer} from './reducers/tasks-reducer/tasks-reducer'
+import { tasksReducer} from './reducers/tasks-reducer/tasks-reducer'
 import {appReducer} from './reducers/app-reducer/app-reducer'
-import {authReducer} from './reducers/auth-reducer'
+import {authReducer} from './reducers/auth-reducer/auth-reducer'
+import {configureStore} from '@reduxjs/toolkit'
 
 export const rootReducer = combineReducers({
     todolists: todolistsReducer,
@@ -12,6 +13,12 @@ export const rootReducer = combineReducers({
     auth: authReducer
 })
 
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
+export const store = configureStore({
+    reducer: rootReducer,
+    middleware: getDefaultMiddleware => getDefaultMiddleware().prepend(thunk)
+})
 
-export const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
+export type StateType = ReturnType<typeof rootReducer>
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
+//export type ThunkType<ReturnType = void> = ThunkAction<ReturnType, StateType, unknown, ActionsType>

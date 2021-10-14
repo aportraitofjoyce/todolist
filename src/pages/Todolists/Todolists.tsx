@@ -1,28 +1,24 @@
 import React, {FC, useCallback, useEffect} from 'react'
 import s from './Todolists.module.css'
 import {useDispatch} from 'react-redux'
-import {
-    createTask,
-    deleteTask,
-    sortTasksByName,
-    updateTaskStatus,
-    updateTaskTitle
-} from '../../store/actions/tasks-actions'
-import {
-    changeTodolistFilter,
-    createTodolist,
-    deleteTodolist,
-    getTodolists,
-    updateTodolistTitle,
-} from '../../store/actions/todolists-actions'
-import {FilterValuesType} from '../../types/todolists-types'
 import {TaskStatuses} from '../../types/server-response-types'
 import {useAppSelector} from '../../hooks/hooks'
 import {AddItemForm} from '../../components/UI/AddItemForm/AddItemForm'
 import {Todolist} from './Todolist/Todolist'
 import {Redirect} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
-import {me} from '../../store/actions/auth-actions'
+import {
+    changeTodolistFilter,
+    createTodolist,
+    deleteTodolist, FilterValuesType, getTodolists,
+    updateTodolistTitle
+} from '../../store/reducers/todolists-reducer/todolists-reducer'
+import {
+    createTask,
+    deleteTask, sortTasksByName,
+    updateTaskStatus,
+    updateTaskTitle
+} from '../../store/reducers/tasks-reducer/tasks-reducer'
 
 export const Todolists: FC = () => {
     const tasks = useAppSelector(state => state.tasks)
@@ -52,7 +48,7 @@ export const Todolists: FC = () => {
     }, [dispatch])
 
     const sortTasksByNameHandler = useCallback((todolistID: string) => {
-        dispatch(sortTasksByName(todolistID))
+        dispatch(sortTasksByName({todolistID}))
     }, [dispatch])
 
     const addTodolistHandler = useCallback((title: string) => {
@@ -64,7 +60,7 @@ export const Todolists: FC = () => {
     }, [dispatch])
 
     const changeTodolistFilterHandler = useCallback((filter: FilterValuesType, todolistID: string) => {
-        dispatch(changeTodolistFilter(filter, todolistID))
+        dispatch(changeTodolistFilter({filter, todolistID}))
     }, [dispatch])
 
     const changeTodolistTitleHandler = useCallback((title: string, todolistID: string) => {

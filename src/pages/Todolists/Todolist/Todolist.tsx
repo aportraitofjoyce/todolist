@@ -2,15 +2,15 @@ import React, {useCallback, useEffect} from 'react'
 import s from '../Todolists.module.css'
 import {Task} from './Task/Task'
 import {useDispatch} from 'react-redux'
-import {FilterValuesType, TodolistType} from '../../../types/todolists-types'
 import {TasksResponseType} from '../../../api/tasks-api'
 import {TaskStatuses} from '../../../types/server-response-types'
-import {getTasks} from '../../../store/actions/tasks-actions'
 import {EditableSpan} from '../../../components/UI/EditableSpan/EditableSpan'
 import {IconButton} from '../../../components/UI/Button/IconButton'
 import {Delete} from '../../../components/Icons/Delete/Delete'
 import {AddItemForm} from '../../../components/UI/AddItemForm/AddItemForm'
 import {Button} from '../../../components/UI/Button/Button'
+import {getTasks} from '../../../store/reducers/tasks-reducer/tasks-reducer'
+import {FilterValuesType, TodolistType} from '../../../store/reducers/todolists-reducer/todolists-reducer'
 
 
 type TodolistPropsType = {

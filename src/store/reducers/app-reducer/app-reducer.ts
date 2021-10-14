@@ -1,24 +1,34 @@
-import {AppReducerType} from '../../../types/app-types'
-import {APP_ACTIONS_TYPES, AppActionsType} from '../../actions/app-actions'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
-const initialState: AppReducerType = {
+export type AppStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+
+export type InitialStateType = {
+    status: AppStatusType
+    error: string | null
+    isInitialized: boolean
+}
+
+const initialState: InitialStateType = {
     status: 'idle',
     error: 'I\'m test and my life is short',
     isInitialized: false
 }
 
-export const appReducer = (state = initialState, action: AppActionsType): AppReducerType => {
-    switch (action.type) {
-        case APP_ACTIONS_TYPES.SET_STATUS:
-            return {...state, status: action.payload.status}
-
-        case APP_ACTIONS_TYPES.SET_ERROR:
-            return {...state, error: action.payload.error}
-
-        case APP_ACTIONS_TYPES.SET_INITIALIZED:
-            return {...state, isInitialized: action.payload.isInitialized}
-
-        default:
-            return state
+const slice = createSlice({
+    name: 'app',
+    initialState: initialState,
+    reducers: {
+        setAppStatus: (state, action: PayloadAction<AppStatusType>) => {
+            state.status = action.payload
+        },
+        setAppError: (state, action: PayloadAction<string | null>) => {
+            state.error = action.payload
+        },
+        setAppInitialized: (state, action: PayloadAction<boolean>) => {
+            state.isInitialized = action.payload
+        }
     }
-}
+})
+
+export const appReducer = slice.reducer
+export const {setAppStatus, setAppError, setAppInitialized} = slice.actions

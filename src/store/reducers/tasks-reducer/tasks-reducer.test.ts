@@ -1,15 +1,12 @@
 import {
-    tasksReducer
-} from './tasks-reducer'
-import {
     addTask,
     changeTaskStatus,
-    changeTaskTitle, removeTask, setTasks,
-    sortTasksByName
-} from '../../actions/tasks-actions'
-import {addTodolist, removeTodolist, setTodolists} from '../../actions/todolists-actions'
-import {TasksType} from '../../../types/tasks-types'
+    changeTaskTitle, removeTask,
+    setTasks, sortTasksByName,
+    tasksReducer, TasksType
+} from './tasks-reducer'
 import {TasksResponseType} from '../../../api/tasks-api'
+import {addTodolist, removeTodolist, setTodolists} from '../todolists-reducer/todolists-reducer'
 
 let startState: TasksType
 

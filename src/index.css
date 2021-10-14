@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap');
 
 :root {
-    --black: #222;
-    --black-light: #333;
+    --black: #333;
+    --black-light: #404040;
     --white: whitesmoke;
-    --primary: #4c945c;
-    --secondary: #ffc443;
+    --primary: cornflowerblue;
+    --secondary: #f0a253;
     --error: #a63333;
     --fira-sans: 'Fira Sans', sans-serif;
 }

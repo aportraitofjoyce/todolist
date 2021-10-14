@@ -3,8 +3,8 @@ import {Link} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
 import {useAppSelector} from '../../hooks/hooks'
 import {useDispatch} from 'react-redux'
-import {logout} from '../../store/actions/auth-actions'
 import {Button} from '../UI/Button/Button'
+import {logout} from '../../store/reducers/auth-reducer/auth-reducer'
 
 export const Navigation: FC = () => {
     const {isLoggedIn, login} = useAppSelector(state => state.auth)

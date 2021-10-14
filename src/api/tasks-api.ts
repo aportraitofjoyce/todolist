@@ -1,7 +1,7 @@
 import {axiosInstance} from './axios-instance'
-import {AppStatusType} from '../types/app-types'
 import {ServerResponseType, TaskPriorities, TaskStatuses} from '../types/server-response-types'
 import {AxiosResponse} from 'axios'
+import {AppStatusType} from '../store/reducers/app-reducer/app-reducer'
 
 export type TasksResponseType = {
     description: string

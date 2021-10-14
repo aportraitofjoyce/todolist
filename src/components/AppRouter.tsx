@@ -7,7 +7,7 @@ import {Progress} from './UI/Progress/Progress'
 import {useAppSelector} from '../hooks/hooks'
 import {Error} from '../pages/Error/Error'
 import {useDispatch} from 'react-redux'
-import {me} from '../store/actions/auth-actions'
+import {me} from '../store/reducers/auth-reducer/auth-reducer'
 
 export const AppRouter: FC = () => {
     const appStatus = useAppSelector(state => state.app.status)

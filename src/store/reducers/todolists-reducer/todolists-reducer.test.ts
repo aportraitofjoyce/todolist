@@ -1,13 +1,14 @@
 import {
-    todolistsReducer
+    addTodolist,
+    changeTodolistEntityStatus,
+    changeTodolistFilter,
+    changeTodolistTitle,
+    FilterValuesType,
+    removeTodolist,
+    setTodolists,
+    todolistsReducer, TodolistType
 } from './todolists-reducer'
 import {v1} from 'uuid'
-import {
-    addTodolist, changeTodolistEntityStatus,
-    changeTodolistFilter,
-    changeTodolistTitle, removeTodolist, setTodolists
-} from '../../actions/todolists-actions'
-import {FilterValuesType, TodolistType} from '../../../types/todolists-types'
 
 let todolistID1: string
 let todolistID2: string

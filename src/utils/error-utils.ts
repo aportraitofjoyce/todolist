@@ -1,14 +1,13 @@
-import {setAppError, setAppStatus} from '../store/actions/app-actions'
-import {Dispatch} from 'react'
-import {ActionsType} from '../types/common-types'
 import {ServerResponseType} from '../types/server-response-types'
+import {AppDispatch} from '../store/store'
+import {setAppError, setAppStatus} from '../store/reducers/app-reducer/app-reducer'
 
-export const networkErrorsHandler = (message: string, dispatch: Dispatch<ActionsType>) => {
+export const networkErrorsHandler = (message: string, dispatch: AppDispatch) => {
     dispatch(setAppStatus('failed'))
     dispatch(setAppError(message))
 }
 
-export const serverErrorsHandler = <T>(response: ServerResponseType<T>, dispatch: Dispatch<ActionsType>) => {
+export const serverErrorsHandler = <T>(response: ServerResponseType<T>, dispatch: AppDispatch) => {
     dispatch(setAppError(response.messages[0] || 'Unrecognized error'))
     dispatch(setAppStatus('failed'))
 }

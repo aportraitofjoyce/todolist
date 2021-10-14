@@ -4,10 +4,10 @@ import {Button} from '../../components/UI/Button/Button'
 import {useFormik} from 'formik'
 import {Checkbox} from '../../components/UI/Checkbox/Checkbox'
 import {useDispatch} from 'react-redux'
-import {login} from '../../store/actions/auth-actions'
 import {useAppSelector} from '../../hooks/hooks'
 import {Redirect} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
+import {login} from '../../store/reducers/auth-reducer/auth-reducer'
 
 type FormInitValues = {
     email: string

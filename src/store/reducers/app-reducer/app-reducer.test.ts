@@ -1,8 +1,6 @@
-import {appReducer} from './app-reducer'
-import {setAppError, setAppStatus} from '../../actions/app-actions'
-import {AppReducerType} from '../../../types/app-types'
+import {appReducer, setAppError, setAppStatus} from './app-reducer'
 
-let startState: AppReducerType
+let startState: any
 
 beforeEach(() => {
     startState = {status: 'idle', error: null,}
