@@ -1,10 +1,9 @@
 import {AppDispatch} from '../../store'
-import {AppStatusType, setAppStatus} from '../app-reducer/app-reducer'
+import {AppStatusType, setAppIsLoading} from '../app-reducer/app-reducer'
 import {todolistsAPI, TodolistsResponseType} from '../../../api/todolists-api'
 import {ServerStatuses} from '../../../types/server-response-types'
 import {networkErrorsHandler, serverErrorsHandler} from '../../../utils/error-utils'
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {getTasks} from '../tasks-reducer/tasks-reducer'
 
 export type TodolistType = TodolistsResponseType & {
     filter: FilterValuesType
@@ -56,10 +55,9 @@ export const {
 // TODO: Need to set tasks before right after todolist, because now they could be fetched before todolists render
 export const getTodolists = () => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus({status: 'loading'}))
+        dispatch(setAppIsLoading({status: true}))
         const response = await todolistsAPI.requestTodolists()
         dispatch(setTodolists({todolists: response}))
-        dispatch(setAppStatus({status: 'succeeded'}))
         //response.forEach(tdl => dispatch(getTasks(tdl.id)))
     } catch {
         networkErrorsHandler('Network Error', dispatch)
@@ -68,13 +66,12 @@ export const getTodolists = () => async (dispatch: AppDispatch) => {
 
 export const deleteTodolist = (todolistID: string) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus({status: 'loading'}))
+        dispatch(setAppIsLoading({status: true}))
         dispatch(changeTodolistEntityStatus({todolistID, status: 'loading'}))
         const response = await todolistsAPI.deleteTodolist(todolistID)
 
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(removeTodolist({todolistID}))
-            dispatch(setAppStatus({status: 'succeeded'}))
             dispatch(changeTodolistEntityStatus({todolistID, status: 'succeeded'}))
         } else {
             dispatch(changeTodolistEntityStatus({todolistID, status: 'failed'}))
@@ -88,12 +85,11 @@ export const deleteTodolist = (todolistID: string) => async (dispatch: AppDispat
 
 export const createTodolist = (title: string) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus({status: 'loading'}))
+        dispatch(setAppIsLoading({status: true}))
         const response = await todolistsAPI.createTodolist(title)
 
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(addTodolist({todolist: response.data.item}))
-            dispatch(setAppStatus({status: 'succeeded'}))
         } else {
             serverErrorsHandler(response, dispatch)
         }
@@ -105,12 +101,11 @@ export const createTodolist = (title: string) => async (dispatch: AppDispatch) =
 
 export const updateTodolistTitle = (todolistID: string, title: string) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus({status: 'loading'}))
+        dispatch(setAppIsLoading({status: true}))
         const response = await todolistsAPI.updateTodolist(todolistID, title)
 
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(changeTodolistTitle({todolistID, title}))
-            dispatch(setAppStatus({status: 'succeeded'}))
         } else {
             serverErrorsHandler(response, dispatch)
         }

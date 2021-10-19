@@ -1,16 +1,12 @@
 import React, {FC, useEffect} from 'react'
 import {Redirect, Route, Switch} from 'react-router-dom'
-import {PATH} from '../routes/routes'
-import {Todolists} from '../pages/Todolists/Todolists'
-import {Login} from '../pages/Login/Login'
+import {PATH, routes} from '../routes/routes'
 import {useAppDispatch, useAppSelector} from '../hooks/hooks'
-import {Error} from '../pages/Error/Error'
 import {checkAuth} from '../store/reducers/auth-reducer/auth-reducer'
 import {Progress} from '../components/UI/Progress/Progress'
 
 export const AppRouter: FC = () => {
-    const appStatus = useAppSelector(state => state.app.status)
-    const isInitialized = useAppSelector(state => state.app.isInitialized)
+    const {isInitialized, isLoading} = useAppSelector(state => state.app)
     const dispatch = useAppDispatch()
 
     useEffect(() => {
@@ -21,12 +17,9 @@ export const AppRouter: FC = () => {
 
     return (
         <>
-            {appStatus === 'loading' && <Progress/>}
+            {isLoading && <Progress/>}
             <Switch>
-                <Route path={PATH.TODOLIST} component={Todolists} exact/>
-                <Route path={PATH.LOGIN} component={Login}/>
-
-                <Route path={PATH.ERROR} component={Error}/>
+                {routes.map(r => <Route key={r.path} path={r.path} component={r.component} exact={r.exact}/>)}
                 <Redirect from={PATH.EMPTY} to={PATH.ERROR}/>
             </Switch>
         </>

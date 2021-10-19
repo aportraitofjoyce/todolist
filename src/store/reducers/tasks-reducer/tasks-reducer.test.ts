@@ -1,9 +1,12 @@
 import {
     addTask,
     changeTaskStatus,
-    changeTaskTitle, removeTask,
-    setTasks, sortTasksByName,
-    tasksReducer, TasksType
+    changeTaskTitle,
+    removeTask,
+    setTasks,
+    sortTasksByName,
+    tasksReducer,
+    TasksType
 } from './tasks-reducer'
 import {TasksResponseType} from '../../../api/tasks-api'
 import {addTodolist, removeTodolist, setTodolists} from '../todolists-reducer/todolists-reducer'
@@ -252,10 +255,12 @@ test('property with todolistId should be deleted', () => {
 })
 
 test('Empty arrays of tasks should be added after set todolists', () => {
-    const action = setTodolists({todolists: [
+    const action = setTodolists({
+        todolists: [
             {id: '1', title: 'What to learn', order: 0, addedDate: ''},
             {id: '2', title: 'What to buy', order: 0, addedDate: ''}
-        ]})
+        ]
+    })
 
     const endState = tasksReducer({}, action)
     const keys = Object.keys(endState)

@@ -3,12 +3,11 @@ import s from './Alerts.module.css'
 
 type SnackbarPropsType = {
     type: 'error' | 'success'
-    text: string | null
+    text: string
     open: boolean
     onClose: () => void
 }
 
-// TODO: Alerts have combined state and hiding all in one time. Need to implement id deps
 export const Snackbar: React.FC<SnackbarPropsType> = React.memo(props => {
     const {type, text, open, onClose} = props
     const [isOpen, setIsOpen] = useState<boolean>(open)
@@ -22,7 +21,7 @@ export const Snackbar: React.FC<SnackbarPropsType> = React.memo(props => {
         setIsOpen(open)
         const timeoutID = setTimeout(() => {
             closeSnackbar()
-        }, 5000)
+        }, 3500)
 
         return () => clearTimeout(timeoutID)
     }, [closeSnackbar, open])

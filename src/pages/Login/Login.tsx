@@ -43,17 +43,7 @@ export const Login: FC = () => {
     if (isLoggedIn) return <Redirect to={PATH.TODOLIST}/>
 
     return (
-        <div>
-
-            <div style={{margin: '40px 0'}}>
-                <p>To log in get registered <a href={'https://social-network.samuraijs.com/'}
-                                               target={'_blank'}>here</a>
-                </p>
-                <p>or use common test account credentials:</p>
-                <p>Email: free@samuraijs.com</p>
-                <p>Password: free</p>
-            </div>
-
+        <div style={{marginTop: 40}}>
             <form onSubmit={formik.handleSubmit}
                   style={{display: 'flex', flexDirection: 'column', gap: 24}}>
 
@@ -78,6 +68,13 @@ export const Login: FC = () => {
 
                 <Button type={'submit'}>Login</Button>
             </form>
+
+            <div style={{margin: '40px 0'}}>
+                <p>To login, you can register <a href={'https://social-network.samuraijs.com/'} target={'_blank'}>here</a></p>
+                <p>or use my account:</p>
+                <p>Email: free@samuraijs.com</p>
+                <p>Password: free</p>
+            </div>
         </div>
     )
 }

@@ -1,18 +1,18 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {AppDispatch} from '../../store'
-import {setAppInitialized, setAppStatus} from '../app-reducer/app-reducer'
+import {setAppInitialized, setAppIsLoading} from '../app-reducer/app-reducer'
 import {authAPI, LoginParamsType, MeDataResponseType} from '../../../api/auth-api'
 import {ServerStatuses} from '../../../types/server-response-types'
 import {networkErrorsHandler, serverErrorsHandler} from '../../../utils/error-utils'
 
-type InitialStateType = {
+type InitialState = {
     isLoggedIn: boolean
     id?: number
     email?: string
     login?: string
 }
 
-const initialState: InitialStateType = {
+const initialState: InitialState = {
     isLoggedIn: false,
 }
 
@@ -34,11 +34,10 @@ const {setIsLoggedIn, setAuthData} = slice.actions
 
 export const login = (data: LoginParamsType) => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus({status: 'loading'}))
+        dispatch(setAppIsLoading({status: true}))
         const response = await authAPI.login(data)
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(setIsLoggedIn({status: true}))
-            dispatch(setAppStatus({status: 'succeeded'}))
         } else {
             serverErrorsHandler(response, dispatch)
         }
@@ -49,11 +48,10 @@ export const login = (data: LoginParamsType) => async (dispatch: AppDispatch) =>
 
 export const checkAuth = () => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus({status: 'loading'}))
+        dispatch(setAppIsLoading({status: true}))
         const response = await authAPI.me()
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(setIsLoggedIn({status: true}))
-            dispatch(setAppStatus({status: 'succeeded'}))
             dispatch(setAuthData({data: response.data}))
         } else {
             serverErrorsHandler(response, dispatch)
@@ -67,11 +65,10 @@ export const checkAuth = () => async (dispatch: AppDispatch) => {
 
 export const logout = () => async (dispatch: AppDispatch) => {
     try {
-        dispatch(setAppStatus({status: 'loading'}))
+        dispatch(setAppIsLoading({status: true}))
         const response = await authAPI.logout()
         if (response.resultCode === ServerStatuses.Success) {
             dispatch(setIsLoggedIn({status: false}))
-            dispatch(setAppStatus({status: 'succeeded'}))
         } else {
             serverErrorsHandler(response, dispatch)
         }

@@ -1,6 +1,7 @@
-import {FunctionComponent} from 'react'
+import {FC} from 'react'
 import {Todolists} from '../pages/Todolists/Todolists'
 import {Login} from '../pages/Login/Login'
+import {Error} from '../pages/Error/Error'
 
 export enum PATH {
     EMPTY = '',
@@ -11,14 +12,12 @@ export enum PATH {
 
 type RoutesType = {
     path: PATH
-    component: FunctionComponent
+    component: FC
     exact?: boolean
 }
 
-export const privateRoutes: RoutesType[] = [
+export const routes: RoutesType[] = [
     {path: PATH.TODOLIST, component: Todolists, exact: true},
-]
-
-export const publicRoutes: RoutesType[] = [
     {path: PATH.LOGIN, component: Login},
+    {path: PATH.ERROR, component: Error},
 ]

@@ -9,14 +9,12 @@ export const Navigation: FC = () => {
     const {isLoggedIn, login} = useAppSelector(state => state.auth)
     const dispatch = useAppDispatch()
 
-    const logoutHandler = () => dispatch(logout())
-
     return (
-        <div style={{display: 'flex', gap: 24, alignItems: 'center'}}>
-            <Link to={PATH.TODOLIST}>Home</Link>
-            {!isLoggedIn && <Link to={PATH.LOGIN}>Login</Link>}
+        <div>
+            {!isLoggedIn && <Link to={PATH.LOGIN}><Button>Login</Button></Link>}
+
             {isLoggedIn && <>
-				<Button onClick={logoutHandler}>Logout</Button>
+				<Button onClick={() => dispatch(logout())}>Logout</Button>
 				<span>Hello {login}</span>
 			</>}
 
