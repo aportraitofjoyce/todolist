@@ -10,14 +10,16 @@ import {PATH} from '../../routes/routes'
 import {
     changeTodolistFilter,
     createTodolist,
-    deleteTodolist, FilterValuesType, getTodolists,
+    deleteTodolist,
+    FilterValuesType,
+    getTodolists,
     updateTodolistTitle
 } from '../../store/reducers/todolists-reducer/todolists-reducer'
 import {
     createTask,
-    deleteTask, sortTasksByName,
+    deleteTask,
     updateTaskStatus,
-    updateTaskTitle
+    updateTaskTitle,
 } from '../../store/reducers/tasks-reducer/tasks-reducer'
 
 export const Todolists: FC = () => {
@@ -32,23 +34,19 @@ export const Todolists: FC = () => {
     }, [dispatch])
 
     const removeTaskHandler = useCallback((taskID: string, todolistID: string) => {
-        dispatch(deleteTask(taskID, todolistID))
+        dispatch(deleteTask({taskID, todolistID}))
     }, [dispatch])
 
     const addTaskHandler = useCallback((title: string, todolistID: string) => {
-        dispatch(createTask(todolistID, title))
+        dispatch(createTask({todolistID, title}))
     }, [dispatch])
 
     const changeTaskStatusHandler = useCallback((taskID: string, status: TaskStatuses, todolistID: string) => {
-        dispatch(updateTaskStatus(todolistID, taskID, status))
+        dispatch(updateTaskStatus({todolistID, taskID, status}))
     }, [dispatch])
 
     const changeTaskTitleHandler = useCallback((taskID: string, title: string, todolistID: string) => {
-        dispatch(updateTaskTitle(todolistID, taskID, title))
-    }, [dispatch])
-
-    const sortTasksByNameHandler = useCallback((todolistID: string) => {
-        dispatch(sortTasksByName({todolistID}))
+        dispatch(updateTaskTitle({todolistID, taskID, title}))
     }, [dispatch])
 
     const addTodolistHandler = useCallback((title: string) => {
@@ -87,8 +85,7 @@ export const Todolists: FC = () => {
                                                 changeTodolistFilter={changeTodolistFilterHandler}
                                                 removeTodolist={removeTodolistHandler}
                                                 changeTaskTitle={changeTaskTitleHandler}
-                                                changeTodolistTitle={changeTodolistTitleHandler}
-                                                sortTasksByName={sortTasksByNameHandler}/>)}
+                                                changeTodolistTitle={changeTodolistTitleHandler}/>)}
             </div>
         </div>
     )

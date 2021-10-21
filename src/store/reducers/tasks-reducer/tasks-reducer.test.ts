@@ -1,9 +1,8 @@
 import {
     addTask,
     changeTaskStatus,
-    changeTaskTitle,
+    changeTaskTitle, fetchTasks,
     removeTask,
-    setTasks,
     sortTasksByName,
     tasksReducer,
     TasksType
@@ -271,7 +270,7 @@ test('Empty arrays of tasks should be added after set todolists', () => {
 })
 
 test('Tasks should be added for selected todolist', () => {
-    const action = setTasks({tasks: startState['TD1'], todolistID: 'TD1'})
+    const action = fetchTasks.fulfilled({tasks: startState['TD1'], todolistID: 'TD1'}, '', 'TD1')
     const endState = tasksReducer({'TD1': [], 'TD2': []}, action)
 
     expect(endState['TD1'].length).toBe(3)

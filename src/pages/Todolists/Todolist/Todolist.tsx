@@ -9,8 +9,8 @@ import {IconButton} from '../../../components/UI/Button/IconButton'
 import {Delete} from '../../../components/Icons/Delete/Delete'
 import {AddItemForm} from '../../../components/UI/AddItemForm/AddItemForm'
 import {Button} from '../../../components/UI/Button/Button'
-import {getTasks} from '../../../store/reducers/tasks-reducer/tasks-reducer'
-import {FilterValuesType, getTodolists, TodolistType} from '../../../store/reducers/todolists-reducer/todolists-reducer'
+import {fetchTasks} from '../../../store/reducers/tasks-reducer/tasks-reducer'
+import {FilterValuesType, TodolistType} from '../../../store/reducers/todolists-reducer/todolists-reducer'
 
 
 type TodolistPropsType = {
@@ -23,7 +23,6 @@ type TodolistPropsType = {
     removeTodolist: (todolistID: string) => void
     changeTaskTitle: (taskID: string, title: string, todolistID: string) => void
     changeTodolistTitle: (title: string, todolistID: string) => void
-    sortTasksByName: (todolistID: string) => void
 }
 
 export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
@@ -37,7 +36,6 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
         removeTodolist,
         changeTaskTitle,
         changeTodolistTitle,
-        sortTasksByName
     } = props
 
     const dispatch = useDispatch()
@@ -60,9 +58,6 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
     const taskEditHandler = useCallback((title: string) => changeTodolistTitle(title, todolist.id),
         [changeTodolistTitle, todolist.id])
 
-    const sortButtonHandler = useCallback(() => sortTasksByName(todolist.id),
-        [sortTasksByName, todolist.id])
-
     const tasksToRender = useCallback((filter: FilterValuesType) => {
         switch (filter) {
             case 'Completed':
@@ -75,7 +70,7 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
     }, [tasks])
 
     useEffect(() => {
-        dispatch(getTasks(todolist.id))
+        dispatch(fetchTasks({todolistID: todolist.id}))
     }, [])
 
     return (
@@ -112,10 +107,6 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
                 <Button onClick={changeFilterToCompletedHandler} active={todolist.filter === 'Completed'} grouped>
                     Completed
                 </Button>
-            </div>
-
-            <div className={s.buttonsContainer}>
-                <Button onClick={sortButtonHandler} grouped>Sort by name</Button>
             </div>
         </div>
     )

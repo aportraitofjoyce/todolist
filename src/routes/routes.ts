@@ -4,8 +4,9 @@ import {Login} from '../pages/Login/Login'
 import {Error} from '../pages/Error/Error'
 
 export enum PATH {
+    HOME = '/',
     EMPTY = '',
-    TODOLIST = '/',
+    TODOLIST = '/todolist',
     LOGIN = '/login',
     ERROR = '/404'
 }

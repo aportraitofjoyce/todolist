@@ -17,10 +17,3 @@ export enum TaskStatuses {
     Draft
 }
 
-export enum TaskPriorities {
-    Low,
-    Middle,
-    High,
-    Urgently,
-    Later
-}

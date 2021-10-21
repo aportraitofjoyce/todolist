@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {AppDispatch} from '../../store'
 import {setAppInitialized, setAppIsLoading} from '../app-reducer/app-reducer'
 import {authAPI, LoginParamsType, MeDataResponseType} from '../../../api/auth-api'
@@ -12,39 +12,20 @@ type InitialState = {
     login?: string
 }
 
-const initialState: InitialState = {
-    isLoggedIn: false,
-}
-
-const slice = createSlice({
-    name: 'auth',
-    initialState,
-    reducers: {
-        setIsLoggedIn: (state, action: PayloadAction<{ status: boolean }>) => {
-            state.isLoggedIn = action.payload.status
-        },
-        setAuthData: (state, action: PayloadAction<{ data: MeDataResponseType }>) => {
-            return {...action.payload.data, isLoggedIn: true}
-        }
-    },
-})
-
-export const authReducer = slice.reducer
-const {setIsLoggedIn, setAuthData} = slice.actions
-
-export const login = (data: LoginParamsType) => async (dispatch: AppDispatch) => {
+export const login = createAsyncThunk('auth/login', async (arg: { loginData: LoginParamsType }, thunkAPI) => {
     try {
-        dispatch(setAppIsLoading({status: true}))
-        const response = await authAPI.login(data)
+        thunkAPI.dispatch(setAppIsLoading({status: true}))
+        const response = await authAPI.login(arg.loginData)
+
         if (response.resultCode === ServerStatuses.Success) {
-            dispatch(setIsLoggedIn({status: true}))
+            thunkAPI.dispatch(setIsLoggedIn({status: true}))
         } else {
-            serverErrorsHandler(response, dispatch)
+            serverErrorsHandler(response, thunkAPI.dispatch)
         }
     } catch {
-        networkErrorsHandler('Network Error', dispatch)
+        networkErrorsHandler('Network Error', thunkAPI.dispatch)
     }
-}
+})
 
 export const checkAuth = () => async (dispatch: AppDispatch) => {
     try {
@@ -76,3 +57,21 @@ export const logout = () => async (dispatch: AppDispatch) => {
         networkErrorsHandler('Network Error', dispatch)
     }
 }
+
+const slice = createSlice({
+    name: 'auth',
+    initialState: {
+        isLoggedIn: false
+    } as InitialState,
+    reducers: {
+        setIsLoggedIn: (state, action: PayloadAction<{ status: boolean }>) => {
+            state.isLoggedIn = action.payload.status
+        },
+        setAuthData: (state, action: PayloadAction<{ data: MeDataResponseType }>) => {
+            return {...action.payload.data, isLoggedIn: true}
+        }
+    },
+})
+
+export const authReducer = slice.reducer
+const {setIsLoggedIn, setAuthData} = slice.actions

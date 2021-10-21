@@ -1,7 +1,15 @@
 import {axiosInstance} from './axios-instance'
-import {ServerResponseType, TaskPriorities, TaskStatuses} from '../types/server-response-types'
+import {ServerResponseType, TaskStatuses} from '../types/server-response-types'
 import {AxiosResponse} from 'axios'
 import {AppStatusType} from '../store/reducers/app-reducer/app-reducer'
+
+enum TaskPriorities {
+    Low,
+    Middle,
+    High,
+    Urgently,
+    Later
+}
 
 export type TasksResponseType = {
     description: string
