@@ -21,42 +21,44 @@ export const login = createAsyncThunk('auth/login', async (arg: { loginData: Log
             thunkAPI.dispatch(setIsLoggedIn({status: true}))
         } else {
             serverErrorsHandler(response, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue({errors: response.messages, fieldErrors: response.fieldsErrors})
+        }
+    } catch (error) {
+        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue({errors: error.messages, fieldErrors: undefined})
+    }
+})
+
+export const checkAuth = createAsyncThunk('auth/checkAuth', async (arg, thunkAPI) => {
+    try {
+        thunkAPI.dispatch(setAppIsLoading({status: true}))
+        const response = await authAPI.me()
+        if (response.resultCode === ServerStatuses.Success) {
+            thunkAPI.dispatch(setIsLoggedIn({status: true}))
+            thunkAPI.dispatch(setAuthData({data: response.data}))
+        } else {
+            serverErrorsHandler(response, thunkAPI.dispatch)
+        }
+    } catch {
+        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } finally {
+        thunkAPI.dispatch(setAppInitialized({status: true}))
+    }
+})
+
+export const logout = createAsyncThunk('auth/logout', async (arg, thunkAPI) => {
+    try {
+        thunkAPI.dispatch(setAppIsLoading({status: true}))
+        const response = await authAPI.logout()
+        if (response.resultCode === ServerStatuses.Success) {
+            thunkAPI.dispatch(setIsLoggedIn({status: false}))
+        } else {
+            serverErrorsHandler(response, thunkAPI.dispatch)
         }
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
     }
 })
-
-export const checkAuth = () => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(setAppIsLoading({status: true}))
-        const response = await authAPI.me()
-        if (response.resultCode === ServerStatuses.Success) {
-            dispatch(setIsLoggedIn({status: true}))
-            dispatch(setAuthData({data: response.data}))
-        } else {
-            serverErrorsHandler(response, dispatch)
-        }
-    } catch {
-        networkErrorsHandler('Network Error', dispatch)
-    } finally {
-        dispatch(setAppInitialized({status: true}))
-    }
-}
-
-export const logout = () => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(setAppIsLoading({status: true}))
-        const response = await authAPI.logout()
-        if (response.resultCode === ServerStatuses.Success) {
-            dispatch(setIsLoggedIn({status: false}))
-        } else {
-            serverErrorsHandler(response, dispatch)
-        }
-    } catch {
-        networkErrorsHandler('Network Error', dispatch)
-    }
-}
 
 const slice = createSlice({
     name: 'auth',

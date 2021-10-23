@@ -3,8 +3,7 @@ import {Input} from '../../components/UI/Input/Input'
 import {Button} from '../../components/UI/Button/Button'
 import {useFormik} from 'formik'
 import {Checkbox} from '../../components/UI/Checkbox/Checkbox'
-import {useDispatch} from 'react-redux'
-import {useAppSelector} from '../../hooks/hooks'
+import {useAppDispatch, useAppSelector} from '../../hooks/hooks'
 import {Redirect} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
 import {login} from '../../store/reducers/auth-reducer/auth-reducer'
@@ -17,7 +16,7 @@ type FormInitValues = {
 
 export const Login: FC = () => {
     const isLoggedIn = useAppSelector(state => state.auth.isLoggedIn)
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const validate = (values: FormInitValues) => {
         const errors = {} as FormInitValues
@@ -34,10 +33,7 @@ export const Login: FC = () => {
             rememberMe: false
         },
         validate,
-        onSubmit: values => {
-            dispatch(login({loginData: values}))
-            formik.resetForm()
-        }
+        onSubmit: (values, formikHelpers) => dispatch(login({loginData: values}))
     })
 
     if (isLoggedIn) return <Redirect to={PATH.TODOLIST}/>

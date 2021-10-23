@@ -1,9 +1,10 @@
-import {tasksAPI, TasksResponseType} from '../../../api/tasks-api'
+import {tasksAPI, TasksResponseType, UpdatedTaskType} from '../../../api/tasks-api'
 import {setAppIsLoading} from '../app-reducer/app-reducer'
 import {ServerStatuses, TaskStatuses} from '../../../types/server-response-types'
 import {networkErrorsHandler, serverErrorsHandler} from '../../../utils/error-utils'
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {addTodolist, removeTodolist, setTodolists} from '../todolists-reducer/todolists-reducer'
+import {RootState} from '../../store'
 
 export type TasksType = {
     [key: string]: TasksResponseType[]
@@ -50,9 +51,10 @@ export const createTask = createAsyncThunk('tasks/createTask', async (arg: { tod
 })
 
 export const updateTaskTitle = createAsyncThunk('tasks/updateTaskTitle', async (arg: { todolistID: string, taskID: string, title: string }, thunkAPI) => {
-    /*try {
+    try {
+        const state = thunkAPI.getState() as RootState
         thunkAPI.dispatch(setAppIsLoading({status: true}))
-        const task = thunkAPI.getState().tasks[todolistID].find(task => task.id === taskID)
+        const task = state.tasks[arg.todolistID].find(task => task.id === arg.taskID)
 
         if (task) {
             const updatedTask: UpdatedTaskType = {
@@ -61,13 +63,13 @@ export const updateTaskTitle = createAsyncThunk('tasks/updateTaskTitle', async (
                 status: task.status,
                 priority: task.priority,
                 startDate: task.startDate,
-                title,
+                title: arg.title,
             }
 
-            const response = await tasksAPI.updateTask(todolistID, taskID, updatedTask)
+            const response = await tasksAPI.updateTask(arg.todolistID, arg.taskID, updatedTask)
 
             if (response.resultCode === ServerStatuses.Success) {
-                thunkAPI.dispatch(changeTaskTitle({todolistID, taskID, title}))
+                return {todolistID: arg.todolistID, taskID: arg.taskID, title: arg.title}
             } else {
                 serverErrorsHandler(response, thunkAPI.dispatch)
             }
@@ -75,14 +77,14 @@ export const updateTaskTitle = createAsyncThunk('tasks/updateTaskTitle', async (
 
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
-    }*/
-    return {todolistID: 'string', taskID: 'string', title: 'string'}
+    }
 })
 
 export const updateTaskStatus = createAsyncThunk('tasks/updateTaskStatus', async (arg: { todolistID: string, taskID: string, status: TaskStatuses }, thunkAPI) => {
-    /*try {
+    try {
+        const state = thunkAPI.getState() as RootState
         thunkAPI.dispatch(setAppIsLoading({status: true}))
-        const task = thunkAPI.getState().tasks[todolistID].find(task => task.id === taskID)
+        const task = state.tasks[arg.todolistID].find(task => task.id === arg.taskID)
 
         if (task) {
             const updatedTask: UpdatedTaskType = {
@@ -91,21 +93,20 @@ export const updateTaskStatus = createAsyncThunk('tasks/updateTaskStatus', async
                 priority: task.priority,
                 startDate: task.startDate,
                 title: task.title,
-                status
+                status: arg.status
             }
-            const response = await tasksAPI.updateTask(todolistID, taskID, updatedTask)
+
+            const response = await tasksAPI.updateTask(arg.todolistID, arg.taskID, updatedTask)
 
             if (response.resultCode === ServerStatuses.Success) {
-                thunkAPI.dispatch(changeTaskStatus({todolistID, taskID, status}))
+                return {todolistID: arg.todolistID, taskID: arg.taskID, status: arg.status}
             } else {
                 serverErrorsHandler(response, thunkAPI.dispatch)
             }
         }
-
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
-    }*/
-    return {todolistID: 'string', taskID: 'string', status: 'TaskStatuses'}
+    }
 })
 
 const slice = createSlice({
@@ -140,19 +141,19 @@ const slice = createSlice({
         })
 
         .addCase(updateTaskStatus.fulfilled, (state, action) => {
-            /*return {
+            return {
                 ...state,
-                [action.payload.todolistID]: state[action.payload.todolistID]
-                    .map(t => (t.id === action.payload.taskID ? {...t, status: action.payload.status} : t))
-            }*/
+                [action.payload!.todolistID]: state[action.payload!.todolistID]
+                    .map(t => (t.id === action.payload!.taskID ? {...t, status: action.payload!.status} : t))
+            }
         })
 
         .addCase(updateTaskTitle.fulfilled, (state, action) => {
-            /*return {
+            return {
                 ...state,
-                [action.payload.todolistID]: state[action.payload.todolistID]
-                    .map(t => (t.id === action.payload.taskID ? {...t, title: action.payload.title} : t))
-            }*/
+                [action.payload!.todolistID]: state[action.payload!.todolistID]
+                    .map(t => (t.id === action.payload!.taskID ? {...t, title: action.payload!.title} : t))
+            }
         })
 })
 
