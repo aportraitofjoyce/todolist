@@ -1,28 +1,14 @@
 import {axiosInstance} from './axios-instance'
 import {ServerResponseType, TaskStatuses} from '../types/server-response-types'
 import {AxiosResponse} from 'axios'
-import {AppStatusType} from '../store/reducers/app-reducer/app-reducer'
-
-enum TaskPriorities {
-    Low,
-    Middle,
-    High,
-    Urgently,
-    Later
-}
 
 export type TasksResponseType = {
-    description: string
     title: string
     status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
     id: string
     todoListId: string
     order: number
     addedDate: string
-    entityStatus: AppStatusType
 }
 
 type RequestTasksResponseType = {
@@ -32,12 +18,8 @@ type RequestTasksResponseType = {
 }
 
 export type UpdatedTaskType = {
-    description: string
     title: string
     status: TaskStatuses
-    priority: TaskPriorities
-    startDate: string
-    deadline: string
 }
 
 export const tasksAPI = {

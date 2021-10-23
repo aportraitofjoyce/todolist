@@ -1,7 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
-export type AppStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
-
 type InitialState = {
     isLoading: boolean
     error: string

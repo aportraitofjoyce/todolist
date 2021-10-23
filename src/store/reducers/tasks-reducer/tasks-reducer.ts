@@ -58,11 +58,7 @@ export const updateTaskTitle = createAsyncThunk('tasks/updateTaskTitle', async (
 
         if (task) {
             const updatedTask: UpdatedTaskType = {
-                description: task.description,
-                deadline: task.deadline,
                 status: task.status,
-                priority: task.priority,
-                startDate: task.startDate,
                 title: arg.title,
             }
 
@@ -88,10 +84,6 @@ export const updateTaskStatus = createAsyncThunk('tasks/updateTaskStatus', async
 
         if (task) {
             const updatedTask: UpdatedTaskType = {
-                description: task.description,
-                deadline: task.deadline,
-                priority: task.priority,
-                startDate: task.startDate,
                 title: task.title,
                 status: arg.status
             }

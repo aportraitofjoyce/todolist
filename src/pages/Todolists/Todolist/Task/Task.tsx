@@ -34,7 +34,7 @@ export const Task: React.FC<TaskPropsType> = React.memo(props => {
                 <EditableSpan title={task.title} changeTitle={spanHandler}/>
             </div>
 
-            <IconButton onClick={onButtonClickHandler} disabled={task.entityStatus === 'loading'}><Delete/></IconButton>
+            <IconButton onClick={onButtonClickHandler}><Delete/></IconButton>
         </div>
     )
 })
