@@ -77,8 +77,7 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
         <div className={s.todolistContainer}>
             <div className={s.titleContainer}>
                 <EditableSpan title={todolist.title} changeTitle={taskEditHandler}/>
-                <IconButton onClick={removeTodolistButtonHandler}
-                            disabled={todolist.entityStatus === 'loading'}><Delete/></IconButton>
+                <IconButton onClick={removeTodolistButtonHandler}><Delete/></IconButton>
             </div>
 
             <div className={s.addTaskContainer}>
@@ -91,8 +90,7 @@ export const Todolist: React.FC<TodolistPropsType> = React.memo(props => {
                                                                todolistID={todolist.id}
                                                                removeTask={removeTask}
                                                                changeTaskTitle={changeTaskTitle}
-                                                               changeTaskStatus={changeTaskStatus}/>
-                )}
+                                                               changeTaskStatus={changeTaskStatus}/>)}
             </div>
 
             <div className={s.buttonsContainer}>

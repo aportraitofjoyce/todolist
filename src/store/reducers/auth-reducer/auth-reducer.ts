@@ -38,9 +38,11 @@ export const checkAuth = createAsyncThunk('auth/checkAuth', async (arg, thunkAPI
             thunkAPI.dispatch(setAuthData({data: response.data}))
         } else {
             serverErrorsHandler(response, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue({})
         }
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue({})
     } finally {
         thunkAPI.dispatch(setAppInitialized({status: true}))
     }
@@ -54,9 +56,11 @@ export const logout = createAsyncThunk('auth/logout', async (arg, thunkAPI) => {
             thunkAPI.dispatch(setIsLoggedIn({status: false}))
         } else {
             serverErrorsHandler(response, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue({})
         }
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
+        return thunkAPI.rejectWithValue({})
     }
 })
 

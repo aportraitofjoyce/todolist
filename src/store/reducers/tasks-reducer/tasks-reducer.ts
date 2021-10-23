@@ -137,7 +137,7 @@ const slice = createSlice({
         })
 
         .addCase(createTask.fulfilled, (state, action) => {
-            state[action.payload!.task.todoListId].push(action.payload!.task)
+            state[action.payload!.task.todoListId].unshift(action.payload!.task)
         })
 
         .addCase(updateTaskStatus.fulfilled, (state, action) => {

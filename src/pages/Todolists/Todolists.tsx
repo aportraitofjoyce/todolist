@@ -10,10 +10,8 @@ import {PATH} from '../../routes/routes'
 import {
     changeTodolistFilter,
     createTodolist,
-    deleteTodolist,
-    FilterValuesType,
-    getTodolists,
-    updateTodolistTitle
+    deleteTodolist, fetchTodolists,
+    FilterValuesType, updateTodolistTitle,
 } from '../../store/reducers/todolists-reducer/todolists-reducer'
 import {
     createTask,
@@ -30,7 +28,7 @@ export const Todolists: FC = () => {
 
     useEffect(() => {
         if (!isLoggedIn) return
-        dispatch(getTodolists())
+        dispatch(fetchTodolists())
     }, [dispatch])
 
     const removeTaskHandler = useCallback((taskID: string, todolistID: string) => {
@@ -50,11 +48,11 @@ export const Todolists: FC = () => {
     }, [dispatch])
 
     const addTodolistHandler = useCallback((title: string) => {
-        dispatch(createTodolist(title))
+        dispatch(createTodolist({title}))
     }, [dispatch])
 
     const removeTodolistHandler = useCallback((todolistID: string) => {
-        dispatch(deleteTodolist(todolistID))
+        dispatch(deleteTodolist({todolistID}))
     }, [dispatch])
 
     const changeTodolistFilterHandler = useCallback((filter: FilterValuesType, todolistID: string) => {
@@ -62,7 +60,7 @@ export const Todolists: FC = () => {
     }, [dispatch])
 
     const changeTodolistTitleHandler = useCallback((title: string, todolistID: string) => {
-        dispatch(updateTodolistTitle(todolistID, title))
+        dispatch(updateTodolistTitle({todolistID, title}))
     }, [dispatch])
 
     if (!isLoggedIn) return <Redirect to={PATH.LOGIN}/>

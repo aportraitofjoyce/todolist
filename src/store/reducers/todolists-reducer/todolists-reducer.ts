@@ -1,21 +1,74 @@
-import {AppDispatch} from '../../store'
-import {AppStatusType, setAppIsLoading} from '../app-reducer/app-reducer'
+import {setAppIsLoading} from '../app-reducer/app-reducer'
 import {todolistsAPI, TodolistsResponseType} from '../../../api/todolists-api'
 import {ServerStatuses} from '../../../types/server-response-types'
 import {networkErrorsHandler, serverErrorsHandler} from '../../../utils/error-utils'
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+
+export type FilterValuesType = 'All' | 'Active' | 'Completed'
 
 export type TodolistType = TodolistsResponseType & {
     filter: FilterValuesType
-    entityStatus: AppStatusType
 }
-export type FilterValuesType = 'All' | 'Active' | 'Completed'
 
-const initialState: TodolistType[] = []
+export const fetchTodolists = createAsyncThunk('todolists/fetchTodolists', async (arg, {dispatch}) => {
+    try {
+        dispatch(setAppIsLoading({status: true}))
+        const response = await todolistsAPI.requestTodolists()
+        dispatch(setTodolists({todolists: response}))
+    } catch {
+        networkErrorsHandler('Network Error', dispatch)
+    }
+})
+
+export const deleteTodolist = createAsyncThunk('todolists/deleteTodolist', async (arg: { todolistID: string }, {dispatch}) => {
+    try {
+        dispatch(setAppIsLoading({status: true}))
+        const response = await todolistsAPI.deleteTodolist(arg.todolistID)
+
+        if (response.resultCode === ServerStatuses.Success) {
+            dispatch(removeTodolist({todolistID: arg.todolistID}))
+        } else {
+            serverErrorsHandler(response, dispatch)
+        }
+    } catch {
+        networkErrorsHandler('Network Error', dispatch)
+    }
+})
+
+export const createTodolist = createAsyncThunk('todolists/createTodolist', async (arg: { title: string }, {dispatch}) => {
+    try {
+        dispatch(setAppIsLoading({status: true}))
+        const response = await todolistsAPI.createTodolist(arg.title)
+
+        if (response.resultCode === ServerStatuses.Success) {
+            dispatch(addTodolist({todolist: response.data.item}))
+        } else {
+            serverErrorsHandler(response, dispatch)
+        }
+    } catch {
+        networkErrorsHandler('Network Error', dispatch)
+    }
+})
+
+export const updateTodolistTitle = createAsyncThunk('todolists/updateTodolistTitle', async (arg: { todolistID: string, title: string }, {dispatch}) => {
+    try {
+        dispatch(setAppIsLoading({status: true}))
+        const response = await todolistsAPI.updateTodolist(arg.todolistID, arg.title)
+
+        if (response.resultCode === ServerStatuses.Success) {
+            dispatch(changeTodolistTitle({todolistID: arg.todolistID, title: arg.title}))
+        } else {
+            serverErrorsHandler(response, dispatch)
+        }
+
+    } catch {
+        networkErrorsHandler('Network Error', dispatch)
+    }
+})
 
 const slice = createSlice({
     name: 'todolist',
-    initialState,
+    initialState: [] as TodolistType[],
     reducers: {
         removeTodolist: (state, action: PayloadAction<{ todolistID: string }>) => {
             return state.filter(tdl => tdl.id !== action.payload.todolistID)
@@ -34,10 +87,6 @@ const slice = createSlice({
         setTodolists: (state, action: PayloadAction<{ todolists: TodolistsResponseType[] }>) => {
             return action.payload.todolists.map(tdl => ({...tdl, filter: 'All', entityStatus: 'idle'}))
         },
-        changeTodolistEntityStatus: (state, action: PayloadAction<{ todolistID: string, status: AppStatusType }>) => {
-            return state.map(tdl => tdl.id === action.payload.todolistID
-                ? {...tdl, entityStatus: action.payload.status} : tdl)
-        },
     }
 })
 
@@ -49,68 +98,4 @@ export const {
     changeTodolistFilter,
     changeTodolistTitle,
     setTodolists,
-    changeTodolistEntityStatus
 } = slice.actions
-
-// TODO: Need to set tasks before right after todolist, because now they could be fetched before todolists render
-export const getTodolists = () => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(setAppIsLoading({status: true}))
-        const response = await todolistsAPI.requestTodolists()
-        dispatch(setTodolists({todolists: response}))
-        //response.forEach(tdl => dispatch(getTasks(tdl.id)))
-    } catch {
-        networkErrorsHandler('Network Error', dispatch)
-    }
-}
-
-export const deleteTodolist = (todolistID: string) => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(setAppIsLoading({status: true}))
-        dispatch(changeTodolistEntityStatus({todolistID, status: 'loading'}))
-        const response = await todolistsAPI.deleteTodolist(todolistID)
-
-        if (response.resultCode === ServerStatuses.Success) {
-            dispatch(removeTodolist({todolistID}))
-            dispatch(changeTodolistEntityStatus({todolistID, status: 'succeeded'}))
-        } else {
-            dispatch(changeTodolistEntityStatus({todolistID, status: 'failed'}))
-            serverErrorsHandler(response, dispatch)
-        }
-
-    } catch {
-        networkErrorsHandler('Network Error', dispatch)
-    }
-}
-
-export const createTodolist = (title: string) => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(setAppIsLoading({status: true}))
-        const response = await todolistsAPI.createTodolist(title)
-
-        if (response.resultCode === ServerStatuses.Success) {
-            dispatch(addTodolist({todolist: response.data.item}))
-        } else {
-            serverErrorsHandler(response, dispatch)
-        }
-
-    } catch {
-        networkErrorsHandler('Network Error', dispatch)
-    }
-}
-
-export const updateTodolistTitle = (todolistID: string, title: string) => async (dispatch: AppDispatch) => {
-    try {
-        dispatch(setAppIsLoading({status: true}))
-        const response = await todolistsAPI.updateTodolist(todolistID, title)
-
-        if (response.resultCode === ServerStatuses.Success) {
-            dispatch(changeTodolistTitle({todolistID, title}))
-        } else {
-            serverErrorsHandler(response, dispatch)
-        }
-
-    } catch {
-        networkErrorsHandler('Network Error', dispatch)
-    }
-}

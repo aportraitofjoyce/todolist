@@ -8,15 +8,13 @@ type InitialState = {
     isInitialized: boolean
 }
 
-const initialState: InitialState = {
-    isLoading: false,
-    error: '',
-    isInitialized: false
-}
-
 const slice = createSlice({
     name: 'app',
-    initialState,
+    initialState: {
+        isLoading: false,
+        error: '',
+        isInitialized: false
+    } as InitialState,
     reducers: {
         setAppIsLoading: (state, action: PayloadAction<{ status: boolean }>) => {
             state.isLoading = action.payload.status
