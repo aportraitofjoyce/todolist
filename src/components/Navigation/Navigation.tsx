@@ -13,7 +13,7 @@ export const Navigation: FC = () => {
     return (
         <div className={s.wrapper}>
             <nav className={s.container}>
-                <NavLink activeClassName={s.active} to={PATH.HOME}>Home</NavLink>
+                <NavLink activeClassName={s.active} to={PATH.HOME} exact>Home</NavLink>
                 <NavLink activeClassName={s.active} to={PATH.TODOLIST}>Todolist</NavLink>
 
                 {!isLoggedIn

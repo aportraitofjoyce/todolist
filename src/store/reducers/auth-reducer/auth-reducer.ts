@@ -25,6 +25,8 @@ export const login = createAsyncThunk('auth/login', async (arg: { loginData: Log
     } catch (error) {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
         return thunkAPI.rejectWithValue({errors: error.messages, fieldErrors: undefined})
+    } finally {
+        thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
 })
 
@@ -44,6 +46,7 @@ export const checkAuth = createAsyncThunk('auth/checkAuth', async (arg, thunkAPI
         return thunkAPI.rejectWithValue({})
     } finally {
         thunkAPI.dispatch(setAppInitialized({status: true}))
+        thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
 })
 
@@ -60,6 +63,8 @@ export const logout = createAsyncThunk('auth/logout', async (arg, thunkAPI) => {
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
         return thunkAPI.rejectWithValue({})
+    } finally {
+        thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
 })
 

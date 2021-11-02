@@ -6,11 +6,9 @@ import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {addTodolist, removeTodolist, setTodolists} from '../todolists-reducer/todolists-reducer'
 import {RootState} from '../../store'
 
-export type TasksType = {
+export type Tasks = {
     [key: string]: TaskResponse[]
 }
-
-const initialState: TasksType = {}
 
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (arg: { todolistID: string }, thunkAPI) => {
     try {
@@ -19,6 +17,8 @@ export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (arg: { tod
         return {tasks: response.items, todolistID: arg.todolistID}
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } finally {
+        thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
 })
 
@@ -33,6 +33,8 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (arg: { tas
         }
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } finally {
+        thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
 })
 
@@ -47,6 +49,8 @@ export const createTask = createAsyncThunk('tasks/createTask', async (arg: { tod
         }
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } finally {
+        thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
 })
 
@@ -70,9 +74,10 @@ export const updateTaskTitle = createAsyncThunk('tasks/updateTaskTitle', async (
                 serverErrorsHandler(response, thunkAPI.dispatch)
             }
         }
-
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } finally {
+        thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
 })
 
@@ -98,14 +103,15 @@ export const updateTaskStatus = createAsyncThunk('tasks/updateTaskStatus', async
         }
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } finally {
+        thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
 })
 
 const slice = createSlice({
     name: 'tasks',
-    initialState,
+    initialState: {} as Tasks,
     reducers: {},
-
     extraReducers: builder => builder
         .addCase(setTodolists, (state, action) => {
             action.payload.todolists.forEach(tdl => state[tdl.id] = [])

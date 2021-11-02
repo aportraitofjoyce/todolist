@@ -3,7 +3,7 @@ import {
     changeTodolistEntityStatus,
     changeTodolistFilter,
     changeTodolistTitle,
-    FilterValuesType,
+    FilterValues,
     removeTodolist,
     setTodolists,
     todolistsReducer, TodolistType
@@ -45,7 +45,7 @@ test('Correct todolist should be added', () => {
 })
 
 test('Correct filter of todolist should be changed', () => {
-    let newFilter: FilterValuesType = 'Completed'
+    let newFilter: FilterValues = 'Completed'
     const endState = todolistsReducer(startState, changeTodolistFilter({filter: newFilter, todolistID: todolistID2}))
 
     expect(endState[0].filter).toBe('All')

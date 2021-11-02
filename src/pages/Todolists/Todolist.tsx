@@ -5,8 +5,7 @@ import {TaskResponse} from '../../api/tasks-api'
 import {
     changeTodolistFilter,
     deleteTodolist,
-    FilterValuesType,
-    TodolistType,
+    FilterValues, TodolistType,
     updateTodolistTitle
 } from '../../store/reducers/todolists-reducer/todolists-reducer'
 import {createTask, fetchTasks} from '../../store/reducers/tasks-reducer/tasks-reducer'
@@ -35,10 +34,10 @@ export const Todolist: FC<TodolistProps> = memo(({todolist, tasks}) => {
     const removeTodolistHandler = useCallback(() =>
         dispatch(deleteTodolist({todolistID: todolist.id})), [dispatch, todolist.id])
 
-    const changeFilterHandler = useCallback((filter: FilterValuesType) =>
+    const changeFilterHandler = useCallback((filter: FilterValues) =>
         dispatch(changeTodolistFilter({filter, todolistID: todolist.id})), [dispatch, todolist.id])
 
-    const tasksToRender = useCallback((filter: FilterValuesType) => {
+    const tasksToRender = useCallback((filter: FilterValues) => {
         switch (filter) {
             case 'Completed':
                 return tasks.filter(t => t.status === TaskStatuses.Completed)

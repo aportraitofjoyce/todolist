@@ -60,8 +60,7 @@ input:hover, .input:focus {
 }
 
 input:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+    cursor: wait;
 }
 
 input:-webkit-autofill {

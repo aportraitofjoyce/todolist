@@ -5,12 +5,12 @@ import {
     removeTask,
     sortTasksByName,
     tasksReducer,
-    TasksType
+    Tasks
 } from './tasks-reducer'
 import {TaskResponse} from '../../../api/tasks-api'
 import {addTodolist, removeTodolist, setTodolists} from '../todolists-reducer/todolists-reducer'
 
-let startState: TasksType
+let startState: Tasks
 
 beforeEach(() => {
     startState = {
