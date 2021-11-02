@@ -1,5 +1,4 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {AppDispatch} from '../../store'
 import {setAppInitialized, setAppIsLoading} from '../app-reducer/app-reducer'
 import {authAPI, LoginData, MeResponse} from '../../../api/auth-api'
 import {ServerStatuses} from '../../../types/server-response-types'

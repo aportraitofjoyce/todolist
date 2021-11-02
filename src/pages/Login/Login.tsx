@@ -66,10 +66,8 @@ export const Login: FC = () => {
 
             <div style={{margin: '40px 0'}}>
                 <p>To login, you can register <a href={'https://social-network.samuraijs.com/'}
+                                                 rel={'noreferrer'}
                                                  target={'_blank'}>here</a></p>
-                <p>or use my account:</p>
-                <p>Email: free@samuraijs.com</p>
-                <p>Password: free</p>
             </div>
         </div>
     )

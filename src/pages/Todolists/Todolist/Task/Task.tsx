@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react'
+import React, {FC, memo, useCallback} from 'react'
 import s from '../../Todolists.module.css'
 import {TaskResponse} from '../../../../api/tasks-api'
 import {TaskStatuses} from '../../../../types/server-response-types'
@@ -6,35 +6,40 @@ import {Checkbox} from '../../../../components/UI/Checkbox/Checkbox'
 import {EditableSpan} from '../../../../components/UI/EditableSpan/EditableSpan'
 import {IconButton} from '../../../../components/UI/Button/IconButton'
 import {Delete} from '../../../../components/Icons/Delete'
+import {deleteTask, updateTaskStatus, updateTaskTitle} from '../../../../store/reducers/tasks-reducer/tasks-reducer'
+import {useAppDispatch} from '../../../../hooks/hooks'
 
-type TaskPropsType = {
+type TaskProps = {
     todolistID: string
     task: TaskResponse
-    removeTask: (id: string, TODOLIST_ID: string) => void
-    changeTaskTitle: (id: string, title: string, TODOLIST_ID: string) => void
-    changeTaskStatus: (id: string, status: TaskStatuses, TODOLIST_ID: string) => void
 }
 
-export const Task: React.FC<TaskPropsType> = React.memo(props => {
-    const {todolistID, task, removeTask, changeTaskTitle, changeTaskStatus} = props
+export const Task: FC<TaskProps> = memo(({todolistID, task}) => {
+    const dispatch = useAppDispatch()
 
-    const onButtonClickHandler = useCallback(() => removeTask(task.id, todolistID),
-        [removeTask, task.id, todolistID])
+    const changeTaskStatusHandler = useCallback((status: boolean) =>
+        dispatch(updateTaskStatus({
+            todolistID,
+            taskID: task.id,
+            status: status ? TaskStatuses.Completed : TaskStatuses.inProgress
+        })), [dispatch])
 
-    const spanHandler = useCallback((title: string) => changeTaskTitle(task.id, title, todolistID),
-        [changeTaskTitle, task.id, todolistID])
+    const changeTaskTitleHandler = useCallback((title: string) => {
+        dispatch(updateTaskTitle({todolistID, taskID: task.id, title}))
+    }, [dispatch])
 
-    const checkboxHandler = useCallback((status: boolean) => changeTaskStatus(task.id, status ? TaskStatuses.Completed : TaskStatuses.inProgress, todolistID),
-        [changeTaskStatus, task.id, todolistID])
+    const removeTaskHandler = useCallback(() => {
+        dispatch(deleteTask({taskID: task.id, todolistID}))
+    }, [dispatch])
 
     return (
         <div className={s.taskContentContainer}>
             <div className={s.taskContent}>
-                <Checkbox checked={task.status === TaskStatuses.Completed} onChangeCallback={checkboxHandler}/>
-                <EditableSpan title={task.title} changeTitle={spanHandler}/>
+                <Checkbox checked={task.status === TaskStatuses.Completed} onChangeCallback={changeTaskStatusHandler}/>
+                <EditableSpan title={task.title} changeTitle={changeTaskTitleHandler}/>
             </div>
 
-            <IconButton onClick={onButtonClickHandler}><Delete/></IconButton>
+            <IconButton onClick={removeTaskHandler}><Delete/></IconButton>
         </div>
     )
 })
