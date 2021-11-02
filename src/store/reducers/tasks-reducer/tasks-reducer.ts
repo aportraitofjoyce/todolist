@@ -15,8 +15,8 @@ export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (arg: { tod
         thunkAPI.dispatch(setAppIsLoading({status: true}))
         const response = await tasksAPI.getTasks(arg.todolistID)
         return {tasks: response.items, todolistID: arg.todolistID}
-    } catch {
-        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } catch (e) {
+        networkErrorsHandler(e, thunkAPI.dispatch)
     } finally {
         thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
@@ -31,8 +31,8 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (arg: { tas
         } else {
             serverErrorsHandler(response, thunkAPI.dispatch)
         }
-    } catch {
-        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } catch (e) {
+        networkErrorsHandler(e, thunkAPI.dispatch)
     } finally {
         thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
@@ -47,8 +47,8 @@ export const createTask = createAsyncThunk('tasks/createTask', async (arg: { tod
         } else {
             serverErrorsHandler(response, thunkAPI.dispatch)
         }
-    } catch {
-        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } catch (e) {
+        networkErrorsHandler(e, thunkAPI.dispatch)
     } finally {
         thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
@@ -74,8 +74,8 @@ export const updateTaskTitle = createAsyncThunk('tasks/updateTaskTitle', async (
                 serverErrorsHandler(response, thunkAPI.dispatch)
             }
         }
-    } catch {
-        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } catch (e) {
+        networkErrorsHandler(e, thunkAPI.dispatch)
     } finally {
         thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
@@ -101,8 +101,8 @@ export const updateTaskStatus = createAsyncThunk('tasks/updateTaskStatus', async
                 serverErrorsHandler(response, thunkAPI.dispatch)
             }
         }
-    } catch {
-        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } catch (e) {
+        networkErrorsHandler(e, thunkAPI.dispatch)
     } finally {
         thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
@@ -139,19 +139,15 @@ const slice = createSlice({
         })
 
         .addCase(updateTaskStatus.fulfilled, (state, action) => {
-            return {
-                ...state,
-                [action.payload!.todolistID]: state[action.payload!.todolistID]
-                    .map(t => (t.id === action.payload!.taskID ? {...t, status: action.payload!.status} : t))
-            }
+            const tasks = state[action.payload!.todolistID]
+            const index = tasks.findIndex(t => t.id === action.payload!.taskID)
+            tasks[index] = {...tasks[index], status: action.payload!.status}
         })
 
         .addCase(updateTaskTitle.fulfilled, (state, action) => {
-            return {
-                ...state,
-                [action.payload!.todolistID]: state[action.payload!.todolistID]
-                    .map(t => (t.id === action.payload!.taskID ? {...t, title: action.payload!.title} : t))
-            }
+            const tasks = state[action.payload!.todolistID]
+            const index = tasks.findIndex(t => t.id === action.payload!.taskID)
+            tasks[index] = {...tasks[index], title: action.payload!.title}
         })
 })
 

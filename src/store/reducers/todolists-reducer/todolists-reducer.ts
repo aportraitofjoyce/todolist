@@ -15,8 +15,8 @@ export const fetchTodolists = createAsyncThunk('todolists/fetchTodolists', async
         thunkAPI.dispatch(setAppIsLoading({status: true}))
         const response = await todolistsAPI.getTodolists()
         thunkAPI.dispatch(setTodolists({todolists: response}))
-    } catch {
-        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } catch (e) {
+        networkErrorsHandler(e, thunkAPI.dispatch)
     } finally {
         thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
@@ -32,8 +32,8 @@ export const deleteTodolist = createAsyncThunk('todolists/deleteTodolist', async
         } else {
             serverErrorsHandler(response, thunkAPI.dispatch)
         }
-    } catch {
-        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } catch (e) {
+        networkErrorsHandler(e, thunkAPI.dispatch)
     } finally {
         thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
@@ -49,8 +49,8 @@ export const createTodolist = createAsyncThunk('todolists/createTodolist', async
         } else {
             serverErrorsHandler(response, thunkAPI.dispatch)
         }
-    } catch {
-        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } catch (e) {
+        networkErrorsHandler(e, thunkAPI.dispatch)
     } finally {
         thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
@@ -66,9 +66,8 @@ export const updateTodolistTitle = createAsyncThunk('todolists/updateTodolistTit
         } else {
             serverErrorsHandler(response, thunkAPI.dispatch)
         }
-
-    } catch {
-        networkErrorsHandler('Network Error', thunkAPI.dispatch)
+    } catch (e) {
+        networkErrorsHandler(e, thunkAPI.dispatch)
     } finally {
         thunkAPI.dispatch(setAppIsLoading({status: false}))
     }
@@ -79,21 +78,23 @@ const slice = createSlice({
     initialState: [] as TodolistType[],
     reducers: {
         removeTodolist: (state, action: PayloadAction<{ todolistID: string }>) => {
-            return state.filter(tdl => tdl.id !== action.payload.todolistID)
+            const index = state.findIndex(tdl => tdl.id === action.payload.todolistID)
+            state.splice(index, 1)
         },
         addTodolist: (state, action: PayloadAction<{ todolist: TodolistsResponse }>) => {
-            return [{...action.payload.todolist, filter: 'All', entityStatus: 'idle'}, ...state]
+            state.unshift({...action.payload.todolist, filter: 'All'})
         },
         changeTodolistFilter: (state, action: PayloadAction<{ filter: FilterValues, todolistID: string }>) => {
-            return state.map(tdl => tdl.id === action.payload.todolistID
-                ? {...tdl, filter: action.payload.filter} : tdl)
+            const index = state.findIndex(tdl => tdl.id === action.payload.todolistID)
+            state[index].filter = action.payload.filter
         },
         changeTodolistTitle: (state, action: PayloadAction<{ todolistID: string, title: string }>) => {
-            return state.map(tdl => tdl.id === action.payload.todolistID
-                ? {...tdl, title: action.payload.title} : tdl)
+            const index = state.findIndex(tdl => tdl.id === action.payload.todolistID)
+            state[index].title = action.payload.title
         },
         setTodolists: (state, action: PayloadAction<{ todolists: TodolistsResponse[] }>) => {
-            return action.payload.todolists.map(tdl => ({...tdl, filter: 'All', entityStatus: 'idle'}))
+            state = action.payload.todolists.map(tdl => ({...tdl, filter: 'All'}))
+            return state
         },
     }
 })
