@@ -11,62 +11,65 @@ type InitialState = {
     login?: string
 }
 
-export const login = createAsyncThunk('auth/login', async (arg: { loginData: LoginData }, thunkAPI) => {
-    try {
-        thunkAPI.dispatch(setAppIsLoading({status: true}))
-        const response = await authAPI.login(arg.loginData)
+export const login = createAsyncThunk('auth/login',
+    async (arg: { loginData: LoginData }, thunkAPI) => {
+        try {
+            thunkAPI.dispatch(setAppIsLoading({status: true}))
+            const response = await authAPI.login(arg.loginData)
 
-        if (response.resultCode === ServerStatuses.Success) {
-            thunkAPI.dispatch(setIsLoggedIn({status: true}))
-        } else {
-            serverErrorsHandler(response, thunkAPI.dispatch)
-            return thunkAPI.rejectWithValue({errors: response.messages, fieldErrors: response.fieldsErrors})
+            if (response.resultCode === ServerStatuses.Success) {
+                thunkAPI.dispatch(setIsLoggedIn({status: true}))
+            } else {
+                serverErrorsHandler(response, thunkAPI.dispatch)
+                return thunkAPI.rejectWithValue({errors: response.messages, fieldErrors: response.fieldsErrors})
+            }
+        } catch (e) {
+            networkErrorsHandler(e, thunkAPI.dispatch)
+            return thunkAPI.rejectWithValue({errors: e.messages, fieldErrors: undefined})
+        } finally {
+            thunkAPI.dispatch(setAppIsLoading({status: false}))
         }
-    } catch (e) {
-        networkErrorsHandler(e, thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({errors: e.messages, fieldErrors: undefined})
-    } finally {
-        thunkAPI.dispatch(setAppIsLoading({status: false}))
-    }
-})
+    })
 
-export const checkAuth = createAsyncThunk('auth/checkAuth', async (arg, thunkAPI) => {
-    try {
-        thunkAPI.dispatch(setAppIsLoading({status: true}))
-        const response = await authAPI.me()
-        if (response.resultCode === ServerStatuses.Success) {
-            thunkAPI.dispatch(setIsLoggedIn({status: true}))
-            thunkAPI.dispatch(setAuthData({data: response.data}))
-        } else {
-            serverErrorsHandler(response, thunkAPI.dispatch)
+export const checkAuth = createAsyncThunk('auth/checkAuth',
+    async (arg, thunkAPI) => {
+        try {
+            thunkAPI.dispatch(setAppIsLoading({status: true}))
+            const response = await authAPI.me()
+            if (response.resultCode === ServerStatuses.Success) {
+                thunkAPI.dispatch(setIsLoggedIn({status: true}))
+                thunkAPI.dispatch(setAuthData({data: response.data}))
+            } else {
+                serverErrorsHandler(response, thunkAPI.dispatch)
+                return thunkAPI.rejectWithValue({})
+            }
+        } catch (e) {
+            networkErrorsHandler(e, thunkAPI.dispatch)
             return thunkAPI.rejectWithValue({})
+        } finally {
+            thunkAPI.dispatch(setAppInitialized({status: true}))
+            thunkAPI.dispatch(setAppIsLoading({status: false}))
         }
-    } catch (e) {
-        networkErrorsHandler(e, thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({})
-    } finally {
-        thunkAPI.dispatch(setAppInitialized({status: true}))
-        thunkAPI.dispatch(setAppIsLoading({status: false}))
-    }
-})
+    })
 
-export const logout = createAsyncThunk('auth/logout', async (arg, thunkAPI) => {
-    try {
-        thunkAPI.dispatch(setAppIsLoading({status: true}))
-        const response = await authAPI.logout()
-        if (response.resultCode === ServerStatuses.Success) {
-            thunkAPI.dispatch(setIsLoggedIn({status: false}))
-        } else {
-            serverErrorsHandler(response, thunkAPI.dispatch)
+export const logout = createAsyncThunk('auth/logout',
+    async (arg, thunkAPI) => {
+        try {
+            thunkAPI.dispatch(setAppIsLoading({status: true}))
+            const response = await authAPI.logout()
+            if (response.resultCode === ServerStatuses.Success) {
+                thunkAPI.dispatch(setIsLoggedIn({status: false}))
+            } else {
+                serverErrorsHandler(response, thunkAPI.dispatch)
+                return thunkAPI.rejectWithValue({})
+            }
+        } catch (e) {
+            networkErrorsHandler(e, thunkAPI.dispatch)
             return thunkAPI.rejectWithValue({})
+        } finally {
+            thunkAPI.dispatch(setAppIsLoading({status: false}))
         }
-    } catch (e) {
-        networkErrorsHandler(e, thunkAPI.dispatch)
-        return thunkAPI.rejectWithValue({})
-    } finally {
-        thunkAPI.dispatch(setAppIsLoading({status: false}))
-    }
-})
+    })
 
 const slice = createSlice({
     name: 'auth',

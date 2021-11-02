@@ -10,68 +10,72 @@ export type TodolistType = TodolistsResponse & {
 
 export type FilterValues = 'All' | 'Active' | 'Completed'
 
-export const fetchTodolists = createAsyncThunk('todolists/fetchTodolists', async (arg, thunkAPI) => {
-    try {
-        thunkAPI.dispatch(setAppIsLoading({status: true}))
-        const response = await todolistsAPI.getTodolists()
-        thunkAPI.dispatch(setTodolists({todolists: response}))
-    } catch (e) {
-        networkErrorsHandler(e, thunkAPI.dispatch)
-    } finally {
-        thunkAPI.dispatch(setAppIsLoading({status: false}))
-    }
-})
-
-export const deleteTodolist = createAsyncThunk('todolists/deleteTodolist', async (arg: { todolistID: string }, thunkAPI) => {
-    try {
-        thunkAPI.dispatch(setAppIsLoading({status: true}))
-        const response = await todolistsAPI.deleteTodolist(arg.todolistID)
-
-        if (response.resultCode === ServerStatuses.Success) {
-            thunkAPI.dispatch(removeTodolist({todolistID: arg.todolistID}))
-        } else {
-            serverErrorsHandler(response, thunkAPI.dispatch)
+export const fetchTodolists = createAsyncThunk('todolists/fetchTodolists',
+    async (arg, thunkAPI) => {
+        try {
+            thunkAPI.dispatch(setAppIsLoading({status: true}))
+            const response = await todolistsAPI.getTodolists()
+            thunkAPI.dispatch(setTodolists({todolists: response}))
+        } catch (e) {
+            networkErrorsHandler(e, thunkAPI.dispatch)
+        } finally {
+            thunkAPI.dispatch(setAppIsLoading({status: false}))
         }
-    } catch (e) {
-        networkErrorsHandler(e, thunkAPI.dispatch)
-    } finally {
-        thunkAPI.dispatch(setAppIsLoading({status: false}))
-    }
-})
+    })
 
-export const createTodolist = createAsyncThunk('todolists/createTodolist', async (arg: { title: string }, thunkAPI) => {
-    try {
-        thunkAPI.dispatch(setAppIsLoading({status: true}))
-        const response = await todolistsAPI.createTodolist(arg.title)
+export const deleteTodolist = createAsyncThunk('todolists/deleteTodolist',
+    async (arg: { todolistID: string }, thunkAPI) => {
+        try {
+            thunkAPI.dispatch(setAppIsLoading({status: true}))
+            const response = await todolistsAPI.deleteTodolist(arg.todolistID)
 
-        if (response.resultCode === ServerStatuses.Success) {
-            thunkAPI.dispatch(addTodolist({todolist: response.data.item}))
-        } else {
-            serverErrorsHandler(response, thunkAPI.dispatch)
+            if (response.resultCode === ServerStatuses.Success) {
+                thunkAPI.dispatch(removeTodolist({todolistID: arg.todolistID}))
+            } else {
+                serverErrorsHandler(response, thunkAPI.dispatch)
+            }
+        } catch (e) {
+            networkErrorsHandler(e, thunkAPI.dispatch)
+        } finally {
+            thunkAPI.dispatch(setAppIsLoading({status: false}))
         }
-    } catch (e) {
-        networkErrorsHandler(e, thunkAPI.dispatch)
-    } finally {
-        thunkAPI.dispatch(setAppIsLoading({status: false}))
-    }
-})
+    })
 
-export const updateTodolistTitle = createAsyncThunk('todolists/updateTodolistTitle', async (arg: { todolistID: string, title: string }, thunkAPI) => {
-    try {
-        thunkAPI.dispatch(setAppIsLoading({status: true}))
-        const response = await todolistsAPI.updateTodolist(arg.todolistID, arg.title)
+export const createTodolist = createAsyncThunk('todolists/createTodolist',
+    async (arg: { title: string }, thunkAPI) => {
+        try {
+            thunkAPI.dispatch(setAppIsLoading({status: true}))
+            const response = await todolistsAPI.createTodolist(arg.title)
 
-        if (response.resultCode === ServerStatuses.Success) {
-            thunkAPI.dispatch(changeTodolistTitle({todolistID: arg.todolistID, title: arg.title}))
-        } else {
-            serverErrorsHandler(response, thunkAPI.dispatch)
+            if (response.resultCode === ServerStatuses.Success) {
+                thunkAPI.dispatch(addTodolist({todolist: response.data.item}))
+            } else {
+                serverErrorsHandler(response, thunkAPI.dispatch)
+            }
+        } catch (e) {
+            networkErrorsHandler(e, thunkAPI.dispatch)
+        } finally {
+            thunkAPI.dispatch(setAppIsLoading({status: false}))
         }
-    } catch (e) {
-        networkErrorsHandler(e, thunkAPI.dispatch)
-    } finally {
-        thunkAPI.dispatch(setAppIsLoading({status: false}))
-    }
-})
+    })
+
+export const updateTodolistTitle = createAsyncThunk('todolists/updateTodolistTitle',
+    async (arg: { todolistID: string, title: string }, thunkAPI) => {
+        try {
+            thunkAPI.dispatch(setAppIsLoading({status: true}))
+            const response = await todolistsAPI.updateTodolist(arg.todolistID, arg.title)
+
+            if (response.resultCode === ServerStatuses.Success) {
+                thunkAPI.dispatch(changeTodolistTitle({todolistID: arg.todolistID, title: arg.title}))
+            } else {
+                serverErrorsHandler(response, thunkAPI.dispatch)
+            }
+        } catch (e) {
+            networkErrorsHandler(e, thunkAPI.dispatch)
+        } finally {
+            thunkAPI.dispatch(setAppIsLoading({status: false}))
+        }
+    })
 
 const slice = createSlice({
     name: 'todolist',

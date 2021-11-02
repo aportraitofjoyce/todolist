@@ -20,5 +20,4 @@ export enum TaskStatuses {
     New,
     inProgress,
     Completed,
-    Draft
 }
