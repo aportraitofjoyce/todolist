@@ -1,22 +1,22 @@
 import React, {FC, memo, useCallback, useEffect} from 'react'
-import s from '../Todolists.module.css'
-import {Task} from './Task/Task'
-import {TaskResponse} from '../../../api/tasks-api'
-import {TaskStatuses} from '../../../types/server-response-types'
-import {EditableSpan} from '../../../components/UI/EditableSpan/EditableSpan'
-import {IconButton} from '../../../components/UI/Button/IconButton'
-import {Delete} from '../../../components/Icons/Delete'
-import {AddItemForm} from '../../../components/UI/AddItemForm/AddItemForm'
-import {Button} from '../../../components/UI/Button/Button'
-import {createTask, fetchTasks} from '../../../store/reducers/tasks-reducer/tasks-reducer'
+import s from './Todolists.module.css'
+import {useAppDispatch} from '../../hooks/hooks'
+import {TaskResponse} from '../../api/tasks-api'
 import {
     changeTodolistFilter,
     deleteTodolist,
     FilterValuesType,
     TodolistType,
     updateTodolistTitle
-} from '../../../store/reducers/todolists-reducer/todolists-reducer'
-import {useAppDispatch} from '../../../hooks/hooks'
+} from '../../store/reducers/todolists-reducer/todolists-reducer'
+import {createTask, fetchTasks} from '../../store/reducers/tasks-reducer/tasks-reducer'
+import {TaskStatuses} from '../../types/server-response-types'
+import {EditableSpan} from '../../components/UI/EditableSpan/EditableSpan'
+import {IconButton} from '../../components/UI/Button/IconButton'
+import {Delete} from '../../components/Icons/Delete'
+import {AddItemForm} from '../../components/UI/AddItemForm/AddItemForm'
+import {Task} from './Task'
+import {Button} from '../../components/UI/Button/Button'
 
 type TodolistProps = {
     todolist: TodolistType

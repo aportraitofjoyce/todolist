@@ -1,13 +1,13 @@
 import React, {FC, memo, useCallback} from 'react'
-import s from '../../Todolists.module.css'
-import {TaskResponse} from '../../../../api/tasks-api'
-import {TaskStatuses} from '../../../../types/server-response-types'
-import {Checkbox} from '../../../../components/UI/Checkbox/Checkbox'
-import {EditableSpan} from '../../../../components/UI/EditableSpan/EditableSpan'
-import {IconButton} from '../../../../components/UI/Button/IconButton'
-import {Delete} from '../../../../components/Icons/Delete'
-import {deleteTask, updateTaskStatus, updateTaskTitle} from '../../../../store/reducers/tasks-reducer/tasks-reducer'
-import {useAppDispatch} from '../../../../hooks/hooks'
+import s from './Todolists.module.css'
+import {useAppDispatch} from '../../hooks/hooks'
+import {TaskResponse} from '../../api/tasks-api'
+import {deleteTask, updateTaskStatus, updateTaskTitle} from '../../store/reducers/tasks-reducer/tasks-reducer'
+import {TaskStatuses} from '../../types/server-response-types'
+import {Checkbox} from '../../components/UI/Checkbox/Checkbox'
+import {EditableSpan} from '../../components/UI/EditableSpan/EditableSpan'
+import {IconButton} from '../../components/UI/Button/IconButton'
+import {Delete} from '../../components/Icons/Delete'
 
 type TaskProps = {
     todolistID: string
@@ -22,15 +22,15 @@ export const Task: FC<TaskProps> = memo(({todolistID, task}) => {
             todolistID,
             taskID: task.id,
             status: status ? TaskStatuses.Completed : TaskStatuses.inProgress
-        })), [dispatch])
+        })), [dispatch, todolistID, task.id])
 
     const changeTaskTitleHandler = useCallback((title: string) => {
         dispatch(updateTaskTitle({todolistID, taskID: task.id, title}))
-    }, [dispatch])
+    }, [dispatch, todolistID, task.id])
 
     const removeTaskHandler = useCallback(() => {
         dispatch(deleteTask({taskID: task.id, todolistID}))
-    }, [dispatch])
+    }, [dispatch, todolistID, task.id])
 
     return (
         <div className={s.taskContentContainer}>
