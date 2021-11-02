@@ -2,6 +2,7 @@ import {FC} from 'react'
 import {Todolists} from '../pages/Todolists/Todolists'
 import {Login} from '../pages/Login/Login'
 import {Error} from '../pages/Error/Error'
+import {Home} from '../pages/Home/Home'
 
 export enum PATH {
     HOME = '/',
@@ -18,7 +19,8 @@ type Route = {
 }
 
 export const routes: Route[] = [
-    {path: PATH.TODOLIST, component: Todolists, exact: true},
+    {path: PATH.HOME, component: Home, exact: true},
+    {path: PATH.TODOLIST, component: Todolists},
     {path: PATH.LOGIN, component: Login},
     {path: PATH.ERROR, component: Error},
 ]

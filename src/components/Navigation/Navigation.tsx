@@ -1,5 +1,5 @@
 import React, {FC} from 'react'
-import {Link, NavLink} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {PATH} from '../../routes/routes'
 import {useAppDispatch, useAppSelector} from '../../hooks/hooks'
 import {logout} from '../../store/reducers/auth-reducer/auth-reducer'
@@ -13,8 +13,8 @@ export const Navigation: FC = () => {
     return (
         <div className={s.wrapper}>
             <nav className={s.container}>
-                <Link to={PATH.HOME}>Home</Link>
-                <NavLink activeClassName={s.active} to={PATH.TODOLIST}>Todo</NavLink>
+                <NavLink activeClassName={s.active} to={PATH.HOME}>Home</NavLink>
+                <NavLink activeClassName={s.active} to={PATH.TODOLIST}>Todolist</NavLink>
 
                 {!isLoggedIn
                     ? <NavLink activeClassName={s.active} to={PATH.LOGIN}>Login</NavLink>

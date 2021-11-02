@@ -21,7 +21,6 @@ export const AppRouter: FC = () => {
             <Switch>
                 {routes.map(r => <Route key={r.path} path={r.path} component={r.component} exact={r.exact}/>)}
 
-                <Redirect from={PATH.HOME} to={PATH.TODOLIST}/>
                 <Redirect from={PATH.EMPTY} to={PATH.ERROR}/>
             </Switch>
         </>
