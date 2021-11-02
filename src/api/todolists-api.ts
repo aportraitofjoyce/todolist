@@ -1,8 +1,8 @@
 import {axiosInstance} from './axios-instance'
-import {ServerResponseType} from '../types/server-response-types'
+import {ServerResponse} from '../types/server-response-types'
 import {AxiosResponse} from 'axios'
 
-export type TodolistsResponseType = {
+export type TodolistsResponse = {
     id: string
     title: string
     addedDate: string
@@ -10,19 +10,19 @@ export type TodolistsResponseType = {
 }
 
 export const todolistsAPI = {
-    requestTodolists: () => axiosInstance
-        .get<TodolistsResponseType[]>('/todo-lists')
+    getTodolists: () => axiosInstance
+        .get<TodolistsResponse[]>('/todo-lists')
         .then(response => response.data),
 
     createTodolist: (title: string) => axiosInstance
-        .post<{ title: string }, AxiosResponse<ServerResponseType<{ item: TodolistsResponseType }>>>('/todo-lists', {title})
+        .post<{ title: string }, AxiosResponse<ServerResponse<{ item: TodolistsResponse }>>>('/todo-lists', {title})
         .then(response => response.data),
 
     updateTodolist: (id: string, title: string) => axiosInstance
-        .put<{ title: string }, AxiosResponse<ServerResponseType>>(`/todo-lists/${id}`, {title})
+        .put<{ title: string }, AxiosResponse<ServerResponse>>(`/todo-lists/${id}`, {title})
         .then(response => response.data),
 
     deleteTodolist: (id: string) => axiosInstance
-        .delete<ServerResponseType>(`/todo-lists/${id}`)
+        .delete<ServerResponse>(`/todo-lists/${id}`)
         .then(response => response.data),
 }

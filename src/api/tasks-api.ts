@@ -1,8 +1,14 @@
 import {axiosInstance} from './axios-instance'
-import {ServerResponseType, TaskStatuses} from '../types/server-response-types'
+import {ServerResponse, TaskStatuses} from '../types/server-response-types'
 import {AxiosResponse} from 'axios'
 
-export type TasksResponseType = {
+type GetTasksResponse = {
+    items: TaskResponse[]
+    totalCount: number
+    error: string
+}
+
+export type TaskResponse = {
     title: string
     status: TaskStatuses
     id: string
@@ -11,31 +17,25 @@ export type TasksResponseType = {
     addedDate: string
 }
 
-type RequestTasksResponseType = {
-    items: TasksResponseType[]
-    totalCount: number
-    error: string
-}
-
-export type UpdatedTaskType = {
+export type UpdatedTask = {
     title: string
     status: TaskStatuses
 }
 
 export const tasksAPI = {
-    requestTasks: (todoID: string) => axiosInstance
-        .get<RequestTasksResponseType>(`todo-lists/${todoID}/tasks`)
+    getTasks: (todoID: string) => axiosInstance
+        .get<GetTasksResponse>(`/todo-lists/${todoID}/tasks`)
         .then(response => response.data),
 
     createTask: (todoID: string, title: string) => axiosInstance
-        .post<{ title: string }, AxiosResponse<ServerResponseType<{ item: TasksResponseType }>>>(`todo-lists/${todoID}/tasks`, {title})
+        .post<{ title: string }, AxiosResponse<ServerResponse<{ item: TaskResponse }>>>(`/todo-lists/${todoID}/tasks`, {title})
         .then(response => response.data),
 
-    updateTask: (todoID: string, taskID: string, task: UpdatedTaskType) => axiosInstance
-        .put<UpdatedTaskType, AxiosResponse<ServerResponseType<{ item: TasksResponseType }>>>(`todo-lists/${todoID}/tasks/${taskID}`, task)
+    updateTask: (todoID: string, taskID: string, task: UpdatedTask) => axiosInstance
+        .put<UpdatedTask, AxiosResponse<ServerResponse<{ item: TaskResponse }>>>(`/todo-lists/${todoID}/tasks/${taskID}`, task)
         .then(response => response.data),
 
     deleteTask: (taskID: string, todoID: string) => axiosInstance
-        .delete<ServerResponseType>(`todo-lists/${todoID}/tasks/${taskID}`)
+        .delete<ServerResponse>(`/todo-lists/${todoID}/tasks/${taskID}`)
         .then(response => response.data),
 }

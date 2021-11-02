@@ -1,13 +1,13 @@
-type FieldsError = {
-    field: string
-    error: string
-}
-
-export type ServerResponseType<T = {}> = {
+export type ServerResponse<T = {}> = {
     resultCode: ServerStatuses
     fieldsErrors: FieldsError[]
     messages: string[]
     data: T
+}
+
+type FieldsError = {
+    field: string
+    error: string
 }
 
 export enum ServerStatuses {
@@ -22,4 +22,3 @@ export enum TaskStatuses {
     Completed,
     Draft
 }
-

@@ -1,19 +1,19 @@
 import {setAppIsLoading} from '../app-reducer/app-reducer'
-import {todolistsAPI, TodolistsResponseType} from '../../../api/todolists-api'
+import {todolistsAPI, TodolistsResponse} from '../../../api/todolists-api'
 import {ServerStatuses} from '../../../types/server-response-types'
 import {networkErrorsHandler, serverErrorsHandler} from '../../../utils/error-utils'
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 
 export type FilterValuesType = 'All' | 'Active' | 'Completed'
 
-export type TodolistType = TodolistsResponseType & {
+export type TodolistType = TodolistsResponse & {
     filter: FilterValuesType
 }
 
 export const fetchTodolists = createAsyncThunk('todolists/fetchTodolists', async (arg, {dispatch}) => {
     try {
         dispatch(setAppIsLoading({status: true}))
-        const response = await todolistsAPI.requestTodolists()
+        const response = await todolistsAPI.getTodolists()
         dispatch(setTodolists({todolists: response}))
     } catch {
         networkErrorsHandler('Network Error', dispatch)
@@ -73,7 +73,7 @@ const slice = createSlice({
         removeTodolist: (state, action: PayloadAction<{ todolistID: string }>) => {
             return state.filter(tdl => tdl.id !== action.payload.todolistID)
         },
-        addTodolist: (state, action: PayloadAction<{ todolist: TodolistsResponseType }>) => {
+        addTodolist: (state, action: PayloadAction<{ todolist: TodolistsResponse }>) => {
             return [{...action.payload.todolist, filter: 'All', entityStatus: 'idle'}, ...state]
         },
         changeTodolistFilter: (state, action: PayloadAction<{ filter: FilterValuesType, todolistID: string }>) => {
@@ -84,7 +84,7 @@ const slice = createSlice({
             return state.map(tdl => tdl.id === action.payload.todolistID
                 ? {...tdl, title: action.payload.title} : tdl)
         },
-        setTodolists: (state, action: PayloadAction<{ todolists: TodolistsResponseType[] }>) => {
+        setTodolists: (state, action: PayloadAction<{ todolists: TodolistsResponse[] }>) => {
             return action.payload.todolists.map(tdl => ({...tdl, filter: 'All', entityStatus: 'idle'}))
         },
     }

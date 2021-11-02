@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;600;700&display=swap');
 
 :root {
-    --black: #333;
-    --black-light: #404040;
-    --white: whitesmoke;
+    --dark: #333;
+    --dark-light: #404040;
+    --light: whitesmoke;
     --primary: cornflowerblue;
     --secondary: #f0a253;
     --error: #a63333;
@@ -24,8 +24,8 @@
 body {
     display: flex;
     justify-content: center;
-    background-color: var(--black);
-    color: var(--white);
+    background-color: var(--dark);
+    color: var(--light);
     font-family: var(--fira-sans);
     font-weight: 400;
     min-height: 100vh;
@@ -46,9 +46,9 @@ p {
 input {
     font-family: var(--fira-sans);
     border: none;
-    border-bottom: 2px solid var(--white);
+    border-bottom: 2px solid var(--light);
     background-color: transparent;
-    color: var(--white);
+    color: var(--light);
     font-size: 16px;
     outline: none;
     padding: 8px 0;
@@ -58,9 +58,14 @@ input:hover, .input:focus {
     border-color: var(--secondary);
 }
 
+input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px var(--black) inset;
-    -webkit-text-fill-color: var(--white) !important;
+    -webkit-box-shadow: 0 0 0 1000px var(--dark) inset;
+    -webkit-text-fill-color: var(--light) !important;
 }
 
 a {

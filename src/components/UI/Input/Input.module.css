@@ -1,4 +1,5 @@
 .container {
+    position: relative;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -15,4 +16,16 @@
 .errorMessage {
     padding-top: 8px;
     color: var(--error);
+}
+
+.eye {
+    color: var(--light);
+    position: absolute;
+    right: 16px;
+    top: 6px;
+    cursor: pointer;
+}
+
+.eye:hover {
+    opacity: 0.8;
 }

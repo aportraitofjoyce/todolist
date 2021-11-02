@@ -1,14 +1,12 @@
-import React, {ChangeEvent, KeyboardEvent, useCallback, useState} from 'react'
-import {Input} from '../../UI/Input/Input'
+import React, {ChangeEvent, FC, KeyboardEvent, memo, useCallback, useState} from 'react'
+import {Input} from '../Input/Input'
 
-type EditableSpanPropsType = {
+type EditableSpanProps = {
     title: string
     changeTitle: (title: string) => void
 }
 
-export const EditableSpan: React.FC<EditableSpanPropsType> = React.memo(props => {
-    const {title, changeTitle} = props
-
+export const EditableSpan: FC<EditableSpanProps> = memo(({title, changeTitle}) => {
     const [value, setValue] = useState<string>(title)
     const [editMode, setEditMode] = useState<boolean>(false)
 

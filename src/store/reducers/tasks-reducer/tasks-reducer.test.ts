@@ -7,7 +7,7 @@ import {
     tasksReducer,
     TasksType
 } from './tasks-reducer'
-import {TasksResponseType} from '../../../api/tasks-api'
+import {TaskResponse} from '../../../api/tasks-api'
 import {addTodolist, removeTodolist, setTodolists} from '../todolists-reducer/todolists-reducer'
 
 let startState: TasksType
@@ -176,7 +176,7 @@ test('correct task should be deleted from correct array', () => {
 })
 
 test('correct task should be added to correct array', () => {
-    const newTask: TasksResponseType = {
+    const newTask: TaskResponse = {
         id: '100',
         title: 'juice',
         status: 0,

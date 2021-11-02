@@ -3,7 +3,7 @@
     display: flex;
 }
 
-.snackbarContainer {
+.container {
     width: 288px;
     background-color: var(--primary);
     padding: 16px;
@@ -19,7 +19,7 @@
     z-index: 100;
 }
 
-.snackbarContainer span {
+.container span {
     cursor: pointer;
     margin-left: 8px;
 }

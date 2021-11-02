@@ -49,18 +49,17 @@ export const Login: FC = () => {
                 {formik.errors.email && formik.touched.email &&
 				<div style={{color: 'red'}}>{formik.errors.email}</div>}
 
-                <Input type={'password'}
+                <Input type={'password'} password
                        placeholder={'Password'}
                        {...formik.getFieldProps('password')}/>
                 {formik.errors.password && formik.touched.password &&
 				<div style={{color: 'red'}}>{formik.errors.password}</div>}
 
-                <label htmlFor='rememberMe' style={{display: 'flex', alignItems: 'center', gap: 8}}>
-                    <Checkbox id={'rememberMe'}
-                              checked={formik.values.rememberMe}
-                              {...formik.getFieldProps('rememberMe')}/>
-                    <span>Remember Me</span>
-                </label>
+                <Checkbox id={'rememberMe'}
+                          checked={formik.values.rememberMe}
+                          {...formik.getFieldProps('rememberMe')}>
+                    Remember Me
+                </Checkbox>
 
                 <Button type={'submit'}>Login</Button>
             </form>

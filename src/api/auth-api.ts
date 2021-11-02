@@ -1,30 +1,30 @@
 import {axiosInstance} from './axios-instance'
-import {ServerResponseType} from '../types/server-response-types'
+import {ServerResponse} from '../types/server-response-types'
 import {AxiosResponse} from 'axios'
 
-export type LoginParamsType = {
+export type LoginData = {
     email: string
     password: string
     rememberMe: boolean
     captcha?: string
 }
 
-export type MeDataResponseType = {
+export type MeResponse = {
     id: number
     email: string
     login: string
 }
 
 export const authAPI = {
-    login: (data: LoginParamsType) => axiosInstance
-        .post<LoginParamsType, AxiosResponse<ServerResponseType<{ userId: number }>>>('/auth/login', data)
+    login: (payload: LoginData) => axiosInstance
+        .post<LoginData, AxiosResponse<ServerResponse<{ userId: number }>>>('/auth/login', payload)
         .then(response => response.data),
 
     logout: () => axiosInstance
-        .delete<ServerResponseType>('/auth/login')
+        .delete<ServerResponse>('/auth/login')
         .then(response => response.data),
 
     me: () => axiosInstance
-        .get<ServerResponseType<MeDataResponseType>>('/auth/me')
+        .get<ServerResponse<MeResponse>>('/auth/me')
         .then(response => response.data)
 }

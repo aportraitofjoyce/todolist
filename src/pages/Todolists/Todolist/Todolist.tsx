@@ -2,11 +2,11 @@ import React, {useCallback, useEffect} from 'react'
 import s from '../Todolists.module.css'
 import {Task} from './Task/Task'
 import {useDispatch} from 'react-redux'
-import {TasksResponseType} from '../../../api/tasks-api'
+import {TaskResponse} from '../../../api/tasks-api'
 import {TaskStatuses} from '../../../types/server-response-types'
 import {EditableSpan} from '../../../components/UI/EditableSpan/EditableSpan'
 import {IconButton} from '../../../components/UI/Button/IconButton'
-import {Delete} from '../../../components/Icons/Delete/Delete'
+import {Delete} from '../../../components/Icons/Delete'
 import {AddItemForm} from '../../../components/UI/AddItemForm/AddItemForm'
 import {Button} from '../../../components/UI/Button/Button'
 import {fetchTasks} from '../../../store/reducers/tasks-reducer/tasks-reducer'
@@ -15,7 +15,7 @@ import {FilterValuesType, TodolistType} from '../../../store/reducers/todolists-
 
 type TodolistPropsType = {
     todolist: TodolistType
-    tasks: TasksResponseType[]
+    tasks: TaskResponse[]
     removeTask: (taskID: string, todolistID: string) => void
     addTask: (title: string, todolistID: string) => void
     changeTaskStatus: (taskID: string, status: TaskStatuses, todolistID: string) => void

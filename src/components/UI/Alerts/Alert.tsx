@@ -1,16 +1,15 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {FC, memo, useCallback, useEffect, useState} from 'react'
 import s from './Alerts.module.css'
 
-type SnackbarPropsType = {
+type SnackbarProps = {
     type: 'error' | 'success'
     text: string
     open: boolean
     onClose: () => void
 }
 
-export const Snackbar: React.FC<SnackbarPropsType> = React.memo(props => {
-    const {type, text, open, onClose} = props
-    const [isOpen, setIsOpen] = useState<boolean>(open)
+export const Alert: FC<SnackbarProps> = memo(({type, text, open, onClose}) => {
+    const [isOpen, setIsOpen] = useState(open)
 
     const closeSnackbar = useCallback(() => {
         setIsOpen(false)
@@ -30,7 +29,7 @@ export const Snackbar: React.FC<SnackbarPropsType> = React.memo(props => {
     return (
         <>
             {isOpen &&
-			<div className={`${s.snackbarContainer} ${type === 'error' && s.error}`}>
+			<div className={`${s.container} ${type === 'error' && s.error}`}>
 				<div>{text ? text : 'I am Alert'}</div>
 				<span onClick={closeSnackbar}>X</span>
 			</div>}

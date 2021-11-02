@@ -1,16 +1,13 @@
-import React, {ButtonHTMLAttributes, DetailedHTMLProps} from 'react'
+import React, {FC, memo} from 'react'
 import s from './Button.module.css'
+import {DefaultButtonProps} from './Button'
+import {useAppSelector} from '../../../hooks/hooks'
 
-type DefaultButtonPropsType = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonElement>, HTMLButtonElement>
+type IconButtonProps = DefaultButtonProps & {}
 
-type IconButtonPropsType = DefaultButtonPropsType & {}
+export const IconButton: FC<IconButtonProps> = memo(({className, disabled, ...restProps}) => {
+    const isLoading = useAppSelector(state => state.app.isLoading)
+    const classNames = `${s.icon} ${className ? className : ''}`
 
-export const IconButton: React.FC<IconButtonPropsType> = React.memo(props => {
-    const {className, ...rest} = props
-
-    const finalClassName = `${s.icon} ${className ? className : ''}`
-
-    return (
-        <button className={finalClassName} {...rest}/>
-    )
+    return <button className={classNames} disabled={disabled || isLoading} {...restProps}/>
 })

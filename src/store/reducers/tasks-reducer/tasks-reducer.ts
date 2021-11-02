@@ -1,4 +1,4 @@
-import {tasksAPI, TasksResponseType, UpdatedTaskType} from '../../../api/tasks-api'
+import {tasksAPI, TaskResponse, UpdatedTask} from '../../../api/tasks-api'
 import {setAppIsLoading} from '../app-reducer/app-reducer'
 import {ServerStatuses, TaskStatuses} from '../../../types/server-response-types'
 import {networkErrorsHandler, serverErrorsHandler} from '../../../utils/error-utils'
@@ -7,7 +7,7 @@ import {addTodolist, removeTodolist, setTodolists} from '../todolists-reducer/to
 import {RootState} from '../../store'
 
 export type TasksType = {
-    [key: string]: TasksResponseType[]
+    [key: string]: TaskResponse[]
 }
 
 const initialState: TasksType = {}
@@ -15,7 +15,7 @@ const initialState: TasksType = {}
 export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async (arg: { todolistID: string }, thunkAPI) => {
     try {
         thunkAPI.dispatch(setAppIsLoading({status: true}))
-        const response = await tasksAPI.requestTasks(arg.todolistID)
+        const response = await tasksAPI.getTasks(arg.todolistID)
         return {tasks: response.items, todolistID: arg.todolistID}
     } catch {
         networkErrorsHandler('Network Error', thunkAPI.dispatch)
@@ -57,7 +57,7 @@ export const updateTaskTitle = createAsyncThunk('tasks/updateTaskTitle', async (
         const task = state.tasks[arg.todolistID].find(task => task.id === arg.taskID)
 
         if (task) {
-            const updatedTask: UpdatedTaskType = {
+            const updatedTask: UpdatedTask = {
                 status: task.status,
                 title: arg.title,
             }
@@ -83,7 +83,7 @@ export const updateTaskStatus = createAsyncThunk('tasks/updateTaskStatus', async
         const task = state.tasks[arg.todolistID].find(task => task.id === arg.taskID)
 
         if (task) {
-            const updatedTask: UpdatedTaskType = {
+            const updatedTask: UpdatedTask = {
                 title: task.title,
                 status: arg.status
             }

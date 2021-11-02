@@ -1,15 +1,20 @@
+.label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: fit-content;
+    cursor: pointer;
+    gap: 12px;
+}
+
 .checkbox {
     appearance: none;
     position: relative;
     width: 24px;
     height: 24px;
-    border: 2px solid #ddd;
+    border: 2px solid var(--light);
     border-radius: 2px;
     cursor: pointer;
-}
-
-.checkbox:hover {
-    opacity: 0.8;
 }
 
 .checkbox:checked {
@@ -38,8 +43,4 @@
     border-bottom: 2px solid #333;
     border-left: 2px solid #333;
     transform: rotate(-45deg);
-}
-
-.checkbox:checked:hover {
-    opacity: 0.8;
 }

@@ -1,16 +1,19 @@
-import React, {ChangeEvent, DetailedHTMLProps, InputHTMLAttributes, KeyboardEvent} from 'react'
+import React, {ChangeEvent, DetailedHTMLProps, FC, InputHTMLAttributes, KeyboardEvent, memo, useState} from 'react'
 import s from './Input.module.css'
+import {EyeIcon} from '../../Icons/Eye'
+import {useAppSelector} from '../../../hooks/hooks'
 
-type DefaultInputPropsType = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
+export type DefaultInputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>
 
-type InputPropsType = DefaultInputPropsType & {
+type InputProps = DefaultInputProps & {
     onChangeText?: (value: string) => void
     onEnter?: () => void
     error?: string
     spanClassName?: string
+    password?: boolean
 }
 
-export const Input: React.FC<InputPropsType> = props => {
+export const Input: FC<InputProps> = memo(props => {
     const {
         type,
         onChange,
@@ -20,8 +23,15 @@ export const Input: React.FC<InputPropsType> = props => {
         error,
         className,
         spanClassName,
+        password,
+        disabled,
         ...restProps
     } = props
+
+    const isLoading = useAppSelector(state => state.app.isLoading)
+    const [isPassword, setIsPassword] = useState(!password)
+
+    const passwordToggle = () => setIsPassword(!isPassword)
 
     const onChangeCallback = (e: ChangeEvent<HTMLInputElement>) => {
         onChange && onChange(e)
@@ -38,13 +48,15 @@ export const Input: React.FC<InputPropsType> = props => {
 
     return (
         <div className={s.container}>
-            <input type={type || 'text'}
+            <input type={password && isPassword ? 'text' : type}
                    onChange={onChangeCallback}
                    onKeyPress={onKeyPressCallback}
                    className={finalInputClassName}
-                   placeholder={'Введите текст...'}
+                   placeholder={'Type text here...'}
+                   disabled={disabled || isLoading}
                    {...restProps}/>
+            {password && <div className={s.eye} onClick={passwordToggle}><EyeIcon/></div>}
             {error && <span className={finalSpanClassName}>{error}</span>}
         </div>
     )
-}
+})

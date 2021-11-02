@@ -11,13 +11,13 @@ export enum PATH {
     ERROR = '/404'
 }
 
-type RoutesType = {
+type Route = {
     path: PATH
     component: FC
     exact?: boolean
 }
 
-export const routes: RoutesType[] = [
+export const routes: Route[] = [
     {path: PATH.TODOLIST, component: Todolists, exact: true},
     {path: PATH.LOGIN, component: Login},
     {path: PATH.ERROR, component: Error},

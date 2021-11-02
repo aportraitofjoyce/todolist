@@ -1,15 +1,15 @@
 import React, {useCallback} from 'react'
 import s from '../../Todolists.module.css'
-import {TasksResponseType} from '../../../../api/tasks-api'
+import {TaskResponse} from '../../../../api/tasks-api'
 import {TaskStatuses} from '../../../../types/server-response-types'
 import {Checkbox} from '../../../../components/UI/Checkbox/Checkbox'
 import {EditableSpan} from '../../../../components/UI/EditableSpan/EditableSpan'
 import {IconButton} from '../../../../components/UI/Button/IconButton'
-import {Delete} from '../../../../components/Icons/Delete/Delete'
+import {Delete} from '../../../../components/Icons/Delete'
 
 type TaskPropsType = {
     todolistID: string
-    task: TasksResponseType
+    task: TaskResponse
     removeTask: (id: string, TODOLIST_ID: string) => void
     changeTaskTitle: (id: string, title: string, TODOLIST_ID: string) => void
     changeTaskStatus: (id: string, status: TaskStatuses, TODOLIST_ID: string) => void

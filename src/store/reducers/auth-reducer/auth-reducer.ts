@@ -1,7 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {AppDispatch} from '../../store'
 import {setAppInitialized, setAppIsLoading} from '../app-reducer/app-reducer'
-import {authAPI, LoginParamsType, MeDataResponseType} from '../../../api/auth-api'
+import {authAPI, LoginData, MeResponse} from '../../../api/auth-api'
 import {ServerStatuses} from '../../../types/server-response-types'
 import {networkErrorsHandler, serverErrorsHandler} from '../../../utils/error-utils'
 
@@ -12,7 +12,7 @@ type InitialState = {
     login?: string
 }
 
-export const login = createAsyncThunk('auth/login', async (arg: { loginData: LoginParamsType }, thunkAPI) => {
+export const login = createAsyncThunk('auth/login', async (arg: { loginData: LoginData }, thunkAPI) => {
     try {
         thunkAPI.dispatch(setAppIsLoading({status: true}))
         const response = await authAPI.login(arg.loginData)
@@ -73,7 +73,7 @@ const slice = createSlice({
         setIsLoggedIn: (state, action: PayloadAction<{ status: boolean }>) => {
             state.isLoggedIn = action.payload.status
         },
-        setAuthData: (state, action: PayloadAction<{ data: MeDataResponseType }>) => {
+        setAuthData: (state, action: PayloadAction<{ data: MeResponse }>) => {
             return {...action.payload.data, isLoggedIn: true}
         }
     },

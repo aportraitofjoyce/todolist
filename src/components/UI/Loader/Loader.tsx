@@ -1,7 +1,7 @@
-import React from 'react'
+import React, {FC, memo} from 'react'
 import s from './Loader.module.css'
 
-export const Loader: React.FC = () => {
+export const Loader: FC = memo(() => {
     return (
         <div className={s.loadingWrapper}>
             <div className={s.loading}>
@@ -10,4 +10,4 @@ export const Loader: React.FC = () => {
             </div>
         </div>
     )
-}
+})
